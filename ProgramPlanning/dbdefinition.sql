@@ -183,6 +183,77 @@ CREATE TABLE public."__EFMigrationsHistory" (
 ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 
 --
+-- Name: course; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.course (
+    id integer NOT NULL,
+    prefix text NOT NULL,
+    num integer NOT NULL,
+    title text NOT NULL
+);
+
+
+ALTER TABLE public.course OWNER TO postgres;
+
+--
+-- Name: course_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.course_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.course_id_seq OWNER TO postgres;
+
+--
+-- Name: course_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.course_id_seq OWNED BY public.course.id;
+
+
+--
+-- Name: courseoutcome; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.courseoutcome (
+    id integer NOT NULL,
+    courseid integer NOT NULL,
+    outcome text NOT NULL
+);
+
+
+ALTER TABLE public.courseoutcome OWNER TO postgres;
+
+--
+-- Name: courseoutcome_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.courseoutcome_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courseoutcome_id_seq OWNER TO postgres;
+
+--
+-- Name: courseoutcome_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.courseoutcome_id_seq OWNED BY public.courseoutcome.id;
+
+
+--
 -- Name: AspNetRoleClaims Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -194,6 +265,20 @@ ALTER TABLE ONLY public."AspNetRoleClaims" ALTER COLUMN "Id" SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY public."AspNetUserClaims" ALTER COLUMN "Id" SET DEFAULT nextval('public."AspNetUserClaims_Id_seq"'::regclass);
+
+
+--
+-- Name: course id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.course ALTER COLUMN id SET DEFAULT nextval('public.course_id_seq'::regclass);
+
+
+--
+-- Name: courseoutcome id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.courseoutcome ALTER COLUMN id SET DEFAULT nextval('public.courseoutcome_id_seq'::regclass);
 
 
 --
@@ -262,6 +347,48 @@ COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin
 
 
 --
+-- Data for Name: course; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.course (id, prefix, num, title) FROM stdin;
+1	CS	1400	Programming Fundamentals
+2	CS	1410	Object-oriented  Programming
+3	SE	3250	Survey of Languages
+4	SE	3410	Human Factors-Software Design
+5	SE	3450	SW Desg. Principles, Patterns
+6	SE	3520	Database Systems
+7	SE	3620	Distributed App Development
+8	SE	3630	Mobile Application Development
+9	SE	4120	Management of Software Project
+10	SE	4140	Social & Eth Computing Issues
+11	SE	4220	Graphical User Interfaces
+12	SE	4230	Advanced Algorithms
+13	SE	4320	Personal Software Practices
+14	SE	4340	Secure Coding Practices
+15	SE	4400	SE Practicum I
+16	SE	4450	SE Practicum II
+18	CS	1405	Programming Fundamentals Lab
+20	CS	1415	Object-Oriented Program Lab
+21	CS	1810	Web Development I
+22	CS	1820	Web Development II
+23	CS	2420	Data Structures & Algorithms
+24	CS	2450	Intro to Software Engineering
+25	CS	2700	Digital Circuits
+26	CS	2810	Computer Organiz/Architecture
+27	CS	2830	Web Development III
+28	CS	2860	Operating Systems
+\.
+
+
+--
+-- Data for Name: courseoutcome; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.courseoutcome (id, courseid, outcome) FROM stdin;
+\.
+
+
+--
 -- Name: AspNetRoleClaims_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -273,6 +400,20 @@ SELECT pg_catalog.setval('public."AspNetRoleClaims_Id_seq"', 1, false);
 --
 
 SELECT pg_catalog.setval('public."AspNetUserClaims_Id_seq"', 1, false);
+
+
+--
+-- Name: course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.course_id_seq', 28, true);
+
+
+--
+-- Name: courseoutcome_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.courseoutcome_id_seq', 1, false);
 
 
 --
@@ -337,6 +478,22 @@ ALTER TABLE ONLY public."AspNetUsers"
 
 ALTER TABLE ONLY public."__EFMigrationsHistory"
     ADD CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId");
+
+
+--
+-- Name: course course_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.course
+    ADD CONSTRAINT course_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courseoutcome courseoutcome_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.courseoutcome
+    ADD CONSTRAINT courseoutcome_pkey PRIMARY KEY (id);
 
 
 --
@@ -434,6 +591,14 @@ ALTER TABLE ONLY public."AspNetUserRoles"
 
 ALTER TABLE ONLY public."AspNetUserTokens"
     ADD CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES public."AspNetUsers"("Id") ON DELETE CASCADE;
+
+
+--
+-- Name: courseoutcome courseid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.courseoutcome
+    ADD CONSTRAINT courseid FOREIGN KEY (courseid) REFERENCES public.course(id);
 
 
 --

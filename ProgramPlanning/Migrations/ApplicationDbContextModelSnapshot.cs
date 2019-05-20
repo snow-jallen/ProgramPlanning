@@ -180,6 +180,26 @@ namespace ProgramPlanning.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ProgramPlanning.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id");
+
+                    b.Property<int>("Number")
+                        .HasColumnName("num");
+
+                    b.Property<string>("Prefix")
+                        .HasColumnName("prefix");
+
+                    b.Property<int>("Title")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("course");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
