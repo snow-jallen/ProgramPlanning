@@ -24,10 +24,10 @@ using System.Windows.Media;
 
 namespace ProgramPlanning.Wpf.ViewModels
 {
-    public class MultiParent : DiagramViewModel
+    public class DiagramViewModel : Syncfusion.UI.Xaml.Diagram.DiagramViewModel
     {
         public Button prevbutton = null;
-        public MultiParent()
+        public DiagramViewModel()
         {
             //Initialize Diagram Properties
             Connectors = new ObservableCollection<ConnectorVM>();

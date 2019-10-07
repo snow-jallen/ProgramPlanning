@@ -19,6 +19,9 @@ using Syncfusion.Licensing;
 using Prism.Unity;
 using Prism.Ioc;
 using ProgramPlanning.Wpf.Views;
+using Prism.Regions;
+using ProgramPlanning.Wpf.ViewModels;
+using ProgramPlanning.Wpf.Services;
 
 namespace ProgramPlanning.Wpf
 {
@@ -62,8 +65,28 @@ namespace ProgramPlanning.Wpf
             return CommonServiceLocator.ServiceLocator.Current.GetInstance<MainWindowView>();
         }
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+        }
+
+        protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
+        {
+
+        }
+
+        protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
+        {
+            base.RegisterRequiredTypes(containerRegistry);
+        }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<IFileService, FileService>();
+
+
+            containerRegistry.RegisterForNavigation<DiagramView>();
+            //containerRegistry.RegisterForNavigation<DiagramView, DiagramViewModel>();
             containerRegistry.RegisterForNavigation<MainWindowView>();
         }
     }

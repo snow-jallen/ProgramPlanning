@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using Prism.Regions;
 using ProgramPlanning.Wpf.ViewModels;
 using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Diagram.Controls;
@@ -25,14 +26,19 @@ namespace ProgramPlanning.Wpf.Views
     /// </summary>
     public partial class MainWindowView : Window
     {
-        public MainWindowView()
+        private readonly IRegionManager regionManager;
+
+        public MainWindowView(IRegionManager regionManager)
         {
             this.InitializeComponent();
+
+            this.regionManager = regionManager;
+            Loaded += MainWindowView_Loaded;
+
         }
 
-        private void Sfdiagram_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindowView_Loaded(object sender, RoutedEventArgs e)
         {
-            (sfdiagram.DataContext as MultiParent).prevbutton = this.ToptoBottomOrientation;
         }
     }
 }
