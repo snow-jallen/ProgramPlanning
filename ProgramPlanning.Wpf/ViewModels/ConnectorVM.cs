@@ -3,7 +3,7 @@
 // Use of this code is subject to the terms of our license.
 // A copy of the current license can be obtained at any time by e-mailing
 // licensing@syncfusion.com. Any infringement will be prosecuted under
-// applicable laws. 
+// applicable laws.
 #endregion
 using Syncfusion.UI.Xaml.Diagram;
 using System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutomaticLayout_MultiParentLayout
+namespace ProgramPlanning.Wpf.ViewModels
 {
     public class ConnectorVM : ConnectorViewModel
     {

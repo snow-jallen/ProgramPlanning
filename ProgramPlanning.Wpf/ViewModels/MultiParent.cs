@@ -3,8 +3,10 @@
 // Use of this code is subject to the terms of our license.
 // A copy of the current license can be obtained at any time by e-mailing
 // licensing@syncfusion.com. Any infringement will be prosecuted under
-// applicable laws. 
+// applicable laws.
 #endregion
+using Prism.Commands;
+using ProgramPlanning.Wpf.Models;
 using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Diagram.Controls;
 using Syncfusion.UI.Xaml.Diagram.Layout;
@@ -20,7 +22,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace AutomaticLayout_MultiParentLayout
+namespace ProgramPlanning.Wpf.ViewModels
 {
     public class MultiParent : DiagramViewModel
     {
@@ -38,7 +40,7 @@ namespace AutomaticLayout_MultiParentLayout
 
             // Initialize Command for sample changes
 
-            Orientation_Command = new Command(OnOrientation_Command);
+            Orientation_Command = new DelegateCommand<Object>(OnOrientation_Command);
 
             // Initialize DataSourceSettings for SfDiagram
             DataSourceSettings = new DataSourceSettings()
@@ -61,7 +63,7 @@ namespace AutomaticLayout_MultiParentLayout
                 },
             };
         }
-        
+
         #region Private Variables
 
         private ICommand _Orientation_Command;

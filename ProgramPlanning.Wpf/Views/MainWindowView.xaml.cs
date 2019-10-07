@@ -3,7 +3,7 @@
 // Use of this code is subject to the terms of our license.
 // A copy of the current license can be obtained at any time by e-mailing
 // licensing@syncfusion.com. Any infringement will be prosecuted under
-// applicable laws. 
+// applicable laws.
 #endregion
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,22 +12,22 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using ProgramPlanning.Wpf.ViewModels;
 using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Diagram.Controls;
 using Syncfusion.UI.Xaml.Diagram.Layout;
 using Syncfusion.Windows.Shared;
 
-namespace AutomaticLayout_MultiParentLayout
+namespace ProgramPlanning.Wpf.Views
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowView : Window
     {
-        public MainWindow()
+        public MainWindowView()
         {
-            this.InitializeComponent();                          
+            this.InitializeComponent();
         }
 
         private void Sfdiagram_Loaded(object sender, RoutedEventArgs e)

@@ -3,7 +3,7 @@
 // Use of this code is subject to the terms of our license.
 // A copy of the current license can be obtained at any time by e-mailing
 // licensing@syncfusion.com. Any infringement will be prosecuted under
-// applicable laws. 
+// applicable laws.
 #endregion
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,16 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using Syncfusion.Licensing;
+using Prism.Unity;
+using Prism.Ioc;
+using ProgramPlanning.Wpf.Views;
 
-namespace AutomaticLayout_MultiParentLayout
+namespace ProgramPlanning.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
         public App()
         {
@@ -52,6 +55,16 @@ namespace AutomaticLayout_MultiParentLayout
                 rootPath = rootDirectory.FullName;
             }
             return string.Empty;
+        }
+
+        protected override Window CreateShell()
+        {
+            return CommonServiceLocator.ServiceLocator.Current.GetInstance<MainWindowView>();
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterForNavigation<MainWindowView>();
         }
     }
 }

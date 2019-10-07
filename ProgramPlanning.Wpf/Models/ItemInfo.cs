@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutomaticLayout_MultiParentLayout
+namespace ProgramPlanning.Wpf.Models
 {
     public class ItemInfo
     {
