@@ -116,7 +116,7 @@ namespace ProgramPlanning.Wpf.ViewModels
         private DataItems GetData(IEnumerable<Course> courses)
         {
             DataItems data = new DataItems();
-
+            int i = 1;
             foreach(var course in courses)
             {
                 data.Add(new ItemInfo($"{course.Area} {course.Number}", "#ff6329")
@@ -124,7 +124,8 @@ namespace ProgramPlanning.Wpf.ViewModels
                     CourseSummary = course.Content,
                     CourseTitle = course.Title,
                     ReportingPerson = new List<string>(course.Prerequisites),
-                    Course = course
+                    Course = course,
+                    XTransform = (i += 50)
                 });
             }
 

@@ -31,6 +31,7 @@ namespace ProgramPlanning.Wpf.Models
         public string CourseTitle { get; set; } = "Course Title";
         public string CourseSummary { get; set; } = "This is the course summary.  It's a great course, definitely one of the best we have. ;-)";
         public Course Course { get; set; }
+        public int XTransform { get; internal set; }
     }
 
     public class DataItems : ObservableCollection<ItemInfo>

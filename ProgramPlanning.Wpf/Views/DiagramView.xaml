@@ -20,6 +20,9 @@
                         BorderBrush="#5e5e5e"
                         Padding="5"
                         Margin="5">
+                    <Border.LayoutTransform>
+                        <TranslateTransform X="{Binding XTransform}" />
+                    </Border.LayoutTransform>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Course.Area}" />
