@@ -20,9 +20,9 @@ namespace ProgramPlanning.Wpf.ViewModels
         {
             this.regionManager = regionManager;
             this.fileService = fileService;
-            //regionManager.RegisterViewWithRegion(Constants.ContentRegion, typeof(ProgramPlanning.Wpf.Views.DiagramView));
 
             BrowseCommand = new DelegateCommand(browseCommand_Execute);
+            ReadFileCommand = new DelegateCommand(readFileCommand_Execute);
             FilePath = @"C:\git\ProgramPlanning\ProgramPlanning.Wpf\Learning Outcomes.xlsx";
         }
 
@@ -36,7 +36,19 @@ namespace ProgramPlanning.Wpf.ViewModels
         public DelegateCommand BrowseCommand { get; private set; }
         private void browseCommand_Execute()
         {
+            FilePath = fileService.BrowseFolderPath();
+        }
+
+        public DelegateCommand ReadFileCommand { get; private set; }
+        private void readFileCommand_Execute()
+        {
             var courses = fileService.ReadCourses(FilePath);
+            var navParams = new NavigationParameters();
+            navParams.Add("courses", courses);
+            //regionManager.RequestNavigate(Constants.ContentRegion, "DiagramKey", (nr)=>
+            //{
+            //});
+            regionManager.RequestNavigate(Constants.ContentRegion, "DiagramView", navParams);
         }
     }
 }

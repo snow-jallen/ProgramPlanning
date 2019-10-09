@@ -12,12 +12,13 @@
         <ResourceDictionary>
             <!--DataTemplate for Content of Node-->
             <DataTemplate x:Key="ContentTemplateforNode">
-                <Border BorderThickness="1" MaxWidth="120" Background="{Binding Path=RatingColor}"
+                <Border BorderThickness="1" MaxWidth="320" Background="{Binding Path=RatingColor}"
                     CornerRadius="6" BorderBrush="#5e5e5e" Padding="5" Margin="5">
                     <StackPanel>
                         <TextBlock Text="{Binding CourseTitle}"
                                    FontWeight="Black"/>
                         <TextBlock Text="{Binding CourseSummary}" TextWrapping="Wrap" />
+                        <ItemsControl ItemsSource="{Binding Outcomes}" />
                     </StackPanel>
                 </Border>
             </DataTemplate>

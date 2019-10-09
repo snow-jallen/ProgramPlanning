@@ -6,7 +6,9 @@
 // applicable laws.
 #endregion
 using Prism.Commands;
+using Prism.Regions;
 using ProgramPlanning.Wpf.Models;
+using ProgramPlanning.Wpf.Services;
 using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Diagram.Controls;
 using Syncfusion.UI.Xaml.Diagram.Layout;
@@ -24,7 +26,7 @@ using System.Windows.Media;
 
 namespace ProgramPlanning.Wpf.ViewModels
 {
-    public class DiagramViewModel : Syncfusion.UI.Xaml.Diagram.DiagramViewModel
+    public class DiagramViewModel : Syncfusion.UI.Xaml.Diagram.DiagramViewModel, INavigationAware
     {
         public Button prevbutton = null;
         public DiagramViewModel()
@@ -34,34 +36,13 @@ namespace ProgramPlanning.Wpf.ViewModels
             Constraints = Constraints.Remove(GraphConstraints.PageEditing , GraphConstraints.PanRails);
             Menu = null;
             Tool = Tool.ZoomPan;
-            HorizontalRuler = new Ruler { Orientation = Orientation.Horizontal };
-            VerticalRuler = new Ruler { Orientation = Orientation.Vertical };
+            //HorizontalRuler = new Ruler { Orientation = Orientation.Horizontal };
+            //VerticalRuler = new Ruler { Orientation = Orientation.Vertical };
             DefaultConnectorType = ConnectorType.Orthogonal;
 
             // Initialize Command for sample changes
 
             Orientation_Command = new DelegateCommand<Object>(OnOrientation_Command);
-
-            // Initialize DataSourceSettings for SfDiagram
-            DataSourceSettings = new DataSourceSettings()
-            {
-                ParentId = "ReportingPerson",
-                Id = "Name",
-                DataSource = GetData(),
-            };
-
-            // Initialize LayoutSettings for SfDiagram
-            LayoutManager = new LayoutManager()
-            {
-                Layout = new DirectedTreeLayout()
-                {
-                    Type = LayoutType.Hierarchical,
-                    Orientation = TreeOrientation.TopToBottom,
-                    AvoidSegmentOverlapping = true,
-                    HorizontalSpacing = 40,
-                    VerticalSpacing = 40,
-                },
-            };
         }
 
         #region Private Variables
@@ -131,53 +112,95 @@ namespace ProgramPlanning.Wpf.ViewModels
         /// Method to Get Data for DataSource
         /// </summary>
         /// <param name="data"></param>
-        private DataItems GetData()
+        private DataItems GetData(IEnumerable<Course> courses)
         {
             DataItems data = new DataItems();
 
-            data.Add(new ItemInfo("n11", "#ff6329"));
+            foreach(var course in courses)
+            {
+                data.Add(new ItemInfo($"{course.Area} {course.Number}", "#ff6329")
+                {
+                    CourseSummary = course.Content,
+                    CourseTitle = course.Title,
+                    ReportingPerson = new List<string>(course.Prerequisites)
+                });
+            }
 
-            data.Add(new ItemInfo("n12", "#ff6329"));
+            //data.Add(new ItemInfo("n11", "#ff6329"));
 
-            data.Add(new ItemInfo("n13", "#ff6329"));
+            //data.Add(new ItemInfo("n12", "#ff6329"));
 
-            data.Add(new ItemInfo("n21", "#941100") { ReportingPerson = new List<string> { "n11", "n12", "n13" } });
+            //data.Add(new ItemInfo("n13", "#ff6329"));
 
-            data.Add(new ItemInfo("n31", "#669be5") { ReportingPerson = new List<string> { "n21" } });
+            //data.Add(new ItemInfo("n21", "#941100") { ReportingPerson = new List<string> { "n11", "n12", "n13" } });
 
-            data.Add(new ItemInfo("n32", "#669be5") { ReportingPerson = new List<string> { "n21" } });
+            //data.Add(new ItemInfo("n31", "#669be5") { ReportingPerson = new List<string> { "n21" } });
 
-            data.Add(new ItemInfo("n41", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
+            //data.Add(new ItemInfo("n32", "#669be5") { ReportingPerson = new List<string> { "n21" } });
 
-            data.Add(new ItemInfo("n42", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
+            //data.Add(new ItemInfo("n41", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
 
-            data.Add(new ItemInfo("n43", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
+            //data.Add(new ItemInfo("n42", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
 
-            data.Add(new ItemInfo("n44", "#30ab5c") { ReportingPerson = new List<string> { "n31", "n32" } });
+            //data.Add(new ItemInfo("n43", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
 
-            data.Add(new ItemInfo("n45", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
+            //data.Add(new ItemInfo("n44", "#30ab5c") { ReportingPerson = new List<string> { "n31", "n32" } });
 
-            data.Add(new ItemInfo("n46", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
+            //data.Add(new ItemInfo("n45", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
 
-            data.Add(new ItemInfo("n47", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
+            //data.Add(new ItemInfo("n46", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
 
-            data.Add(new ItemInfo("n51", "#ff9400") { ReportingPerson = new List<string> { "n41", "n42", "n43" } });
+            //data.Add(new ItemInfo("n47", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
 
-            data.Add(new ItemInfo("n52", "#ff9400") { ReportingPerson = new List<string> { "n45", "n46", "n47" } });
+            //data.Add(new ItemInfo("n51", "#ff9400") { ReportingPerson = new List<string> { "n41", "n42", "n43" } });
 
-            data.Add(new ItemInfo("n61", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
+            //data.Add(new ItemInfo("n52", "#ff9400") { ReportingPerson = new List<string> { "n45", "n46", "n47" } });
 
-            data.Add(new ItemInfo("n62", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
+            //data.Add(new ItemInfo("n61", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
 
-            data.Add(new ItemInfo("n63", "#99bb55") { ReportingPerson = new List<string> { "n51", "n44" } });
+            //data.Add(new ItemInfo("n62", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
 
-            data.Add(new ItemInfo("n64", "#99bb55") { ReportingPerson = new List<string> { "n44", "n52" } });
+            //data.Add(new ItemInfo("n63", "#99bb55") { ReportingPerson = new List<string> { "n51", "n44" } });
 
-            data.Add(new ItemInfo("n65", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
+            //data.Add(new ItemInfo("n64", "#99bb55") { ReportingPerson = new List<string> { "n44", "n52" } });
 
-            data.Add(new ItemInfo("n66", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
+            //data.Add(new ItemInfo("n65", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
+
+            //data.Add(new ItemInfo("n66", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
 
             return data;
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            var courses = navigationContext.Parameters["courses"] as IEnumerable<Course>;
+
+            // Initialize DataSourceSettings for SfDiagram
+            DataSourceSettings = new DataSourceSettings()
+            {
+                ParentId = "ReportingPerson",
+                Id = "Name",
+                DataSource = GetData(courses),
+            };
+
+            // Initialize LayoutSettings for SfDiagram
+            LayoutManager = new LayoutManager()
+            {
+                Layout = new DirectedTreeLayout()
+                {
+                    Type = LayoutType.Hierarchical,
+                    Orientation = TreeOrientation.LeftToRight,
+                    AvoidSegmentOverlapping = true,
+                    HorizontalSpacing = 40,
+                    VerticalSpacing = 40,
+                },
+            };
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext) => false;
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
         }
     }
 }

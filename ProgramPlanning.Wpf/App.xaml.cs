@@ -72,7 +72,11 @@ namespace ProgramPlanning.Wpf
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
         {
-
+            base.ConfigureDefaultRegionBehaviors(regionBehaviors);
+        }
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
         }
 
         protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
@@ -86,8 +90,9 @@ namespace ProgramPlanning.Wpf
 
 
             containerRegistry.RegisterForNavigation<DiagramView>();
-            //containerRegistry.RegisterForNavigation<DiagramView, DiagramViewModel>();
+            //containerRegistry.RegisterForNavigation<DiagramView, DiagramViewModel>("DiagramKey");
             containerRegistry.RegisterForNavigation<MainWindowView>();
+
         }
     }
 }

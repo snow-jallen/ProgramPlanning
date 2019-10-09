@@ -26,12 +26,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Program Planning"
                    FontSize="15px"
                    FontWeight="Bold"
-                   Margin="5,10" Grid.ColumnSpan="3"/>
+                   Margin="5,10"
+                   Grid.ColumnSpan="4" />
 
         <TextBlock Text="Input File"
                    Margin="5"
@@ -46,17 +48,20 @@
                 Command="{Binding BrowseCommand}"
                 MinWidth="60"
                 Margin="5"/>
+        <Button Content="Read File"
+                Grid.Row="1"
+                Grid.Column="3"
+                Command="{Binding ReadFileCommand}"
+                MinWidth="60"
+                Margin="5" />
 
         <Border Grid.Row="2"
-                Grid.ColumnSpan="3"
+                Grid.ColumnSpan="4"
                 BorderBrush="Black"
                 BorderThickness="5"
                 CornerRadius="5"
                 Margin="5">
-            <!--<StackPanel>
-                <ContentControl prism:RegionManager.RegionName="{x:Static programPlanning:Constants.ContentRegion}" />
-            </StackPanel>-->
-            <views:DiagramView />
+            <ContentControl prism:RegionManager.RegionName="{x:Static programPlanning:Constants.ContentRegion}" />
         </Border>
     </Grid>
 </Window>
