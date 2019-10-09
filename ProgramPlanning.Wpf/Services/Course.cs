@@ -12,5 +12,6 @@ namespace ProgramPlanning.Wpf.Services
         public IEnumerable<string> Outcomes { get; set; }
         public IEnumerable<string> Prerequisites { get; set; }
         public IEnumerable<string> Corequisites { get; set; }
+        public string Semester { get; set; }
     }
 }

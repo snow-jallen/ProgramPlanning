@@ -5,6 +5,7 @@
 // licensing@syncfusion.com. Any infringement will be prosecuted under
 // applicable laws.
 #endregion
+using ProgramPlanning.Wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,7 @@ namespace ProgramPlanning.Wpf.Models
         public List<string> ReportingPerson { get; set; }
         public string CourseTitle { get; set; } = "Course Title";
         public string CourseSummary { get; set; } = "This is the course summary.  It's a great course, definitely one of the best we have. ;-)";
+        public Course Course { get; set; }
     }
 
     public class DataItems : ObservableCollection<ItemInfo>

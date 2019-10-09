@@ -52,6 +52,7 @@ namespace ProgramPlanning.Wpf.ViewModels
         #endregion
 
         #region Commands
+
         public ICommand Orientation_Command
         {
             get { return _Orientation_Command; }
@@ -122,50 +123,31 @@ namespace ProgramPlanning.Wpf.ViewModels
                 {
                     CourseSummary = course.Content,
                     CourseTitle = course.Title,
-                    ReportingPerson = new List<string>(course.Prerequisites)
+                    ReportingPerson = new List<string>(course.Prerequisites),
+                    Course = course
                 });
             }
 
             //data.Add(new ItemInfo("n11", "#ff6329"));
-
             //data.Add(new ItemInfo("n12", "#ff6329"));
-
             //data.Add(new ItemInfo("n13", "#ff6329"));
-
             //data.Add(new ItemInfo("n21", "#941100") { ReportingPerson = new List<string> { "n11", "n12", "n13" } });
-
             //data.Add(new ItemInfo("n31", "#669be5") { ReportingPerson = new List<string> { "n21" } });
-
             //data.Add(new ItemInfo("n32", "#669be5") { ReportingPerson = new List<string> { "n21" } });
-
             //data.Add(new ItemInfo("n41", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
-
             //data.Add(new ItemInfo("n42", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
-
             //data.Add(new ItemInfo("n43", "#30ab5c") { ReportingPerson = new List<string> { "n31" } });
-
             //data.Add(new ItemInfo("n44", "#30ab5c") { ReportingPerson = new List<string> { "n31", "n32" } });
-
             //data.Add(new ItemInfo("n45", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
-
             //data.Add(new ItemInfo("n46", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
-
             //data.Add(new ItemInfo("n47", "#30ab5c") { ReportingPerson = new List<string> { "n32" } });
-
             //data.Add(new ItemInfo("n51", "#ff9400") { ReportingPerson = new List<string> { "n41", "n42", "n43" } });
-
             //data.Add(new ItemInfo("n52", "#ff9400") { ReportingPerson = new List<string> { "n45", "n46", "n47" } });
-
             //data.Add(new ItemInfo("n61", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
-
             //data.Add(new ItemInfo("n62", "#99bb55") { ReportingPerson = new List<string> { "n51" } });
-
             //data.Add(new ItemInfo("n63", "#99bb55") { ReportingPerson = new List<string> { "n51", "n44" } });
-
             //data.Add(new ItemInfo("n64", "#99bb55") { ReportingPerson = new List<string> { "n44", "n52" } });
-
             //data.Add(new ItemInfo("n65", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
-
             //data.Add(new ItemInfo("n66", "#99bb55") { ReportingPerson = new List<string> { "n52" } });
 
             return data;
@@ -176,12 +158,31 @@ namespace ProgramPlanning.Wpf.ViewModels
             var courses = navigationContext.Parameters["courses"] as IEnumerable<Course>;
 
             // Initialize DataSourceSettings for SfDiagram
+            var dataItems = GetData(courses);
             DataSourceSettings = new DataSourceSettings()
             {
                 ParentId = "ReportingPerson",
                 Id = "Name",
-                DataSource = GetData(courses),
+                DataSource = dataItems,
             };
+
+            var groups = new ObservableCollection<GroupViewModel>();
+            foreach(var group in from c in dataItems
+                                 orderby c.Course.Semester
+                                 group c by c.Course.Semester into g
+                                 select new {Semester = g.Key, DataItems=g})
+            {
+                //groups.Add(new GroupViewModel
+                //{
+                //    Nodes = group.DataItems.ToArray(),
+                //    ID=group.Semester,
+                //    Key=group.Semester,
+                //    ZIndex=1
+                //});
+            }
+
+            //Groups = groups;
+
 
             // Initialize LayoutSettings for SfDiagram
             LayoutManager = new LayoutManager()

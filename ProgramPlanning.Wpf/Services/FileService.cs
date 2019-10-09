@@ -44,6 +44,7 @@ namespace ProgramPlanning.Wpf.Services
                 var coRequisites = new List<string>();
                 var content = string.Empty;
                 var title = string.Empty;
+                var semester = string.Empty;
                 for (var row = 2; row < sheet.Dimension.End.Row; row++)
                 {
                     var area = sheet.Cells[row, 1].Value.ToString();
@@ -53,15 +54,19 @@ namespace ProgramPlanning.Wpf.Services
                     {
                         content = (string)sheet.Cells[row, 4].Value;
                     }
-                    else if(linetype=="Title")
+                    else if (linetype == "Title")
                     {
                         title = (string)sheet.Cells[row, 4].Value;
                     }
-                    else if(linetype=="Prereq")
+                    else if (linetype == "Semester")
+                    {
+                        semester = (string)sheet.Cells[row, 4].Value;
+                    }
+                    else if (linetype == "Prereq")
                     {
                         preRequisites.Add((string)sheet.Cells[row, 4].Value);
                     }
-                    else if(linetype=="Coreq")
+                    else if (linetype == "Coreq")
                     {
                         coRequisites.Add((string)sheet.Cells[row, 4].Value);
                     }
@@ -76,6 +81,7 @@ namespace ProgramPlanning.Wpf.Services
                         course.Number = num;
                         course.Content = content;
                         course.Title = title;
+                        course.Semester = semester;
                         course.Outcomes = outcomes;
                         course.Prerequisites = preRequisites;
                         course.Corequisites = coRequisites;
@@ -86,6 +92,7 @@ namespace ProgramPlanning.Wpf.Services
                         coRequisites = new List<string>();
                         content = string.Empty;
                         title = string.Empty;
+                        semester = string.Empty;
                     }
                 }
             }

@@ -15,8 +15,19 @@
                 <Border BorderThickness="1" MaxWidth="320" Background="{Binding Path=RatingColor}"
                     CornerRadius="6" BorderBrush="#5e5e5e" Padding="5" Margin="5">
                     <StackPanel>
-                        <TextBlock Text="{Binding CourseTitle}"
-                                   FontWeight="Black"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Course.Area}" />
+                            <TextBlock Text="{Binding Course.Number}" />
+                            <TextBlock Text="{Binding CourseTitle}"
+                                       Margin="5,0"
+                                       FontWeight="Black"/>
+                        </StackPanel>
+                        <Rectangle HorizontalAlignment="Stretch"
+                                   StrokeThickness="2"
+                                   VerticalAlignment="Center"
+                                   Height="1"
+                                   Fill="Black"
+                                   Margin="0,2" />
                         <TextBlock Text="{Binding CourseSummary}" TextWrapping="Wrap" />
                         <ItemsControl ItemsSource="{Binding Outcomes}" />
                     </StackPanel>
@@ -94,6 +105,7 @@
             <Syncfusion:SfDiagram x:Name="sfdiagram"
                                   DefaultConnectorType="{Binding DefaultConnectorType}"
                                   Nodes="{Binding Nodes}"
+                                  Groups="{Binding Groups}"
                                   Connectors="{Binding Connectors}"
                                   Constraints="{Binding Constraints}"
                                   Tool="{Binding Tool}"
@@ -186,6 +198,10 @@
                     <Label Height="20"/>
                     <CheckBox Margin="10,10,0,0" Content="Avoid Segements Overlapping" FontFamily="Segoe UI" IsChecked="{Binding ElementName=sfdiagram, Path=DataContext.LayoutManager.Layout.AvoidSegmentOverlapping}" Foreground="Black" FontSize="11pt"/>
                 </StackPanel>
+                <Button Content="Export to PNG"
+                        Click="export_Click"
+                        Margin="15"
+                        MinHeight="40"/>
             </StackPanel>
         </Border>
     </Grid>

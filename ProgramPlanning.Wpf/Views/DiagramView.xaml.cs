@@ -1,6 +1,8 @@
 ﻿using Prism.Regions;
+using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +35,20 @@ namespace ProgramPlanning.Wpf.Views
             var dataContext = sfdiagram.DataContext as ProgramPlanning.Wpf.ViewModels.DiagramViewModel;
             if(dataContext != null)
                 dataContext.prevbutton = this.ToptoBottomOrientation;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void export_Click(object sender, RoutedEventArgs e)
+        {
+            var exportFileName = "Program Planning.png";
+            sfdiagram.ExportSettings.FileName = exportFileName;
+            sfdiagram.ExportSettings.ExportMode = ExportMode.Content;
+            sfdiagram.Export();
+            Process.Start(exportFileName);
         }
     }
 }
