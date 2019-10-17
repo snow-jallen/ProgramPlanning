@@ -47,21 +47,30 @@
         content.id = obj.id + '_outerstack';
         content.orientation = 'Horizontal';
         content.style.strokeColor = 'gray';
-        content.padding = { left: 5, right: 5, top: 5, bottom: 5 };
+        content.padding = { left: 5, right: 10, top: 5, bottom: 5 };
+
+        var image = new ej.diagrams.ImageElement();
+        image.width = 50;
+        image.height = 50;
+        image.style.strokeColor = 'none';
+        image.source = obj.data.Image;
+        image.id = obj.id + '_pic';
+        var innerStack = new ej.diagrams.StackPanel();
+        innerStack.style.strokeColor = 'none';
+        innerStack.margin = { left: 5, right: 0, top: 0, bottom: 0 };
+        innerStack.id = obj.id + '_innerstack';
 
         var text = new ej.diagrams.TextElement();
-        text.margin = { left: 0, right: 0, top: 0, bottom: 0 };
         text.content = obj.data.Name;
-        text.style.bold = true;
         text.style.color = 'black';
+        text.style.bold = true;
         text.style.strokeColor = 'none';
-        text.style.fontSize = 12;
         text.horizontalAlignment = 'Left';
         text.style.fill = 'none';
         text.id = obj.id + '_text1';
 
         var desigText = new ej.diagrams.TextElement();
-        desigText.margin = { left: 0, right: 0, top: 0, bottom: 0 };
+        desigText.margin = { left: 0, right: 0, top: 5, bottom: 0 };
         desigText.content = obj.data.Designation;
         desigText.style.color = 'black';
         desigText.style.strokeColor = 'none';
@@ -70,8 +79,9 @@
         desigText.horizontalAlignment = 'Left';
         desigText.style.textWrapping = 'Wrap';
         desigText.id = obj.id + '_desig';
+        innerStack.children = [text, desigText];
 
-        content.children = [text, desigText];
+        content.children = [image, innerStack];
 
         return content;
     }
