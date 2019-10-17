@@ -1,27 +1,41 @@
 ﻿@page
 @model IndexModel
 @using Syncfusion.EJ2;
+@using Syncfusion.EJ2.Diagrams;
 @using ProgramPlanning.Shared.Services;
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Snow SE - Program Planning</h1>
 </div>
 
 <div class="control-section">
+    <ejs-diagram id="swimlaneDiagram"
+                 width="100%"
+                 height="700px"
+                 getNodeDefaults="@ViewBag.getNodeDefaults"
+                 getConnectorDefaults="@ViewBag.getConnectorDefaults">
+        <e-diagram-datasourcesettings id="Name"
+                                      parentId="Prerequisites"
+                                      dataSource="new DataManager() { Data = (List<Course>)ViewBag.Nodes }">
+        </e-diagram-datasourcesettings>
+        <e-diagram-layout type="HierarchicalTree" horizontalSpacing="15" verticalSpacing="40" margin="new DiagramMargin() { Left = 10, Top = 50 }">
+
+        </e-diagram-layout>
+    </ejs-diagram>
     <ejs-diagram id="diagram"
                  width="100%"
-                 height="550px"
+                 height="700px"
                  getNodeDefaults="@ViewBag.getNodeDefaults"
                  getConnectorDefaults="@ViewBag.getConnectorDefaults"
                  created="diagramCreated">
         <e-diagram-snapsettings constraints="None">
 
         </e-diagram-snapsettings>
-        <e-diagram-datasourcesettings id="Name"
-                                      parentId="ReportingPerson"
+        <e-diagram-datasourcesettings id="CourseName"
+                                      parentId="Prerequisites"
                                       dataSource="new DataManager(){ Data = (List<Course>)ViewBag.Nodes }">
 
         </e-diagram-datasourcesettings>
@@ -50,11 +64,14 @@
             diagram.dataBind();
         }
 
-        function getNodeDefaults(obj, data, diagram) {
+        function getNodeDefaults(obj, diagram) {
             //Initialize shape
+            obj.shape = { type: 'Text', content: obj.data.Name };
             obj.annotations = [{
                 /* tslint:disable:no-string-literal */
-                content: obj.data.Name, style: { color: 'black' }
+                content: obj.data.Name,
+                margin: {top: 10, left: 10, right: 10, bottom: 0},
+                style: { color: 'black' }
             }];
             obj.style =
 
@@ -73,6 +90,7 @@
             connector.type = 'Orthogonal';
             connector.style.strokeColor = '#4d4d4d';
             connector.targetDecorator.shape = 'None';
+            connector.cornerRadius = 5;
             return connector;
         }
 
