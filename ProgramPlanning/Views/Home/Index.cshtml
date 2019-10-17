@@ -1,16 +1,56 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using Syncfusion.EJ2.Diagrams;
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>This should work</h1>
+
+<div class="control-section">
+    <ejs-diagram id="diagram" width="100%" height="550px" getNodeDefaults="@ViewBag.getNodeDefaults" getConnectorDefaults="@ViewBag.getConnectorDefaults" created="diagramCreated">
+        <e-diagram-snapsettings constraints="None"></e-diagram-snapsettings>
+        <e-diagram-datasourcesettings id="Name" parentId="Category" dataSource="new DataManager(){ Data = (List<LocalDataDetails>)ViewBag.Nodes }"></e-diagram-datasourcesettings>
+        <e-diagram-layout type="HierarchicalTree" horizontalSpacing="15" verticalSpacing="50"></e-diagram-layout>
+    </ejs-diagram>
 </div>
 
-<ejs-diagram id="container" width="100%" height="700px">
-    <e-diagram-nodes>
-        <e-diagram-node id="node1" offsetX="100" offsetY="100" width="100" height="100" borderWidth="2">
-            <e-node-style fill="darkcyan"></e-node-style>
-        </e-diagram-node>
-    </e-diagram-nodes>
-</ejs-diagram>
+<style>
+    #diagram {
+        display: block;
+    }
+
+    .row {
+        display: block;
+    }
+</style>
+
+<script>
+    function diagramCreated() {
+        var diagram = document.getElementById("diagram").ej2_instances[0];
+        diagram.tool = ej.diagrams.DiagramTools.ZoomPan;
+        diagram.dataBind();
+    }
+
+    function getNodeDefaults(obj, data, diagram) {
+        //Initialize shape
+        obj.annotations = [{
+            /* tslint:disable:no-string-literal */
+            content: obj.data.Name, style: { color: 'black' }
+        }];
+        obj.style =
+
+        {
+            fill: '#ffeec7', strokeColor: '#f5d897', strokeWidth: 1
+        }
+
+            ; obj.shape = {
+                type: 'Basic', shape: 'Rectangle'
+            }
+
+            ; obj.width = 95; obj.height = 30; return obj;
+    }
+
+    function getConnectorDefaults(connector, diagram) {
+        connector.type = 'Orthogonal';
+        connector.style.strokeColor = '#4d4d4d';
+        connector.targetDecorator.shape = 'None';
+        return connector;
+    }
+
+</script>
