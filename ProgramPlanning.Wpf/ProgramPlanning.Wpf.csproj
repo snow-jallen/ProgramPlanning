@@ -74,9 +74,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
-    <Compile Include="Services\Course.cs" />
-    <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\IFileService.cs" />
     <Compile Include="ViewModels\ConnectorVM.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Page Include="Views\DiagramView.xaml">
@@ -92,6 +89,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\WpfFileService.cs" />
     <Compile Include="Views\DiagramView.xaml.cs">
       <DependentUpon>DiagramView.xaml</DependentUpon>
     </Compile>
@@ -170,6 +168,12 @@
     <PackageReference Include="Unity.Container">
       <Version>5.11.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProgramPlanning.Shared\ProgramPlanning.Shared.csproj">
+      <Project>{3da60f98-5f08-4328-8a17-aa133013701a}</Project>
+      <Name>ProgramPlanning.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

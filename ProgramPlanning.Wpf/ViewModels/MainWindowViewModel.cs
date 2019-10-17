@@ -2,7 +2,7 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
-using ProgramPlanning.Wpf.Services;
+using ProgramPlanning.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

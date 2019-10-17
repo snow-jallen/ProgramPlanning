@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Wpf", "Prog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Web", "ProgramPlanning.Web\ProgramPlanning.Web.csproj", "{94C78621-2C6E-4AC9-B329-3D3616661786}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Shared", "ProgramPlanning.Shared\ProgramPlanning.Shared.csproj", "{3DA60F98-5F08-4328-8A17-AA133013701A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{94C78621-2C6E-4AC9-B329-3D3616661786}.Release|x64.Build.0 = Release|Any CPU
 		{94C78621-2C6E-4AC9-B329-3D3616661786}.Release|x86.ActiveCfg = Release|Any CPU
 		{94C78621-2C6E-4AC9-B329-3D3616661786}.Release|x86.Build.0 = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|x64.Build.0 = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|x86.Build.0 = Debug|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|x64.ActiveCfg = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|x64.Build.0 = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|x86.ActiveCfg = Release|Any CPU
+		{3DA60F98-5F08-4328-8A17-AA133013701A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

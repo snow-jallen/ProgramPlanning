@@ -7,8 +7,8 @@
 #endregion
 using Prism.Commands;
 using Prism.Regions;
+using ProgramPlanning.Shared.Services;
 using ProgramPlanning.Wpf.Models;
-using ProgramPlanning.Wpf.Services;
 using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Diagram.Controls;
 using Syncfusion.UI.Xaml.Diagram.Layout;

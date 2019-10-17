@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ProgramPlanning.Wpf.Services
+namespace ProgramPlanning.Shared.Services
 {
     public interface IFileService
     {

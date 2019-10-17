@@ -21,7 +21,7 @@ using Prism.Ioc;
 using ProgramPlanning.Wpf.Views;
 using Prism.Regions;
 using ProgramPlanning.Wpf.ViewModels;
-using ProgramPlanning.Wpf.Services;
+using ProgramPlanning.Shared.Services;
 
 namespace ProgramPlanning.Wpf
 {
@@ -86,7 +86,7 @@ namespace ProgramPlanning.Wpf
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IFileService, FileService>();
+            containerRegistry.Register<IFileService, WpfFileService>();
 
 
             containerRegistry.RegisterForNavigation<DiagramView>();

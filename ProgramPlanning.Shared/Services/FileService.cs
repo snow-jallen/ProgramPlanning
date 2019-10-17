@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgramPlanning.Wpf.Services
+namespace ProgramPlanning.Shared.Services
 {
 
     public class FileService : IFileService
@@ -17,23 +17,17 @@ namespace ProgramPlanning.Wpf.Services
 
         }
 
-        public string BrowseFolderPath()
+        public virtual string BrowseFolderPath()
         {
-            var fileBrowser = new OpenFileDialog();
-            fileBrowser.CheckFileExists = true;
-            fileBrowser.DefaultExt = ".xlsx";
-            fileBrowser.Filter = "Spreadsheets (*.xlsx)|*.xlsx";
-            fileBrowser.Title = "Course Information Spreadsheet";
-            if(fileBrowser.ShowDialog() ?? false)
-            {
-                return fileBrowser.FileName;
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Course> ReadCourses(string excelFile)
         {
             var file = new FileInfo(excelFile);
+            if (file.Exists == false)
+                throw new FileNotFoundException("Unable to locate excel file", excelFile);
+
             var courses = new List<Course>();
             using(var package = new ExcelPackage(file))
             {

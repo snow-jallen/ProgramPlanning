@@ -5,7 +5,7 @@
 // licensing@syncfusion.com. Any infringement will be prosecuted under
 // applicable laws.
 #endregion
-using ProgramPlanning.Wpf.Services;
+using ProgramPlanning.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
