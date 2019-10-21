@@ -21,7 +21,7 @@
                                       parentId="Prerequisites"
                                       dataSource="new DataManager() { Data = (List<Course>)ViewBag.Nodes }">
         </e-diagram-datasourcesettings>
-        <e-diagram-layout type="HierarchicalTree" horizontalSpacing="15" verticalSpacing="40" margin="new DiagramMargin() { Left = 10, Top = 50 }">
+        <e-diagram-layout type="ComplexHierarchicalTree" horizontalSpacing="15" verticalSpacing="40" margin="new DiagramMargin() { Left = 10, Top = 50 }">
 
         </e-diagram-layout>
     </ejs-diagram>
@@ -34,12 +34,12 @@
         <e-diagram-snapsettings constraints="None">
 
         </e-diagram-snapsettings>
-        <e-diagram-datasourcesettings id="CourseName"
+        <e-diagram-datasourcesettings id="Name"
                                       parentId="Prerequisites"
                                       dataSource="new DataManager(){ Data = (List<Course>)ViewBag.Nodes }">
 
         </e-diagram-datasourcesettings>
-        <e-diagram-layout type="HierarchicalTree"
+        <e-diagram-layout type="ComplexHierarchicalTree"
                           horizontalSpacing="15"
                           verticalSpacing="50">
 

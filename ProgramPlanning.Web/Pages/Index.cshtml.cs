@@ -44,7 +44,7 @@ namespace ProgramPlanning.Web.Pages
             var connectors = new List<DiagramConnector>();
             //connectors.Add(new DiagramConnector() { Id="connector1", SourceID=})
 
-            ViewData["Nodes"] = nodes;
+            ViewData["Nodes"] = courses;
 
             ViewData["getNodeDefaults"] = "getNodeDefaults";
             ViewData["getConnectorDefaults"] = "getConnectorDefaults";
