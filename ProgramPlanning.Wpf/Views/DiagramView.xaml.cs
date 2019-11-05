@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using MigraDoc.DocumentObjectModel;
+using Prism.Regions;
 using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;

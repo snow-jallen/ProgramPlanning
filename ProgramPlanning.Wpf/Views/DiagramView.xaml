@@ -462,6 +462,10 @@
                         Click="export_Click"
                         Margin="15"
                         MinHeight="40" />
+                <Button Content="Generate Word Doc"
+                        Command="{Binding ExportReport}"
+                        Margin="15"
+                        MinHeight="40" />
             </StackPanel>
         </Border>
     </Grid>

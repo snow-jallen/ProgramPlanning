@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
+    <Compile Include="DocumentGenerator.cs" />
     <Compile Include="ViewModels\ConnectorVM.cs" />
     <Compile Include="ViewModels\DiagramViewModel.cs" />
     <Page Include="Views\DiagramView.xaml">
@@ -154,6 +155,9 @@
       <Version>2.9.6</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PDFsharp-MigraDoc-WPF">
+      <Version>1.50.5147</Version>
     </PackageReference>
     <PackageReference Include="Prism.Unity">
       <Version>7.2.0.1367</Version>

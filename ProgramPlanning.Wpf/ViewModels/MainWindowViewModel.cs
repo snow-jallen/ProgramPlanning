@@ -23,7 +23,7 @@ namespace ProgramPlanning.Wpf.ViewModels
 
             BrowseCommand = new DelegateCommand(browseCommand_Execute);
             ReadFileCommand = new DelegateCommand(readFileCommand_Execute);
-            FilePath = @"C:\git\ProgramPlanning\ProgramPlanning.Wpf\Learning Outcomes.xlsx";
+            FilePath = @"C:\git\ProgramPlanning\ProgramPlanning.Web\Learning Outcomes.xlsx";
         }
 
         private string filePath;

@@ -43,6 +43,7 @@ namespace ProgramPlanning.Wpf.ViewModels
             // Initialize Command for sample changes
 
             Orientation_Command = new DelegateCommand<Object>(OnOrientation_Command);
+            ExportReport = new DelegateCommand(() => DocumentGenerator.MakeDocument(courses));
         }
 
         #region Private Variables
@@ -65,6 +66,8 @@ namespace ProgramPlanning.Wpf.ViewModels
                 }
             }
         }
+
+        public DelegateCommand ExportReport { get; private set; }
         #endregion
 
 
@@ -154,9 +157,16 @@ namespace ProgramPlanning.Wpf.ViewModels
             return data;
         }
 
+        IEnumerable<Course> courses;
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            var courses = navigationContext.Parameters["courses"] as IEnumerable<Course>;
+            if (navigationContext is null)
+            {
+                throw new ArgumentNullException(nameof(navigationContext));
+            }
+
+            courses = navigationContext.Parameters["courses"] as IEnumerable<Course>;
 
             // Initialize DataSourceSettings for SfDiagram
             var dataItems = GetData(courses);
