@@ -2,7 +2,7 @@
 
 namespace ProgramPlanning.Shared.Services
 {
-    public class Course
+    public class ExcelBasedCourse
     {
         public string Area { get; set; }
         public int Number { get; set; }

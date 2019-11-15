@@ -116,7 +116,7 @@ namespace ProgramPlanning.Wpf.ViewModels
         /// Method to Get Data for DataSource
         /// </summary>
         /// <param name="data"></param>
-        private DataItems GetData(IEnumerable<Course> courses)
+        private DataItems GetData(IEnumerable<ExcelBasedCourse> courses)
         {
             DataItems data = new DataItems();
             int i = 1;
@@ -157,7 +157,7 @@ namespace ProgramPlanning.Wpf.ViewModels
             return data;
         }
 
-        IEnumerable<Course> courses;
+        IEnumerable<ExcelBasedCourse> courses;
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -166,7 +166,7 @@ namespace ProgramPlanning.Wpf.ViewModels
                 throw new ArgumentNullException(nameof(navigationContext));
             }
 
-            courses = navigationContext.Parameters["courses"] as IEnumerable<Course>;
+            courses = navigationContext.Parameters["courses"] as IEnumerable<ExcelBasedCourse>;
 
             // Initialize DataSourceSettings for SfDiagram
             var dataItems = GetData(courses);

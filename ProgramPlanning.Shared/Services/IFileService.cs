@@ -4,7 +4,7 @@ namespace ProgramPlanning.Shared.Services
 {
     public interface IFileService
     {
-        IEnumerable<Course> ReadCourses(string excelFile);
+        IEnumerable<ExcelBasedCourse> ReadCourses(string excelFile);
         string BrowseFolderPath();
     }
 }

@@ -13,7 +13,7 @@ namespace ProgramPlanning.Wpf
 {
     public static class DocumentGenerator
     {
-        public static void MakeDocument(IEnumerable<Course> courses)
+        public static void MakeDocument(IEnumerable<ExcelBasedCourse> courses)
         {
             if (courses == null)
                 throw new ArgumentNullException(nameof(courses));

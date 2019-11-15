@@ -1,0 +1,49 @@
+﻿<Window x:Class="CoursesOutcomesAndSkills.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoursesOutcomesAndSkills"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Skills" />
+        <TextBlock Text="PreRequisites"
+                   Grid.Column="1" />
+        <TextBlock Text="Yr1 - Fall"
+                   Grid.Column="2" />
+        <TextBlock Text="Yr1 - Spring"
+                   Grid.Column="3" />
+        <TextBlock Text="Yr2 - Fall"
+                   Grid.Column="4" />
+        <TextBlock Text="Yr2 - Spring"
+                   Grid.Column="5" />
+        <TextBlock Text="Yr3 - Fall"
+                   Grid.Column="6" />
+        <TextBlock Text="Yr3 - Spring"
+                   Grid.Column="7" />
+        <TextBlock Text="Yr4 - Fall"
+                   Grid.Column="8" />
+        <TextBlock Text="Yr4 - Spring"
+                   Grid.Column="9" />
+        <TextBlock Text="Outcomes"
+                   Grid.Column="10" />
+    </Grid>
+</Window>

@@ -22,17 +22,17 @@ namespace ProgramPlanning.Shared.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Course> ReadCourses(string excelFile)
+        public IEnumerable<ExcelBasedCourse> ReadCourses(string excelFile)
         {
             var file = new FileInfo(excelFile);
             if (file.Exists == false)
                 throw new FileNotFoundException("Unable to locate excel file", excelFile);
 
-            var courses = new List<Course>();
+            var courses = new List<ExcelBasedCourse>();
             using(var package = new ExcelPackage(file))
             {
                 var sheet = package.Workbook.Worksheets.First();
-                var course = new Course();
+                var course = new ExcelBasedCourse();
                 var outcomes = new List<string>();
                 var preRequisites = new List<string>();
                 var coRequisites = new List<string>();
@@ -80,7 +80,7 @@ namespace ProgramPlanning.Shared.Services
                         course.Prerequisites = preRequisites;
                         course.Corequisites = coRequisites;
                         courses.Add(course);
-                        course = new Course();
+                        course = new ExcelBasedCourse();
                         outcomes = new List<string>();
                         preRequisites = new List<string>();
                         coRequisites = new List<string>();
