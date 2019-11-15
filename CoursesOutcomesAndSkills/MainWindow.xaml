@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CoursesOutcomesAndSkills"
         xmlns:views="clr-namespace:CoursesOutcomesAndSkills.Views"
         mc:Ignorable="d"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
         Title="Snow | Software Engineering" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
