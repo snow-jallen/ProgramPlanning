@@ -33,6 +33,10 @@ namespace ProgramPlanning.Shared.Services
             var cs1415 = new Course("CS", 1415, "Yr1-Fall", ")) Programming - Lab");
             var cs2700 = new Course("CS", 2700, "Yr1-Spring", "Digital Circuits");
 
+            cs1400_lo1.Courses.Add(cs1400);
+            cs1400_lo2.Courses.Add(cs1400);
+            cs1400_lo3.Courses.Add(cs1400);
+
             courses = new List<Course>(new []{
                 cs1400, cs1405, cs1410, cs1415, cs2700
             });

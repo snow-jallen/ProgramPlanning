@@ -128,9 +128,20 @@
             <StackPanel Margin="5">
                 <TextBlock Text="{Binding Name}"
                            TextWrapping="Wrap"/>
-                <TextBlock Text="Skills"
+                <TextBlock Text="Courses"
                            Margin="5,2,0,0"
                            FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding Courses}"
+                              Margin="5,0,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="Skills"
+                           Margin="5,2,0,0"
+                           FontWeight="Bold" />
                 <ItemsControl ItemsSource="{Binding Skills}"
                               Margin="5,0,0,0">
                     <ItemsControl.ItemTemplate>
