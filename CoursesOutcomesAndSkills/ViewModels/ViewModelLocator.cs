@@ -16,7 +16,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
             MainWindowViewModel = new MainWindowViewModel();
             ProgramViewModel = new ProgramViewModel(courses);
             ReportViewModel = new ReportViewModel();
-            CourseViewModel = new CourseViewModel();
+            CourseViewModel = new CourseViewModel(courses);
         }
 
         public MainWindowViewModel MainWindowViewModel { get; private set; }

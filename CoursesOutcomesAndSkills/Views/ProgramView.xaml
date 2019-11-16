@@ -22,41 +22,6 @@
                     Value="5,0,5,5" />
         </Style>
 
-        <DataTemplate x:Key="OutcomeTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Name}"
-                           Grid.ColumnSpan="2"
-                           TextWrapping="Wrap" />
-                <TextBlock Text="Skills:"
-                           Grid.Row="1"
-                           Margin="5,2,2,0"
-                           FontWeight="Medium" />
-                <ItemsControl Margin="5,0,2,2"
-                              Grid.Column="1"
-                              Grid.Row="1"
-                              ItemsSource="{Binding Skills}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Margin="0,2,0,0" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name,StringFormat='{}{0}, '}"
-                                       FontStyle="Italic" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

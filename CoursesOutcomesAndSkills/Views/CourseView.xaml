@@ -5,8 +5,189 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CoursesOutcomesAndSkills.Views"
              mc:Ignorable="d"
+             DataContext="{Binding CourseViewModel, Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="courseTemplate">
+            <StackPanel Margin="3">
+                <TextBlock Text="{Binding CourseNumber}"
+                           FontWeight="Medium"/>
+                <TextBlock Text="{Binding Title}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </DataTemplate>
+        <Style TargetType="ListBox"
+               x:Key="courseList">
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Disabled" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="Course View" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Pre-Requisites" />
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding PreReqCourses}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+        <TextBlock Text="Year 1 - Fall"
+                   Grid.Column="1" />
+        <ListView Grid.Row="1"
+                  Grid.Column="1"
+                  ItemsSource="{Binding Year1Fall}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+
+        <TextBlock Text="Year 1 - Spring"
+                   Grid.Row="2"
+                   Grid.Column="1" />
+        <ListView Grid.Row="3"
+                  Grid.Column="1"
+                  ItemsSource="{Binding Year1Spring}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+        <TextBlock Text="Year 2 - Fall"
+                   Grid.Column="2" />
+        <ListView Grid.Row="1"
+                  Grid.Column="2"
+                  ItemsSource="{Binding Year2Fall}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+
+        <TextBlock Text="Year 2 - Spring"
+                   Grid.Row="2"
+                   Grid.Column="2" />
+        <ListView Grid.Row="3"
+                  Grid.Column="2"
+                  ItemsSource="{Binding Year2Spring}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+        <TextBlock Text="Year 3 - Fall"
+                   Grid.Column="3" />
+        <ListView Grid.Row="1"
+                  Grid.Column="3"
+                  ItemsSource="{Binding Year3Fall}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+
+        <TextBlock Text="Year 3 - Spring"
+                   Grid.Row="2"
+                   Grid.Column="3" />
+        <ListView Grid.Row="3"
+                  Grid.Column="3"
+                  ItemsSource="{Binding Year3Spring}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+        <TextBlock Text="Year 4 - Fall"
+                   Grid.Column="4" />
+        <ListView Grid.Row="1"
+                  Grid.Column="4"
+                  ItemsSource="{Binding Year4Fall}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+
+        <TextBlock Text="Year 4 - Spring"
+                   Grid.Row="2"
+                   Grid.Column="4" />
+        <ListView Grid.Row="3"
+                  Grid.Column="4"
+                  ItemsSource="{Binding Year4Spring}"
+                  ItemTemplate="{StaticResource courseTemplate}"
+                  Style="{StaticResource courseList}"
+                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+
+        <GridSplitter Grid.Column="5"
+                      Width="3"
+                      Grid.RowSpan="4"
+                      HorizontalAlignment="Left"
+                      Margin="2,0"
+                      Background="LightGray" />
+
+        <Grid Grid.Column="5"
+              Grid.RowSpan="4"
+              Margin="10,5,5,5"
+              DataContext="{Binding SelectedCourse}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding CourseNumber}"
+                       FontWeight="Bold"
+                       FontSize="12pt"/>
+            <TextBlock Text="{Binding Title}"
+                       Grid.ColumnSpan="2"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Semester}"
+                       FontStyle="Italic"
+                       Grid.Column="1"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+            <Border Grid.ColumnSpan="2"
+                    VerticalAlignment="Bottom"
+                    BorderThickness="1"
+                    Margin="0,0,0,-5"
+                    BorderBrush="DarkGray" />
+
+            <TextBlock Text="{Binding Summary, TargetNullValue='[ No Summary Provided ]'}"
+                       TextWrapping="Wrap"
+                       Margin="0,10,0,0"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Learning Outcomes"
+                       FontWeight="Bold"
+                       Grid.Row="2" />
+
+            <ItemsControl Grid.Row="3"
+                          Grid.ColumnSpan="2"
+                          ItemsSource="{Binding Outcomes}"
+                          ItemTemplate="{StaticResource OutcomeTemplate}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </UserControl>

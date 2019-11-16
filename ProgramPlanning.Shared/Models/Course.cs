@@ -11,7 +11,7 @@ namespace ProgramPlanning.Shared.Models
         private List<Course> prerequisites;
         private List<LearningOutcome> outcomes;
 
-        public Course(string prefix, int number, string semester, string title, string summary = null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
+        public Course(string prefix, int number, Semester semester, string title, string summary = null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
         {
             this.Prefix = prefix;
             this.Number = number;
@@ -32,9 +32,22 @@ namespace ProgramPlanning.Shared.Models
         public int Number { get; set; }
         public string CourseNumber => $"{Prefix} {Number}";
         public string Title { get; set; }
-        public string Semester { get; set; }
+        public Semester Semester { get; set; }
         public string Summary { get; set; }
         public IEnumerable<Course> Prerequisites { get => prerequisites; }
         public IEnumerable<LearningOutcome> Outcomes { get => outcomes; }
+    }
+
+    public enum Semester
+    {
+        PreReq,
+        Year1Fall,
+        Year1Spring,
+        Year2Fall,
+        Year2Spring,
+        Year3Fall,
+        Year3Spring,
+        Year4Fall,
+        Year4Spring,
     }
 }
