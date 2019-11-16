@@ -5,8 +5,8 @@ using System.Text;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
-    {
+	public class MainWindowViewModel : ViewModelBase
+	{
 		public MainWindowViewModel()
 		{
 			Host = "postgres";

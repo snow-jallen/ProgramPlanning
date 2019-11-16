@@ -7,7 +7,87 @@
              mc:Ignorable="d"
              DataContext="{Binding ProgramViewModel, Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="objectiveDisplay">
+
+        </DataTemplate>
+        <Style x:Key="reportListBox"
+               TargetType="ListBox">
+            <Setter Property="Margin"
+                    Value="5,0,5,5" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="Program View" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Outcomes &amp; Skills"
+                   Style="{StaticResource sectionHeading}" />
+        <TextBlock Text="Pre."
+                   Grid.Column="1"
+                   Style="{StaticResource sectionHeading}" />
+        <TextBlock Text="Selected"
+                   Grid.Column="2"
+                   Style="{StaticResource sectionHeading}" />
+        <TextBlock Text="Post"
+                   Grid.Column="3"
+                   Style="{StaticResource sectionHeading}" />
+
+        <Border Grid.Row="1"
+                BorderThickness="1" BorderBrush="LightSlateGray"
+                Margin="5,0,5,5">
+            <StackPanel>
+            <TextBlock Text="Filter"
+                       Margin="5,2,5,0"/>
+            <TextBox Text="{Binding ObjectivesFilter, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="5,0,5,5"/>
+            <ListBox ItemsSource="{Binding Outcomes}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                            <ListBox Margin="5,2,2,2"
+                                     Grid.Row="1"
+                                     ItemsSource="{Binding Skills}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            </StackPanel>
+        </Border>
+
+        <ListBox Grid.Row="1"
+                 Grid.Column="1"
+                 Style="{StaticResource reportListBox}">
+
+        </ListBox>
+        <ListBox Grid.Row="1"
+                 Grid.Column="2"
+                 Style="{StaticResource reportListBox}">
+
+        </ListBox>
+        <ListBox Grid.Row="1"
+                 Grid.Column="3"
+                 Style="{StaticResource reportListBox}">
+
+        </ListBox>
     </Grid>
 </UserControl>

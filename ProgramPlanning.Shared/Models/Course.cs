@@ -18,8 +18,13 @@ namespace ProgramPlanning.Shared.Models
             this.Title = title;
             this.Semester = semester;
             this.Summary = summary;
-            this.prerequisites = new List<Course>(prerequisites);
-            this.outcomes = new List<LearningOutcome>(outcomes);
+            this.prerequisites = new List<Course>();
+            if (prerequisites != null)
+                this.prerequisites.AddRange(prerequisites);
+
+            this.outcomes = new List<LearningOutcome>();
+            if (outcomes != null)
+                this.outcomes.AddRange(outcomes);
         }
 
         public int Id { get; set; }

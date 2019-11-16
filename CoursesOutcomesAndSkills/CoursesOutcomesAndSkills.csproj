@@ -23,4 +23,8 @@
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProgramPlanning.Shared\ProgramPlanning.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

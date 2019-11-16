@@ -16,8 +16,14 @@ namespace ProgramPlanning.Shared.Models
         {
             this.Name = name;
             this.skills = new List<Skill>(skills);
-            this.preOutcomes = new List<LearningOutcome>(preOutcomes);
-            this.postOutcomes = new List<LearningOutcome>(postOutcomes);
+
+            this.preOutcomes = new List<LearningOutcome>();
+            if (preOutcomes != null)
+                this.preOutcomes.AddRange(preOutcomes);
+
+            this.postOutcomes = new List<LearningOutcome>();
+            if (postOutcomes != null)
+                this.postOutcomes.AddRange(postOutcomes);
         }
 
         public int Id { get; set; }

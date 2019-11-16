@@ -7,5 +7,9 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ReportViewModel : ViewModelBase
     {
+        public ReportViewModel()
+        {
+
+        }
     }
 }
