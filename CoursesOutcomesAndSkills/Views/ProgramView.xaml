@@ -42,36 +42,44 @@
                    Style="{StaticResource sectionHeading}" />
 
         <Border Grid.Row="1"
-                BorderThickness="1" BorderBrush="LightSlateGray"
+                BorderThickness="1"
+                BorderBrush="LightSlateGray"
                 Margin="5,0,5,5">
-            <StackPanel>
-            <TextBlock Text="Filter"
-                       Margin="5,2,5,0"/>
-            <TextBox Text="{Binding ObjectivesFilter, UpdateSourceTrigger=PropertyChanged}"
-                     Margin="5,0,5,5"/>
-            <ListBox ItemsSource="{Binding Outcomes}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
-                            <ListBox Margin="5,2,2,2"
-                                     Grid.Row="1"
-                                     ItemsSource="{Binding Skills}">
-                                    <ListBox.ItemTemplate>
+            <Grid x:Name="OutcomesGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Filter"
+                           Margin="2,2,0,0" />
+                <TextBox Text="{Binding ObjectivesFilter, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Row="1"
+                         Margin="0,0,0,5" />
+                <ListBox ItemsSource="{Binding Outcomes}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         Grid.Row="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}"
+                                           TextWrapping="Wrap" />
+                                <TextBlock Text="Associated Skills:"
+                                           Margin="5,2,2,0"
+                                           FontWeight="Medium"/>
+                                <ItemsControl Margin="5,0,2,2"
+                                         ItemsSource="{Binding Skills}">
+                                    <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}" />
                                         </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            </StackPanel>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
         </Border>
 
         <ListBox Grid.Row="1"

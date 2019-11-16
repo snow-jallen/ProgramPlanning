@@ -28,8 +28,9 @@ namespace ProgramPlanning.Shared.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
-        IEnumerable<Skill> Skills { get => skills; }
-        IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
-        IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
+        public IEnumerable<Skill> Skills { get => skills; }
+        public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
+        public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
+        public string FirstSkill => Skills.FirstOrDefault()?.Name;
     }
 }
