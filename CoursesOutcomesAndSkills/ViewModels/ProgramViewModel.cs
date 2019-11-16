@@ -17,11 +17,27 @@ namespace CoursesOutcomesAndSkills.ViewModels
                        from o in c.Outcomes
                        select o;
             SelectedOutcome = Outcomes.FirstOrDefault();
-
+            FilterText = string.Empty;
         }
+
+        private string filterText;
+        public string FilterText
+        {
+            get => filterText;
+            set
+            {
+                Set(ref filterText, value);
+                RaisePropertyChanged(nameof(FilteredOutcomes));
+            }
+        }
+
 
         public IEnumerable<Course> Courses { get; }
         public IEnumerable<LearningOutcome> Outcomes { get; }
+        public IEnumerable<LearningOutcome> FilteredOutcomes => from o in Outcomes
+                                                                where o.Name.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ||
+                                                                      o.Skills.Any(s => s.Name.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase))
+                                                                select o;
         private LearningOutcome selectedOutcome;
         public LearningOutcome SelectedOutcome
         {
