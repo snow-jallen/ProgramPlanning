@@ -16,10 +16,51 @@
             <Setter Property="Margin"
                     Value="5,0,5,5" />
         </Style>
+        <Style x:Key="reportContentControl"
+               TargetType="ContentControl">
+            <Setter Property="Margin"
+                    Value="5,0,5,5" />
+        </Style>
+
+        <DataTemplate x:Key="OutcomeTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Name}"
+                           Grid.ColumnSpan="2"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="Skills:"
+                           Grid.Row="1"
+                           Margin="5,2,2,0"
+                           FontWeight="Medium" />
+                <ItemsControl Margin="5,0,2,2"
+                              Grid.Column="1"
+                              Grid.Row="1"
+                              ItemsSource="{Binding Skills}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Margin="0,2,0,0" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name,StringFormat='{}{0}, '}"
+                                       FontStyle="Italic" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -29,22 +70,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+
         <TextBlock Text="Outcomes &amp; Skills"
                    Style="{StaticResource sectionHeading}" />
-        <TextBlock Text="Pre."
-                   Grid.Column="1"
-                   Style="{StaticResource sectionHeading}" />
-        <TextBlock Text="Selected"
-                   Grid.Column="2"
-                   Style="{StaticResource sectionHeading}" />
-        <TextBlock Text="Post"
-                   Grid.Column="3"
-                   Style="{StaticResource sectionHeading}" />
-
         <Border Grid.Row="1"
                 BorderThickness="1"
                 BorderBrush="LightSlateGray"
-                Margin="5,0,5,5">
+                Margin="5,0,9,5">
             <Grid x:Name="OutcomesGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -57,41 +89,59 @@
                          Grid.Row="1"
                          Margin="0,0,0,5" />
                 <ListBox ItemsSource="{Binding Outcomes}"
+                         SelectionMode="Single"
+                         SelectedItem="{Binding SelectedOutcome}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemTemplate="{StaticResource OutcomeTemplate}"
                          Grid.Row="2">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}"
-                                           TextWrapping="Wrap" />
-                                <TextBlock Text="Associated Skills:"
-                                           Margin="5,2,2,0"
-                                           FontWeight="Medium"/>
-                                <ItemsControl Margin="5,0,2,2"
-                                         ItemsSource="{Binding Skills}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+
                 </ListBox>
             </Grid>
         </Border>
 
+        <GridSplitter Grid.Column="0"
+                      HorizontalAlignment="Right"
+                      Width="4"
+                      Grid.RowSpan="2"
+                      Background="DarkGray" />
+
+        <TextBlock Text="Pre."
+                   Grid.Column="1"
+                   Style="{StaticResource sectionHeading}" />
         <ListBox Grid.Row="1"
                  Grid.Column="1"
                  Style="{StaticResource reportListBox}">
-
         </ListBox>
-        <ListBox Grid.Row="1"
-                 Grid.Column="2"
-                 Style="{StaticResource reportListBox}">
 
-        </ListBox>
+        <TextBlock Text="Selected"
+                   Grid.Column="2"
+                   Style="{StaticResource sectionHeading}" />
+        <Border Grid.Row="1"
+                        Grid.Column="2"
+                        DataContext="{Binding SelectedOutcome}"
+                        BorderThickness="1"
+                Margin="5,0,5,5"
+                BorderBrush="Gray">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}"
+                           TextWrapping="Wrap"/>
+                <TextBlock Text="Skills"
+                           Margin="5,2,0,0"
+                           FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding Skills}"
+                              Margin="5,0,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Text="Post"
+                   Grid.Column="3"
+                   Style="{StaticResource sectionHeading}" />
         <ListBox Grid.Row="1"
                  Grid.Column="3"
                  Style="{StaticResource reportListBox}">

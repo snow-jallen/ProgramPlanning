@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -19,5 +20,12 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
         public IEnumerable<Course> Courses { get; }
         public IEnumerable<LearningOutcome> Outcomes { get; }
+        private LearningOutcome selectedOutcome;
+        public LearningOutcome SelectedOutcome
+        {
+            get => selectedOutcome;
+            set { Set(ref selectedOutcome, value); }
+        }
+
     }
 }
