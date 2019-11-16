@@ -43,7 +43,7 @@
                   ItemsSource="{Binding PreReqCourses}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 1 - Fall"
                    Grid.Column="1" />
@@ -52,7 +52,7 @@
                   ItemsSource="{Binding Year1Fall}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
 
         <TextBlock Text="Year 1 - Spring"
@@ -63,7 +63,7 @@
                   ItemsSource="{Binding Year1Spring}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 2 - Fall"
                    Grid.Column="2" />
@@ -72,7 +72,7 @@
                   ItemsSource="{Binding Year2Fall}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
 
         <TextBlock Text="Year 2 - Spring"
@@ -83,7 +83,7 @@
                   ItemsSource="{Binding Year2Spring}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 3 - Fall"
                    Grid.Column="3" />
@@ -92,7 +92,7 @@
                   ItemsSource="{Binding Year3Fall}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
 
         <TextBlock Text="Year 3 - Spring"
@@ -103,7 +103,7 @@
                   ItemsSource="{Binding Year3Spring}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 4 - Fall"
                    Grid.Column="4" />
@@ -112,7 +112,7 @@
                   ItemsSource="{Binding Year4Fall}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
 
         <TextBlock Text="Year 4 - Spring"
@@ -123,7 +123,7 @@
                   ItemsSource="{Binding Year4Spring}"
                   ItemTemplate="{StaticResource courseTemplate}"
                   Style="{StaticResource courseList}"
-                  SelectedItem="{Binding SelectedCourse, Mode=OneWayToSource}" />
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <GridSplitter Grid.Column="5"
                       Width="3"

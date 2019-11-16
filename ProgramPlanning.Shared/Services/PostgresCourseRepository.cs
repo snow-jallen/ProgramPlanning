@@ -26,9 +26,9 @@ namespace ProgramPlanning.Shared.Services
         public IEnumerable<Course> GetCourses()
         {
             var courses = new List<Course>();
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
-                var rows = conn.Query<QueryRow>("select [columns] from [tables] [where]", new { ParamName = "Bogus" });
+                var rows = connection.Query<QueryRow>("select [columns] from [tables] [where]", new { ParamName = "Bogus" });
                 foreach(var row in rows)
                 {
                     //map row columns to course, learning outcome and skill
@@ -36,6 +36,30 @@ namespace ProgramPlanning.Shared.Services
             }
 
             return courses;
+        }
+
+        public object TestConnection()
+        {
+            string create = "create table Customers (CustomerName text)";
+            string sql = "INSERT INTO Customers (CustomerName) Values (@CustomerName);";
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Execute(create);
+
+                var affectedRows = connection.Execute(sql, new { CustomerName = "Mark" });
+
+                Console.WriteLine(affectedRows);
+
+                var customer = connection.Query<Customer>("Select * FROM CUSTOMERS WHERE CustomerName = 'Mark'").ToList();
+
+            }
+            return null;
+        }
+
+        private class Customer
+        {
+            string CustomerName { get; set; }
         }
     }
 

@@ -24,22 +24,31 @@
             <TabItem Header="Report">
                 <views:ReportView />
             </TabItem>
-        </TabControl>
+            <TabItem Header="Config">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="3">
-            <TextBlock Text="Host"
-                       VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Host}"
-                     Margin="3,3,8,3"
-                     MinWidth="50" />
-            <TextBlock Text="Database"
-                       VerticalAlignment="Center" />
-            <TextBox Text="{Binding Database}"
-                     Margin="3"
-                     MinWidth="50" />
-        </StackPanel>
+                    <GroupBox Header="PostgreSQL Database"
+                              HorizontalAlignment="Left"
+                              MinWidth="350">
+                        <StackPanel>
+                            <TextBlock Text="Connection String" />
+                            <TextBox Text="{Binding ConnectionString}" />
+                            <Button Content="Connect"
+                                    Command="{Binding ConnectToDatabase}"
+                                    HorizontalAlignment="Left"
+                                    Margin="0,5,0,0"
+                                    MinWidth="80"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

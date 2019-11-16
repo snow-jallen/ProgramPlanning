@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using ProgramPlanning.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,22 +11,21 @@ namespace CoursesOutcomesAndSkills.ViewModels
 	{
 		public MainWindowViewModel()
 		{
-			Host = "postgres";
-			Database = "courses1";
+			ConnectionString = "Server=localhost; Port=5432; Database=postgres; User ID=postgres; Password=postgres;";
 		}
 
-		private string host;
-		public string Host
+		private string connectionString;
+		public string ConnectionString
 		{
-			get { return host; }
-			set { Set(ref host, value); }
+			get { return connectionString; }
+			set { Set(ref connectionString, value); }
 		}
 
-		private string database;
-		public string Database
+		private RelayCommand connectToDatabase;
+		public RelayCommand ConnectToDatabase => connectToDatabase ?? (connectToDatabase = new RelayCommand(() =>
 		{
-			get { return database; }
-			set { Set(ref database, value); }
-		}
+			var repo = new PostgresCourseRepository(ConnectionString);
+			var courses = repo.TestConnection();
+		}));
 	}
 }
