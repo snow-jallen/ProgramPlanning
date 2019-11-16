@@ -17,15 +17,15 @@ namespace ProgramPlanning.Shared.Services
                 new Skill("Control Structures"),
                 new Skill("Programming Approaches")
             });
-            var cs1400_lo2 = new LearningOutcome("Solve problems by developing algorithms and implementing those algorithms using a current programming language.", new[]
-            {
-                new Skill("Develop algorithms"),
-                new Skill("Implement algorithms")
-            });
             var cs1400_lo3 = new LearningOutcome("Understand the social responsibilities of the computing professional and the impact of computing on society.", new[]
             {
                 new Skill("Understand social responsibilities"),
             });
+            var cs1400_lo2 = new LearningOutcome("Solve problems by developing algorithms and implementing those algorithms using a current programming language.", new[]
+            {
+                new Skill("Develop algorithms"),
+                new Skill("Implement algorithms")
+            }, preOutcomes: new[] { cs1400_lo1 }, postOutcomes: new[] { cs1400_lo3 });
 
             var cs1400 = new Course("CS", 1400, "PreRequisite", "Intro to Programming - Lecture", prerequisites: null, outcomes: new[] { cs1400_lo1, cs1400_lo2, cs1400_lo3 });
             var cs1405 = new Course("CS", 1405, "PreRequisite", "Intro to Programming - Lab");

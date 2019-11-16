@@ -16,6 +16,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
             Outcomes = from c in courses
                        from o in c.Outcomes
                        select o;
+            SelectedOutcome = Outcomes.FirstOrDefault();
+
         }
 
         public IEnumerable<Course> Courses { get; }
