@@ -31,9 +31,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
             get { return selectedCourse; }
             set
             {
-                selectedCourse = null;
-                RaisePropertyChanged();
-                Set(ref selectedCourse, value);
+                Set(ref selectedCourse, null);//un-select the prior one
+                Set(ref selectedCourse, value);//select the new one
             }
         }
 
