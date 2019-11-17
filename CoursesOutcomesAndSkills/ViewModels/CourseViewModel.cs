@@ -29,7 +29,12 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public Course SelectedCourse
         {
             get { return selectedCourse; }
-            set { Set(ref selectedCourse, value); }
+            set
+            {
+                selectedCourse = null;
+                RaisePropertyChanged();
+                Set(ref selectedCourse, value);
+            }
         }
 
     }
