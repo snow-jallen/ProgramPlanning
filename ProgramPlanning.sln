@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29319.158
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Wpf", "ProgramPlanning.Wpf\ProgramPlanning.Wpf.csproj", "{D17DE54F-CFE7-4913-8B0F-86503328A8F8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramPlanning.Shared", "ProgramPlanning.Shared\ProgramPlanning.Shared.csproj", "{3DA60F98-5F08-4328-8A17-AA133013701A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoursesOutcomesAndSkills", "CoursesOutcomesAndSkills\CoursesOutcomesAndSkills.csproj", "{15DE1A7C-791B-4EF2-B77A-12C92C806F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoursesOutcomesAndSkills", "CoursesOutcomesAndSkills\CoursesOutcomesAndSkills.csproj", "{15DE1A7C-791B-4EF2-B77A-12C92C806F35}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prior Attempts", "Prior Attempts", "{CC747C00-81E1-4244-8398-7E25EC41EFE8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Tests", "ProgramPlanning.Tests\ProgramPlanning.Tests.csproj", "{0F68EE33-43D8-4BDF-B998-26132BDC4773}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramPlanning.Tests", "ProgramPlanning.Tests\ProgramPlanning.Tests.csproj", "{0F68EE33-43D8-4BDF-B998-26132BDC4773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|x64.Build.0 = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Debug|x86.Build.0 = Debug|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|x64.ActiveCfg = Release|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|x64.Build.0 = Release|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|x86.ActiveCfg = Release|Any CPU
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8}.Release|x86.Build.0 = Release|Any CPU
 		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA60F98-5F08-4328-8A17-AA133013701A}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -74,9 +58,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D17DE54F-CFE7-4913-8B0F-86503328A8F8} = {CC747C00-81E1-4244-8398-7E25EC41EFE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B2C6016-31D3-49D0-BB88-BC38F046FBD7}

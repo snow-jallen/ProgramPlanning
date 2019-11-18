@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              xmlns:local="clr-namespace:CoursesOutcomesAndSkills.Views"
              mc:Ignorable="d"
              DataContext="{Binding CourseViewModel, Source={StaticResource Locator}}"
@@ -11,7 +12,7 @@
         <Style x:Key="courseHeader"
                TargetType="TextBlock">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsPrerequisiteToCurrentCourse}"
+                <DataTrigger Binding="{Binding Path=IsPrerequisiteToCurrentCourse, diag:PresentationTraceSources.TraceLevel=High}"
                              Value="True">
                     <Setter Property="Background"
                             Value="Yellow" />
@@ -30,9 +31,11 @@
                     BorderBrush="Blue">
                 <StackPanel Margin="3">
                     <TextBlock Text="{Binding CourseNumber}"
+                               Name="courseHeaderTextblock"
                                Style="{StaticResource courseHeader}"/>
                     <TextBlock Text="{Binding Title}"
                                TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding IsPrerequisiteToCurrentCourse, StringFormat='IsPrereq: {0}'}" />
                 </StackPanel>
             </Border>
         </DataTemplate>

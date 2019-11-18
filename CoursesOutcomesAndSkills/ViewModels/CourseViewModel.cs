@@ -4,29 +4,54 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class CourseViewModel : ViewModelBase
     {
         private readonly IEnumerable<IndividualCourseViewModel> courses;
+        private readonly IEnumerable<ObservableCollection<IndividualCourseViewModel>> semesters;
 
         public CourseViewModel(IEnumerable<Course> courses)
         {
             if (courses == null)
                 throw new ArgumentNullException(nameof(courses), "Must have a list of courses");
             this.courses = courses.Select(c => new IndividualCourseViewModel(c));
+
+            semesters = new[]
+            {
+                PreReqCourses,
+                Year1Fall,
+                Year2Spring,
+                Year2Fall,
+                Year3Spring,
+                Year3Fall,
+                Year3Spring,
+                Year4Fall,
+                Year4Spring
+            };
+
+            PreReqCourses = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.PreReq));
+            Year1Fall = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year1Fall));
+            Year1Spring = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year1Spring));
+            Year2Fall = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year2Fall));
+            Year2Spring = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year2Spring));
+            Year3Fall = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year3Fall));
+            Year3Spring = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year3Spring));
+            Year4Fall = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year4Fall));
+            Year4Spring = new ObservableCollection<IndividualCourseViewModel>(this.courses.Where(c => c.Semester == Semester.Year4Spring));
         }
 
-        public IEnumerable<IndividualCourseViewModel> PreReqCourses => courses.Where(c => c.Semester == Semester.PreReq);
-        public IEnumerable<IndividualCourseViewModel> Year1Fall => courses.Where(c => c.Semester == Semester.Year1Fall);
-        public IEnumerable<IndividualCourseViewModel> Year1Spring => courses.Where(c => c.Semester == Semester.Year1Spring);
-        public IEnumerable<IndividualCourseViewModel> Year2Fall => courses.Where(c => c.Semester == Semester.Year2Fall);
-        public IEnumerable<IndividualCourseViewModel> Year2Spring => courses.Where(c => c.Semester == Semester.Year2Spring);
-        public IEnumerable<IndividualCourseViewModel> Year3Fall => courses.Where(c => c.Semester == Semester.Year3Fall);
-        public IEnumerable<IndividualCourseViewModel> Year3Spring => courses.Where(c => c.Semester == Semester.Year3Spring);
-        public IEnumerable<IndividualCourseViewModel> Year4Fall => courses.Where(c => c.Semester == Semester.Year4Fall);
-        public IEnumerable<IndividualCourseViewModel> Year4Spring => courses.Where(c => c.Semester == Semester.Year4Spring);
+        public ObservableCollection<IndividualCourseViewModel> PreReqCourses { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year1Fall { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year1Spring { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year2Fall { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year2Spring { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year3Fall { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year3Spring { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year4Fall { get; private set; }
+        public ObservableCollection<IndividualCourseViewModel> Year4Spring { get; private set; }
         private IndividualCourseViewModel selectedCourse;
         public IndividualCourseViewModel SelectedCourse
         {
@@ -45,7 +70,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
         {
             if (selectedCourse?.Course?.Prerequisites == null)
                 return;
-            foreach(var preReq in selectedCourse.Course.Prerequisites)
+            foreach (var preReq in selectedCourse.Course.Prerequisites)
             {
                 var courseVM = courses.Single(c => c.Course == preReq);
                 courseVM.IsPrerequisiteToCurrentCourse = false;
@@ -60,6 +85,10 @@ namespace CoursesOutcomesAndSkills.ViewModels
             {
                 var courseVM = courses.Single(c => c.Course == preReq);
                 courseVM.IsPrerequisiteToCurrentCourse = true;
+            }
+            foreach (var semester in semesters)
+            {
+
             }
         }
     }
@@ -84,6 +113,5 @@ namespace CoursesOutcomesAndSkills.ViewModels
             get => isPrerequisiteToCurrentCourse;
             set { Set(ref isPrerequisiteToCurrentCourse, value); }
         }
-
     }
 }
