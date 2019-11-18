@@ -8,18 +8,49 @@
              DataContext="{Binding CourseViewModel, Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <Style x:Key="courseHeader"
+               TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsPrerequisiteToCurrentCourse}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="Yellow" />
+                    <Setter Property="FontSize"
+                            Value="60" />
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+        </Style>
         <DataTemplate x:Key="courseTemplate">
-            <StackPanel Margin="3">
-                <TextBlock Text="{Binding CourseNumber}"
-                           FontWeight="Medium"/>
-                <TextBlock Text="{Binding Title}"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
+            <Border CornerRadius="3"
+                    Margin="0,1"
+                    HorizontalAlignment="Stretch"
+                    BorderThickness="1"
+                    BorderBrush="Blue">
+                <StackPanel Margin="3">
+                    <TextBlock Text="{Binding CourseNumber}"
+                               Style="{StaticResource courseHeader}"/>
+                    <TextBlock Text="{Binding Title}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
         </DataTemplate>
         <Style TargetType="ListBox"
                x:Key="courseList">
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                     Value="Disabled" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+        </Style>
+        <Style x:Key="semesterHeader"
+               TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="Medium" />
+            <Setter Property="FontSize"
+                    Value="14px" />
+            <Setter Property="Margin"
+                    Value="4,3,0,2" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -38,7 +69,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Pre-Requisites" />
+        <TextBlock Text="Pre-Requisites"
+                   Style="{StaticResource semesterHeader}"/>
         <ListView Grid.Row="1"
                   ItemsSource="{Binding PreReqCourses}"
                   ItemTemplate="{StaticResource courseTemplate}"
@@ -46,7 +78,8 @@
                   SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 1 - Fall"
-                   Grid.Column="1" />
+                   Grid.Column="1"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="1"
                   Grid.Column="1"
                   ItemsSource="{Binding Year1Fall}"
@@ -57,7 +90,8 @@
 
         <TextBlock Text="Year 1 - Spring"
                    Grid.Row="2"
-                   Grid.Column="1" />
+                   Grid.Column="1"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="3"
                   Grid.Column="1"
                   ItemsSource="{Binding Year1Spring}"
@@ -66,7 +100,8 @@
                   SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 2 - Fall"
-                   Grid.Column="2" />
+                   Grid.Column="2"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="1"
                   Grid.Column="2"
                   ItemsSource="{Binding Year2Fall}"
@@ -77,7 +112,8 @@
 
         <TextBlock Text="Year 2 - Spring"
                    Grid.Row="2"
-                   Grid.Column="2" />
+                   Grid.Column="2"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="3"
                   Grid.Column="2"
                   ItemsSource="{Binding Year2Spring}"
@@ -86,7 +122,8 @@
                   SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 3 - Fall"
-                   Grid.Column="3" />
+                   Grid.Column="3"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="1"
                   Grid.Column="3"
                   ItemsSource="{Binding Year3Fall}"
@@ -97,7 +134,8 @@
 
         <TextBlock Text="Year 3 - Spring"
                    Grid.Row="2"
-                   Grid.Column="3" />
+                   Grid.Column="3"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="3"
                   Grid.Column="3"
                   ItemsSource="{Binding Year3Spring}"
@@ -106,7 +144,8 @@
                   SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
 
         <TextBlock Text="Year 4 - Fall"
-                   Grid.Column="4" />
+                   Grid.Column="4"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="1"
                   Grid.Column="4"
                   ItemsSource="{Binding Year4Fall}"
@@ -117,7 +156,8 @@
 
         <TextBlock Text="Year 4 - Spring"
                    Grid.Row="2"
-                   Grid.Column="4" />
+                   Grid.Column="4"
+                   Style="{StaticResource semesterHeader}" />
         <ListView Grid.Row="3"
                   Grid.Column="4"
                   ItemsSource="{Binding Year4Spring}"

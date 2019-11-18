@@ -7,8 +7,8 @@
         xmlns:views="clr-namespace:CoursesOutcomesAndSkills.Views"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
         Title="Snow | Software Engineering"
-        Height="450"
-        Width="800">
+        Height="650"
+        Width="1300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
