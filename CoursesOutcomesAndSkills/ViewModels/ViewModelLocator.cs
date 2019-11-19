@@ -17,11 +17,13 @@ namespace CoursesOutcomesAndSkills.ViewModels
             ProgramViewModel = new ProgramViewModel(courses);
             ReportViewModel = new ReportViewModel();
             CourseViewModel = new CourseViewModel(courses);
+            ConfigViewModel = new ConfigViewModel();
         }
 
         public MainWindowViewModel MainWindowViewModel { get; private set; }
         public ProgramViewModel ProgramViewModel { get; private set; }
         public ReportViewModel ReportViewModel { get; private set; }
         public CourseViewModel CourseViewModel { get; private set; }
+        public ConfigViewModel ConfigViewModel { get; private set; }
     }
 }

@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Wpf", "Prog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramPlanning.Shared", "ProgramPlanning.Shared\ProgramPlanning.Shared.csproj", "{3DA60F98-5F08-4328-8A17-AA133013701A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoursesOutcomesAndSkills", "CoursesOutcomesAndSkills\CoursesOutcomesAndSkills.csproj", "{15DE1A7C-791B-4EF2-B77A-12C92C806F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoursesOutcomesAndSkills", "CoursesOutcomesAndSkills\CoursesOutcomesAndSkills.csproj", "{15DE1A7C-791B-4EF2-B77A-12C92C806F35}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prior Attempts", "Prior Attempts", "{CC747C00-81E1-4244-8398-7E25EC41EFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramPlanning.Tests", "ProgramPlanning.Tests\ProgramPlanning.Tests.csproj", "{0F68EE33-43D8-4BDF-B998-26132BDC4773}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramPlanning.Tests", "ProgramPlanning.Tests\ProgramPlanning.Tests.csproj", "{0F68EE33-43D8-4BDF-B998-26132BDC4773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
