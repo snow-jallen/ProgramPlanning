@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:CoursesOutcomesAndSkills.Views"
+             xmlns:local="clr-namespace:CoursesOutcomesAndSkills"
              mc:Ignorable="d"
              DataContext="{Binding ConfigViewModel, Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -16,25 +16,71 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Testing}" />
-        <GroupBox Header="PostgreSQL Database"
-                  HorizontalAlignment="Left"
-                  MinWidth="350">
-            <StackPanel>
-                <TextBlock Text="Connection String" />
-                <TextBox Text="{Binding ConnectionString}" />
-                <Button Content="Connect"
-                        Command="{Binding ConnectToDatabase}"
-                        HorizontalAlignment="Left"
-                        Margin="0,5,0,0"
-                        MinWidth="80" />
-            </StackPanel>
-        </GroupBox>
+        <TextBlock Text="Saved Connections"
+                   Style="{StaticResource sectionHeading}" />
 
-        <DataGrid ItemsSource="{Binding Connections2}"
-                  Grid.Row="2"/>
-        <Button Content="Save Connections"
-                Grid.Row="3"
-                Command="{Binding SaveCommand}" />
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1">
+            <RadioButton Content="Run in Docker"
+                         GroupName="Docker"
+                         Margin="5"
+                         IsChecked="{Binding RunInDocker}" />
+            <RadioButton Content="Run without Docker"
+                         Margin="5"
+                         GroupName="Docker" />
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Connections}"
+                  AutoGenerateColumns="False"
+                  Grid.Row="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nickname"
+                                    Binding="{Binding Nickname}" />
+                <DataGridTextColumn Header="Host"
+                                    Binding="{Binding Host}" />
+                <DataGridTextColumn Header="Port"
+                                    Binding="{Binding Port}" />
+                <DataGridTextColumn Header="Database"
+                                    Binding="{Binding Database}" />
+                <DataGridTextColumn Header="User"
+                                    Binding="{Binding User}" />
+                <DataGridTextColumn Header="Password"
+                                    Binding="{Binding Password}" />
+                <DataGridTextColumn Header="Import/Load File"
+                                    Binding="{Binding ImportFile, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTemplateColumn Header="Import/Load">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Import"
+                                    MinWidth="60"
+                                    Command="{Binding ImportCommand}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Export/Dump">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="File Name: " />
+                                <TextBox Text="{Binding ExportFile,UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="80" />
+                                <Button Content="Export"
+                                        MinWidth="60"
+                                        Command="{Binding ExportCommand}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3">
+            <Button Content="Save Connections"
+                    HorizontalAlignment="Left"
+                    Margin="5"
+                    Padding="10,5"
+                    Command="{Binding SaveCommand}" />
+            <TextBlock Text="{Binding SaveCommandOutput}"
+                       Margin="5" />
+        </StackPanel>
     </Grid>
 </UserControl>

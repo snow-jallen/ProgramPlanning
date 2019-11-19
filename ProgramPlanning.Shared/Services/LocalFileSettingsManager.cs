@@ -11,7 +11,7 @@ namespace ProgramPlanning.Shared.Services
     {
         private readonly string _filePath;
 
-        public LocalFileSettingsManager(string fileName = "coursesOutcomesAndSkills.settings")
+        public LocalFileSettingsManager(string fileName = "coursesOutcomesAndSkills.json")
         {
             _filePath = GetLocalFilePath(fileName);
         }
