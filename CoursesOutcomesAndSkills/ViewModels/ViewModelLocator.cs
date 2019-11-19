@@ -9,7 +9,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ViewModelLocator
     {
-        public ViewModelLocator()
+        public ViewModelLocator(IServiceProvider serviceProvider)
         {
             var courseRepository = new BogusCourseInfoRepository();
             var courses = courseRepository.GetCourses();
