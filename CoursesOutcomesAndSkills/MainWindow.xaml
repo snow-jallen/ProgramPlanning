@@ -14,14 +14,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TabControl Margin="5">
-            <TabItem Header="Program View">
+        <TabControl Margin="5"
+                    SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Program View"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:ProgramView />
             </TabItem>
-            <TabItem Header="Course View">
+            <TabItem Header="Course View"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:CourseView />
             </TabItem>
-            <TabItem Header="Report">
+            <TabItem Header="Report"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:ReportView />
             </TabItem>
             <TabItem Header="Config">
@@ -40,7 +44,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock>
                             <Run Text="{Binding Nickname}"
-                                 FontWeight="Medium"/>
+                                 FontWeight="Medium" />
                             <Run Text="(" />
                             <Run Text="{Binding Database}" />
                             <Run Text="@" />

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -16,12 +17,31 @@ namespace CoursesOutcomesAndSkills.ViewModels
 			this.courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
 			this.settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
 
-			Connections = settingsManager.LoadSettings().Connections;
+			Connections = (settingsManager.LoadSettings() ?? new MySettings()).Connections;
+			DataIsEnabled = Connections.Any();
+			if (!DataIsEnabled)
+			{
+				MessengerInstance.Send(new MessageBoxMessage("No Databases Configured", "No database connections have been configured.\nPlease add some on the 'Config' tab."));
+				SelectedTabIndex = 3;//config tab
+			}
 		}
 
-		private RelayCommand connectToDatabase;
 		private readonly ICourseInfoRepository courseRepository;
 		private readonly ISettingsManager<MySettings> settingsManager;
+
+		private bool dataIsEnabled;
+		public bool DataIsEnabled
+		{
+			get => dataIsEnabled;
+			set { Set(ref dataIsEnabled, value); }
+		}
+
+		private int selectedTabIndex;
+		public int SelectedTabIndex
+		{
+			get => selectedTabIndex;
+			set { Set(ref selectedTabIndex, value); }
+		}
 
 		public IEnumerable<ConnectionInfo> Connections { get; set; }
 		private ConnectionInfo selectedConnection;

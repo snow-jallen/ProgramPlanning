@@ -1,4 +1,5 @@
 ﻿using CoursesOutcomesAndSkills.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -43,6 +44,11 @@ namespace CoursesOutcomesAndSkills
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             await host.StartAsync();
+
+            Messenger.Default.Register<MessageBoxMessage>(this, (msg) =>
+            {
+                MessageBox.Show(msg.Message, msg.Title);
+            });
 
             Resources.Add("Locator", host.Services.GetService<ViewModelLocator>());
 
