@@ -28,5 +28,28 @@
                 <views:ConfigView />
             </TabItem>
         </TabControl>
+
+        <ComboBox ItemsSource="{Binding Connections}"
+                  SelectedItem="{Binding SelectedConnection}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  MinWidth="80"
+                  Margin="5">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>
+                            <Run Text="{Binding Nickname}"
+                                 FontWeight="Medium"/>
+                            <Run Text="(" />
+                            <Run Text="{Binding Database}" />
+                            <Run Text="@" />
+                            <Run Text="{Binding Host}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </Window>

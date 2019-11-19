@@ -37,6 +37,7 @@ namespace CoursesOutcomesAndSkills
                 services.AddSingleton<IDatabaseManagementService, DatabaseManagementService>();
                 services.AddSingleton<IFileService, FileService>();
                 services.AddSingleton<ViewModelLocator>();
+                services.AddSingleton<ICourseInfoRepository, PostgresCourseRepository>();
             });
 
         private async void Application_Startup(object sender, StartupEventArgs e)

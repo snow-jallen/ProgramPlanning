@@ -1,31 +1,36 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using ProgramPlanning.Shared.Models;
 using ProgramPlanning.Shared.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		public MainWindowViewModel()
+		public MainWindowViewModel(ICourseInfoRepository courseRepository, ISettingsManager<MySettings> settingsManager)
 		{
-			ConnectionString = "Server=localhost; Port=5432; Database=postgres; User ID=postgres; Password=postgres;";
-		}
+			this.courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+			this.settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
 
-		private string connectionString;
-		public string ConnectionString
-		{
-			get { return connectionString; }
-			set { Set(ref connectionString, value); }
+			Connections = settingsManager.LoadSettings().Connections;
 		}
 
 		private RelayCommand connectToDatabase;
-		public RelayCommand ConnectToDatabase => connectToDatabase ?? (connectToDatabase = new RelayCommand(() =>
-		{
-			var repo = new PostgresCourseRepository(ConnectionString);
-			var courses = repo.TestConnection();
-		}));
+		private readonly ICourseInfoRepository courseRepository;
+		private readonly ISettingsManager<MySettings> settingsManager;
+
+		public IEnumerable<ConnectionInfo> Connections { get; set; }
+		private ConnectionInfo selectedConnection;
+		public ConnectionInfo SelectedConnection { get { return selectedConnection; }
+			set
+			{
+				selectedConnection = value;
+				courseRepository.SetConnection(selectedConnection);
+			}
+		}
 	}
 }

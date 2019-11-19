@@ -9,7 +9,9 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ViewModelLocator
     {
-        public ViewModelLocator(ISettingsManager<MySettings> settingsManager, IDatabaseManagementService databaseManagementService)
+        public ViewModelLocator(ISettingsManager<MySettings> settingsManager,
+            IDatabaseManagementService databaseManagementService,
+            ICourseInfoRepository courseRepository)
         {
             if (settingsManager is null)
             {
@@ -21,12 +23,15 @@ namespace CoursesOutcomesAndSkills.ViewModels
                 throw new ArgumentNullException(nameof(databaseManagementService));
             }
 
-            var courseRepository = new BogusCourseInfoRepository();
-            var courses = courseRepository.GetCourses();
-            MainWindowViewModel = new MainWindowViewModel();
-            ProgramViewModel = new ProgramViewModel(courses);
+            if (courseRepository is null)
+            {
+                throw new ArgumentNullException(nameof(courseRepository));
+            }
+
+            MainWindowViewModel = new MainWindowViewModel(courseRepository, settingsManager);
+            ProgramViewModel = new ProgramViewModel(courseRepository);
             ReportViewModel = new ReportViewModel();
-            CourseViewModel = new CourseViewModel(courses);
+            CourseViewModel = new CourseViewModel(courseRepository);
             ConfigViewModel = new ConfigViewModel(databaseManagementService, settingsManager);
         }
 
