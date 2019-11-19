@@ -12,19 +12,19 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ConnectionInfoViewModel : IConnectionInfo
     {
-        public ConnectionInfoViewModel(IDatabaseManagementService databaseManagement)
+        public ConnectionInfoViewModel()
         {
-            this.databaseManagement = databaseManagement ?? throw new ArgumentNullException(nameof(databaseManagement));
+            conn = new ConnectionInfo();
         }
 
         public ConnectionInfoViewModel(ConnectionInfo conn, IDatabaseManagementService databaseManagement)
-            : this(databaseManagement)
         {
             if (conn is null)
             {
                 throw new ArgumentNullException(nameof(conn));
             }
 
+            this.databaseManagement = databaseManagement ?? throw new ArgumentNullException(nameof(databaseManagement));
             this.conn = conn;
         }
 
@@ -41,28 +41,34 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public RelayCommand ImportCommand => importCommand ?? (importCommand = new RelayCommand(() =>
             {
                 if (RunInDocker)
-                    databaseManagement.LoadFromBackupUsingDocker(conn, ImportFile);
+                    DatabaseManagement.LoadFromBackupUsingDocker(conn, ImportFile);
                 else
-                    databaseManagement.LoadFromBackupWithoutDocker(conn, ImportFile);
+                    DatabaseManagement.LoadFromBackupWithoutDocker(conn, ImportFile);
             },
             () =>
             {
                 return File.Exists(ImportFile);
             }));
         private RelayCommand exportCommand;
-        private readonly IDatabaseManagementService databaseManagement;
+        private IDatabaseManagementService databaseManagement;
         private readonly ConnectionInfo conn;
 
         public RelayCommand ExportCommand => exportCommand ?? (exportCommand = new RelayCommand(()=>
             {
                 if (RunInDocker)
-                    databaseManagement.DumpDatabaseUsingDocker(conn, ExportFile);
+                    DatabaseManagement.DumpDatabaseUsingDocker(conn, ExportFile);
                 else
-                    databaseManagement.DumpDatabaseWithoutDocker(conn, ExportFile);
+                    DatabaseManagement.DumpDatabaseWithoutDocker(conn, ExportFile);
             },
             () =>
             {
                 return !String.IsNullOrWhiteSpace(ExportFile);
             }));
+
+        public IDatabaseManagementService DatabaseManagement
+        {
+            get => databaseManagement;
+            set => databaseManagement = value;
+        }
     }
 }

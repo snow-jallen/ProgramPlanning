@@ -21,11 +21,11 @@
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1">
-            <RadioButton Content="Run in Docker"
+            <RadioButton Content="Run commands using Docker"
                          GroupName="Docker"
                          Margin="5"
                          IsChecked="{Binding RunInDocker}" />
-            <RadioButton Content="Run without Docker"
+            <RadioButton Content="Use installed PostgreSQL tools"
                          IsChecked="{Binding RunWithoutDocker}"
                          Margin="5"
                          GroupName="Docker" />
@@ -37,6 +37,7 @@
         </StackPanel>
         <DataGrid ItemsSource="{Binding Connections}"
                   AutoGenerateColumns="False"
+                  CanUserAddRows="true"
                   Grid.Row="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nickname"
@@ -86,6 +87,9 @@
                     Padding="10,5"
                     Command="{Binding SaveCommand}" />
             <TextBlock Text="{Binding SaveCommandOutput}"
+                       Foreground="Green"
+                       FontWeight="Medium"
+                       VerticalAlignment="Center"
                        Margin="5" />
         </StackPanel>
     </Grid>

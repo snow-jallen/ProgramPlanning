@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -71,6 +73,17 @@ namespace CoursesOutcomesAndSkills.ViewModels
                                             });
             settingsManager.SaveSettings(mySettings);
             SaveCommandOutput = "Saved OK";
+            Task.Run(() =>
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(5));
+                SaveCommandOutput = null;
+            });
+
+            foreach (var c in Connections)
+            {
+                //new items don't get databaseManagement via dependency injection, so we have to use property injection after the fact.
+                c.DatabaseManagement = databaseManagement;
+            }
         }));
 
         private string saveCommandOutput;

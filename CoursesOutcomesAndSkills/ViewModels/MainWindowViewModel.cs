@@ -19,7 +19,11 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
 			Connections = (settingsManager.LoadSettings() ?? new MySettings()).Connections;
 			DataIsEnabled = Connections.Any();
-			if (!DataIsEnabled)
+			if(DataIsEnabled)
+			{
+				SelectedConnection = Connections.First();
+			}
+			else
 			{
 				MessengerInstance.Send(new MessageBoxMessage("No Databases Configured", "No database connections have been configured.\nPlease add some on the 'Config' tab."));
 				SelectedTabIndex = 3;//config tab
