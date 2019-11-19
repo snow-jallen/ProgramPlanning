@@ -11,21 +11,27 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ConfigViewModel : ViewModelBase
     {
+        private readonly IDatabaseManagementService databaseManagement;
         private readonly ISettingsManager<MySettings> settingsManager;
         private MySettings mySettings;
 
-        public ConfigViewModel(ISettingsManager<MySettings> settingsManager)
+        public ConfigViewModel(IDatabaseManagementService databaseManagement, ISettingsManager<MySettings> settingsManager)
         {
+            this.databaseManagement = databaseManagement ?? throw new ArgumentNullException(nameof(databaseManagement));
             this.settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             mySettings = settingsManager.LoadSettings() ?? new MySettings();
 
             Connections = new List<ConnectionInfoViewModel>();
             foreach(var conn in mySettings.Connections)
             {
-                Connections.Add(new ConnectionInfoViewModel(conn));
+                Connections.Add(new ConnectionInfoViewModel(conn, databaseManagement));
             }
 
             RunInDocker = true;
+            if(databaseManagement.HasPostgresInstalled)
+                RunInDocker = false;
+            else if (!databaseManagement.HasDockerInstalled)
+                NeitherDockerNorPostgresInstalled = "You have neither Docker nor Postgres installed. :(";
         }
 
         public List<ConnectionInfoViewModel> Connections { get; private set; }
@@ -37,9 +43,15 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set
             {
                 Set(ref runInDocker, value);
+                RaisePropertyChanged(nameof(RunWithoutDocker));
                 foreach (var c in Connections)
                     c.RunInDocker = value;
             }
+        }
+        public bool RunWithoutDocker
+        {
+            get { return !RunInDocker; }
+            set { RunInDocker = !value; }
         }
 
         private RelayCommand saveCommand;
@@ -68,5 +80,6 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set { Set(ref saveCommandOutput, value); }
         }
 
+        public string NeitherDockerNorPostgresInstalled { get; }
     }
 }

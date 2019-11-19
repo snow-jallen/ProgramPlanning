@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using ProgramPlanning.Shared.Models;
+using ProgramPlanning.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,64 +12,53 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ConnectionInfoViewModel : IConnectionInfo
     {
-        public ConnectionInfoViewModel()
+        public ConnectionInfoViewModel(IDatabaseManagementService databaseManagement)
         {
-
+            this.databaseManagement = databaseManagement ?? throw new ArgumentNullException(nameof(databaseManagement));
         }
 
-        public ConnectionInfoViewModel(ConnectionInfo conn)
-            : this()
+        public ConnectionInfoViewModel(ConnectionInfo conn, IDatabaseManagementService databaseManagement)
+            : this(databaseManagement)
         {
             if (conn is null)
             {
                 throw new ArgumentNullException(nameof(conn));
             }
 
-            Nickname = conn.Nickname;
-            Host = conn.Host;
-            Port = conn.Port;
-            Database = conn.Database;
-            User = conn.User;
-            Password = conn.Password;
+            this.conn = conn;
         }
 
-        public string Nickname { get; set; }
-        public string Host { get; set; }
-        public int Port { get; set; }
-        public string Database { get; set; }
-        public string User { get; set; }
-        public string Password { get; set; }
+        public string Nickname { get { return conn.Nickname; } set { conn.Nickname = value; } }
+        public string Host { get { return conn.Host; } set { conn.Host = value; } }
+        public int Port { get { return conn.Port; } set { conn.Port = value; } }
+        public string Database { get { return conn.Database; } set { conn.Database = value; } }
+        public string User { get { return conn.User; } set { conn.User = value; } }
+        public string Password { get { return conn.Password; } set { conn.Password = value; } }
         public string ImportFile { get; set; }
         public string ExportFile { get; set; }
         public bool RunInDocker { get; set; }
         private RelayCommand importCommand;
         public RelayCommand ImportCommand => importCommand ?? (importCommand = new RelayCommand(() =>
             {
-                var folder = Path.GetDirectoryName(ImportFile);
-                if (!Directory.Exists(folder))
-                    throw new DirectoryNotFoundException(ImportFile);
-
-                var file = Path.GetFileName(ImportFile);
-
-                string dockerRun = $"docker run --rm -e PGPASSWORD={Password} -v \"{folder}:/usr/backupoutput\" -it postgres ";
-                var cmd = $"{(RunInDocker?dockerRun:String.Empty)} dropdb -h {Host} -p {Port} -U {User} {Database};";
-                cmd += $"{(RunInDocker ? dockerRun : String.Empty)} createdb -h {Host} -p {Port} -U {User} {Database};";
-
-                var backupScript = RunInDocker ?
-                    $"/usr/backupoutput/{file}" :
-                    ImportFile;
-                cmd += $"{(RunInDocker ? dockerRun : String.Empty)} psql -h {Host} -p {Port} -U {User} -d {Database} -f {backupScript};";
-                Clipboard.SetText(cmd);
-                Process.Start("powershell.exe", $"-NoExit -c {{{cmd}}}");
+                if (RunInDocker)
+                    databaseManagement.LoadFromBackupUsingDocker(conn, ImportFile);
+                else
+                    databaseManagement.LoadFromBackupWithoutDocker(conn, ImportFile);
             },
             () =>
             {
                 return File.Exists(ImportFile);
             }));
         private RelayCommand exportCommand;
+        private readonly IDatabaseManagementService databaseManagement;
+        private readonly ConnectionInfo conn;
+
         public RelayCommand ExportCommand => exportCommand ?? (exportCommand = new RelayCommand(()=>
             {
-
+                if (RunInDocker)
+                    databaseManagement.DumpDatabaseUsingDocker(conn, ExportFile);
+                else
+                    databaseManagement.DumpDatabaseWithoutDocker(conn, ExportFile);
             },
             () =>
             {

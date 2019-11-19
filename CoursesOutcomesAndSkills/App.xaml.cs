@@ -34,14 +34,16 @@ namespace CoursesOutcomesAndSkills
             {
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<ISettingsManager<MySettings>, LocalFileSettingsManager<MySettings>>();
+                services.AddSingleton<IDatabaseManagementService, DatabaseManagementService>();
                 services.AddSingleton<IFileService, FileService>();
+                services.AddSingleton<ViewModelLocator>();
             });
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             await host.StartAsync();
 
-            Resources.Add("Locator", new ViewModelLocator(host.Services));
+            Resources.Add("Locator", host.Services.GetService<ViewModelLocator>());
 
             var mainWindow = host.Services.GetService<MainWindow>();
             mainWindow.Show();
