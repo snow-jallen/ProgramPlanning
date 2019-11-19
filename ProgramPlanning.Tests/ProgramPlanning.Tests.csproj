@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProgramPlanning.Shared\ProgramPlanning.Shared.csproj" />
-    <ProjectReference Include="..\ProgramPlanning.Wpf\ProgramPlanning.Wpf.csproj" />
   </ItemGroup>
 
 </Project>

@@ -78,6 +78,37 @@ namespace ProgramPlanning.Shared.Services
 
             refreshCourses();
         }
+
+        public DbCourse GetDbCourse(string prefix, int num)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                var sql = "select id, num, title, summary, semester, prefix, nonprogramprereq from public.course where prefix = @prefix and num = @num";
+                var course = connection.QuerySingle<DbCourse>(sql, new { prefix = prefix, num = num });
+                return course;
+            }
+        }
+
+        public DbLearningObjective AddOutcome(DbLearningObjective learningOutcome)
+        {
+            using(var conn = new NpgsqlConnection(connectionString))
+            {
+                var sql = "insert into learningobjective (name, description) values (@name, @description)";
+                conn.Execute(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
+                var newOutcome = conn.QuerySingle<DbLearningObjective>("select name, description from learningobjective where description = @description order by id desc",
+                    new { description = learningOutcome.Description });
+                return newOutcome;
+            }
+        }
+
+        public void AddCourseOutcomeLink(DbCourseLearningObjectiveXRef outcomeCourseLink)
+        {
+            using(var conn = new NpgsqlConnection(connectionString))
+            {
+                var sql = "insert into course_learningobjective (course_id, learningobjective_id) values (@CourseId, @LearningOutcomeId)";
+                conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningObjectiveId });
+            }
+        }
     }
 
     public class DbCourse
