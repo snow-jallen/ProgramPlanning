@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProgramPlanning.Shared.Models
+namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ConnectionInfoViewModel
     {

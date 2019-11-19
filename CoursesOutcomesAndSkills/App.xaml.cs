@@ -24,6 +24,8 @@ namespace CoursesOutcomesAndSkills
         {
             host = CreateHostBuilder(Environment.GetCommandLineArgs())
                 .Build();
+
+            //TODO: Look into https://github.com/dapplo/Dapplo.Microsoft.Extensions.Hosting to see if there's a better way to be doing this
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

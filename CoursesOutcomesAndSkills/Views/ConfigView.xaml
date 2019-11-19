@@ -30,5 +30,11 @@
                         MinWidth="80" />
             </StackPanel>
         </GroupBox>
+
+        <DataGrid ItemsSource="{Binding Connections2}"
+                  Grid.Row="2"/>
+        <Button Content="Save Connections"
+                Grid.Row="3"
+                Command="{Binding SaveCommand}" />
     </Grid>
 </UserControl>

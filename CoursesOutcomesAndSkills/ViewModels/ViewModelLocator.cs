@@ -11,13 +11,18 @@ namespace CoursesOutcomesAndSkills.ViewModels
     {
         public ViewModelLocator(IServiceProvider serviceProvider)
         {
+            if (serviceProvider is null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
             var courseRepository = new BogusCourseInfoRepository();
             var courses = courseRepository.GetCourses();
             MainWindowViewModel = new MainWindowViewModel();
             ProgramViewModel = new ProgramViewModel(courses);
             ReportViewModel = new ReportViewModel();
             CourseViewModel = new CourseViewModel(courses);
-            ConfigViewModel = new ConfigViewModel();
+            ConfigViewModel = new ConfigViewModel(serviceProvider.GetService(typeof(ISettingsManager<MySettings>)) as ISettingsManager<MySettings>);
         }
 
         public MainWindowViewModel MainWindowViewModel { get; private set; }

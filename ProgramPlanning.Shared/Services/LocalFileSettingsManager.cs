@@ -11,15 +11,15 @@ namespace ProgramPlanning.Shared.Services
     {
         private readonly string _filePath;
 
-        public LocalFileSettingsManager(string fileName)
+        public LocalFileSettingsManager(string fileName = "coursesOutcomesAndSkills.settings")
         {
             _filePath = GetLocalFilePath(fileName);
         }
 
         private string GetLocalFilePath(string fileName)
         {
-            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            return Path.Combine(appData, fileName);
+            string appRoot = Environment.CurrentDirectory;
+            return Path.Combine(appRoot, fileName);
         }
 
         public T LoadSettings() =>
