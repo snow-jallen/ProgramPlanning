@@ -89,24 +89,24 @@ namespace ProgramPlanning.Shared.Services
             }
         }
 
-        public DbLearningObjective AddOutcome(DbLearningObjective learningOutcome)
+        public DbLearningOutcome AddOutcome(DbLearningOutcome learningOutcome)
         {
             using(var conn = new NpgsqlConnection(connectionString))
             {
-                var sql = "insert into learningobjective (name, description) values (@name, @description)";
+                var sql = "insert into learningoutcome (name, description) values (@name, @description)";
                 conn.Execute(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
-                var newOutcome = conn.QuerySingle<DbLearningObjective>("select name, description from learningobjective where description = @description order by id desc",
+                var newOutcome = conn.QuerySingle<DbLearningOutcome>("select id, name, description from learningoutcome where description = @description order by id desc fetch first 1 row only",
                     new { description = learningOutcome.Description });
                 return newOutcome;
             }
         }
 
-        public void AddCourseOutcomeLink(DbCourseLearningObjectiveXRef outcomeCourseLink)
+        public void AddCourseOutcomeLink(DbCourseLearningOutcomeXRef outcomeCourseLink)
         {
             using(var conn = new NpgsqlConnection(connectionString))
             {
-                var sql = "insert into course_learningobjective (course_id, learningobjective_id) values (@CourseId, @LearningOutcomeId)";
-                conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningObjectiveId });
+                var sql = "insert into course_learningoutcome (course_id, learningoutcome_id) values (@CourseId, @LearningOutcomeId)";
+                conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningOutcomeId });
             }
         }
     }
@@ -133,26 +133,26 @@ namespace ProgramPlanning.Shared.Services
         public int CourseId { get; set; }
     }
 
-    public class DbCourseLearningObjectiveXRef
+    public class DbCourseLearningOutcomeXRef
     {
         public int CourseId { get; set; }
-        public int LearningObjectiveId { get; set; }
+        public int LearningOutcomeId { get; set; }
     }
 
-    public class DbLearningObjective
+    public class DbLearningOutcome
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class DbLearningObjectivePost
+    public class DbLearningOutcomePost
     {
         public int Here { get; set; }
         public int Post { get; set; }
     }
 
-    public class DbLearingObjectivePre
+    public class DbLearingOutcomePre
     {
         public int Here { get; set; }
         public int Pre { get; set; }

@@ -14,7 +14,7 @@ namespace DataMunger.Jobs
         public static void Run()
         {
             var repo = new PostgresCourseRepository();
-            repo.SetConnection(new ConnectionInfo { Host = "127.0.0.1", Database = "bogus", Port = 5432, User = "postgres", Password = "password" });
+            repo.SetConnection(new ConnectionInfo { Host = "127.0.0.1", Database = "pp2", Port = 5432, User = "postgres", Password = "password" });
 
             var path = @"C:\git\ProgramPlanning\data\RawSpreadsheet.xlsx";
             using (var package = new ExcelPackage(new FileInfo(path)))
@@ -29,6 +29,8 @@ namespace DataMunger.Jobs
                     var prefix = (string)sheet.Cells[row, prefixCol].Value;
                     var num = (int)(Double)sheet.Cells[row, numCol].Value;
 
+                    Console.WriteLine($"Doing {prefix} {num}");
+
                     DbCourse dbCourse = repo.GetDbCourse(prefix, num);
 
                     for(int outcomeCol = outcomeColStart; outcomeCol < outcomeColStart+12; outcomeCol++)
@@ -37,21 +39,26 @@ namespace DataMunger.Jobs
                         if (outcomeText == null)
                             break;
 
-                        var learningOutcome = new DbLearningObjective
+                        var learningOutcome = new DbLearningOutcome
                         {
                             Description = outcomeText
                         };
                         learningOutcome = repo.AddOutcome(learningOutcome);
 
-                        var outcomeCourseLink = new DbCourseLearningObjectiveXRef
+                        var outcomeCourseLink = new DbCourseLearningOutcomeXRef
                         {
-                            LearningObjectiveId = learningOutcome.Id,
+                            LearningOutcomeId = learningOutcome.Id,
                             CourseId = dbCourse.Id
                         };
                         repo.AddCourseOutcomeLink(outcomeCourseLink);
+
+                        Console.WriteLine($"Added learning outcome {outcomeText.Substring(0, Math.Min(outcomeText.Length, 25))}...");
                     }
                 }
+
+                Console.WriteLine("All done.");
             }
+            Console.ReadLine();
         }
     }
 }
