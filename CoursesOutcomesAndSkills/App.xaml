@@ -19,22 +19,28 @@
             <Grid Margin="0,5,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Name}"
+                <TextBlock Text="{Binding Name, TargetNullValue='[No name]'}"
+                           FontWeight="Medium"
                            Grid.ColumnSpan="2"
                            TextWrapping="Wrap" />
-                <TextBlock Text="Skills:"
+                <TextBlock Text="{Binding Description}"
                            Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock Text="Skills:"
+                           Grid.Row="2"
                            Margin="5,2,2,0"
                            FontWeight="Medium" />
                 <ItemsControl Margin="5,0,2,2"
                               Grid.Column="1"
-                              Grid.Row="1"
+                              Grid.Row="2"
                               ItemsSource="{Binding Skills}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

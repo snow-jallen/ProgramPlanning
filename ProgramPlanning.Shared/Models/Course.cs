@@ -11,8 +11,9 @@ namespace ProgramPlanning.Shared.Models
         private List<Course> prerequisites;
         private List<LearningOutcome> outcomes;
 
-        public Course(string prefix, int number, Semester semester, string title, string summary = null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
+        public Course(int id, string prefix, int number, Semester semester, string title, string summary = null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
         {
+            this.Id = id;
             this.Prefix = prefix;
             this.Number = number;
             this.Title = title;

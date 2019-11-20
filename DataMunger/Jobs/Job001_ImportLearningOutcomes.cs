@@ -52,7 +52,7 @@ namespace DataMunger.Jobs
                         };
                         learningOutcome = repo.AddOutcome(learningOutcome);
 
-                        var outcomeCourseLink = new DbCourseLearningOutcomeXRef
+                        var outcomeCourseLink = new DbCourseLearningOutcome
                         {
                             LearningOutcomeId = learningOutcome.Id,
                             CourseId = dbCourse.Id

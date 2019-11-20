@@ -34,18 +34,26 @@ namespace ProgramPlanning.Shared.Services
                 using (var connection = new NpgsqlConnection(connectionString))
                 {
                     var sql = @"select id, num, title, summary, semester, prefix, nonprogramprereq from public.course;
-                                select course_id, prereq_id from ""coursePreReq"";";
+                                select course_id, prereq_id from ""coursePreReq"";
+                                select id, name, description from learningoutcome;
+                                select course_id, learningoutcome_id from course_learningoutcome;";
                     using(var multi = connection.QueryMultiple(sql))
                     {
                         var dbCourses = multi.Read<DbCourse>();
                         var coursePreReqs = multi.Read<DbCoursePreReq>();
+                        var dbOutcomes = multi.Read<DbLearningOutcome>();
+                        var dbCourseOutcomes = multi.Read<DbCourseLearningOutcome>();
 
                         courses.AddRange(from c in dbCourses
                                          let prereqs = from p in coursePreReqs
                                                        where p.Course_Id == c.Id
                                                        let prereq = dbCourses.Single(prereq => prereq.Id == p.Prereq_Id)
                                                        select CourseFromDbCourse(prereq)
-                                         select CourseFromDbCourse(c, prereqs));
+                                         let outcomes = from co in dbCourseOutcomes
+                                                        where co.Course_Id == c.Id
+                                                        let outcome = dbOutcomes.Single(o => o.Id == co.LearningOutcome_Id)
+                                                        select new LearningOutcome(outcome.Name, outcome.Description)
+                                         select CourseFromDbCourse(c, prereqs, outcomes)); ;
                     }
                 }
                 Messenger.Default.Send(new RefreshDatabaseMessage());
@@ -84,19 +92,26 @@ namespace ProgramPlanning.Shared.Services
             }
         }
 
-        public void AddCourseOutcomeLink(DbCourseLearningOutcomeXRef outcomeCourseLink)
+        public void AddCourseOutcomeLink(DbCourseLearningOutcome outcomeCourseLink)
         {
             using(var conn = new NpgsqlConnection(connectionString))
             {
                 var sql = "insert into course_learningoutcome (course_id, learningoutcome_id) values (@CourseId, @LearningOutcomeId)";
-                conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningOutcomeId });
+                conn.Execute(sql, new { CourseId = outcomeCourseLink.Course_Id, LearningOutcomeId = outcomeCourseLink.LearningOutcome_Id });
             }
         }
 
-        public static Course CourseFromDbCourse(DbCourse dbCourse, IEnumerable<Course> prereqs=null)
+        public static Course CourseFromDbCourse(DbCourse dbCourse, IEnumerable<Course> prereqs=null, IEnumerable<LearningOutcome> outcomes=null)
         {
-            var c = new Course(dbCourse.Prefix, dbCourse.Num, translateSemester(dbCourse.Semester), dbCourse.Title, dbCourse.Summary, prereqs);
-            c.Id = dbCourse.Id;
+            var c = new Course(
+                dbCourse.Id,
+                dbCourse.Prefix,
+                dbCourse.Num,
+                translateSemester(dbCourse.Semester),
+                dbCourse.Title,
+                dbCourse.Summary,
+                prereqs,
+                outcomes);
             return c;
         }
 
@@ -150,10 +165,10 @@ namespace ProgramPlanning.Shared.Services
         public int Prereq_Id { get; set; }
     }
 
-    public class DbCourseLearningOutcomeXRef
+    public class DbCourseLearningOutcome
     {
-        public int CourseId { get; set; }
-        public int LearningOutcomeId { get; set; }
+        public int Course_Id { get; set; }
+        public int LearningOutcome_Id { get; set; }
     }
 
     public class DbLearningOutcome

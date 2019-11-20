@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using ProgramPlanning.Shared.Services;
 using GalaSoft.MvvmLight.CommandWpf;
+using System.Diagnostics;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -66,7 +67,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
                 return;
             foreach(var preReq in selectedCourse.Course.Prerequisites)
             {
-                var courseVM = courseViewModels.Single(c => c.Course == preReq);
+                var courseVM = courseViewModels.Single(c => c.Course.Id == preReq.Id);
                 courseVM.IsPrerequisiteToCurrentCourse = false;
             }
         }
@@ -77,8 +78,9 @@ namespace CoursesOutcomesAndSkills.ViewModels
                 return;
             foreach (var preReq in selectedCourse.Course.Prerequisites)
             {
-                var courseVM = courseViewModels.Single(c => c.Course == preReq);
+                var courseVM = courseViewModels.Single(c => c.Course.Id == preReq.Id);
                 courseVM.IsPrerequisiteToCurrentCourse = true;
+                Debug.WriteLine($"{selectedCourse.CourseNumber} has {preReq.CourseNumber} as a prereq");
             }
         }
     }
