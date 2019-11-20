@@ -17,9 +17,17 @@ namespace CoursesOutcomesAndSkills.ViewModels
 			this.courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
 			this.settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
 
+			refreshConnections(settingsManager);
+
+			MessengerInstance.Register<RefreshDatabaseConnectionsMessage>(this, (m) => refreshConnections(settingsManager));
+		}
+
+		private void refreshConnections(ISettingsManager<MySettings> settingsManager)
+		{
 			Connections = (settingsManager.LoadSettings() ?? new MySettings()).Connections;
+
 			DataIsEnabled = Connections.Any();
-			if(DataIsEnabled)
+			if (DataIsEnabled)
 			{
 				SelectedConnection = Connections.First();
 			}

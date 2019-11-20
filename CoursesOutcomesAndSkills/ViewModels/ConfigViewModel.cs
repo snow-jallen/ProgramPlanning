@@ -84,6 +84,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
                 //new items don't get databaseManagement via dependency injection, so we have to use property injection after the fact.
                 c.DatabaseManagement = databaseManagement;
             }
+
+            MessengerInstance.Send(new RefreshDatabaseConnectionsMessage());
         }));
 
         private string saveCommandOutput;
