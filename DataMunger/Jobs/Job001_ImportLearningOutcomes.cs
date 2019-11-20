@@ -14,7 +14,14 @@ namespace DataMunger.Jobs
         public static void Run()
         {
             var repo = new PostgresCourseRepository();
-            repo.SetConnection(new ConnectionInfo { Host = "127.0.0.1", Database = "pp2", Port = 5432, User = "postgres", Password = "password" });
+            repo.SetConnection(new ConnectionInfo
+            {
+                Host = "127.0.0.1",
+                Database = "pp3",
+                Port = 5432,
+                User = "postgres",
+                Password = "password"
+            });
 
             var path = @"C:\git\ProgramPlanning\data\RawSpreadsheet.xlsx";
             using (var package = new ExcelPackage(new FileInfo(path)))
