@@ -33,39 +33,22 @@ namespace ProgramPlanning.Shared.Services
             {
                 using (var connection = new NpgsqlConnection(connectionString))
                 {
-                    var dbCourses = connection.Query<DbCourse>("select id, num, title, summary, semester, prefix, nonprogramprereq from public.course");
+                    var sql = @"select id, num, title, summary, semester, prefix, nonprogramprereq from public.course;
+                                select course_id, prereq_id from ""coursePreReq"";";
+                    using(var multi = connection.QueryMultiple(sql))
+                    {
+                        var dbCourses = multi.Read<DbCourse>();
+                        var coursePreReqs = multi.Read<DbCoursePreReq>();
 
-                    courses.AddRange(from d in dbCourses
-                                     select new Course(d.Prefix, d.Num, translateSemester(d.Semester), d.Title, d.Summary));
+                        courses.AddRange(from c in dbCourses
+                                         let prereqs = from p in coursePreReqs
+                                                       where p.Course_Id == c.Id
+                                                       let prereq = dbCourses.Single(prereq => prereq.Id == p.Prereq_Id)
+                                                       select CourseFromDbCourse(prereq)
+                                         select CourseFromDbCourse(c, prereqs));
+                    }
                 }
                 Messenger.Default.Send(new RefreshDatabaseMessage());
-            }
-        }
-
-        private Semester translateSemester(string semester)
-        {
-            switch (semester)
-            {
-                case "Yr0-PreReq":
-                    return Semester.Year0PreReq;
-                case "Yr1 - Fall":
-                    return Semester.Year1Fall;
-                case "Yr1 - Spring":
-                    return Semester.Year1Spring;
-                case "Yr2 - Fall":
-                    return Semester.Year2Fall;
-                case "Yr2 - Spring":
-                    return Semester.Year2Spring;
-                case "Yr3 - Fall":
-                    return Semester.Year3Fall;
-                case "Yr3 - Spring":
-                    return Semester.Year3Spring;
-                case "Yr4 - Fall":
-                    return Semester.Year4Fall;
-                case "Yr4 - Spring":
-                    return Semester.Year4Spring;
-                default:
-                    return Semester.Year0PreReq;
             }
         }
 
@@ -109,6 +92,40 @@ namespace ProgramPlanning.Shared.Services
                 conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningOutcomeId });
             }
         }
+
+        public static Course CourseFromDbCourse(DbCourse dbCourse, IEnumerable<Course> prereqs=null)
+        {
+            var c = new Course(dbCourse.Prefix, dbCourse.Num, translateSemester(dbCourse.Semester), dbCourse.Title, dbCourse.Summary, prereqs);
+            c.Id = dbCourse.Id;
+            return c;
+        }
+
+        private static Semester translateSemester(string semester)
+        {
+            switch (semester)
+            {
+                case "Yr0-PreReq":
+                    return Semester.Year0PreReq;
+                case "Yr1 - Fall":
+                    return Semester.Year1Fall;
+                case "Yr1 - Spring":
+                    return Semester.Year1Spring;
+                case "Yr2 - Fall":
+                    return Semester.Year2Fall;
+                case "Yr2 - Spring":
+                    return Semester.Year2Spring;
+                case "Yr3 - Fall":
+                    return Semester.Year3Fall;
+                case "Yr3 - Spring":
+                    return Semester.Year3Spring;
+                case "Yr4 - Fall":
+                    return Semester.Year4Fall;
+                case "Yr4 - Spring":
+                    return Semester.Year4Spring;
+                default:
+                    return Semester.Year0PreReq;
+            }
+        }
     }
 
     public class DbCourse
@@ -127,10 +144,10 @@ namespace ProgramPlanning.Shared.Services
         public List<DbCourse> PreRequisites { get; set; }
     }
 
-    public class DbCoursePreReqXRef
+    public class DbCoursePreReq
     {
-        public int Id { get; set; }
-        public int CourseId { get; set; }
+        public int Course_Id { get; set; }
+        public int Prereq_Id { get; set; }
     }
 
     public class DbCourseLearningOutcomeXRef
