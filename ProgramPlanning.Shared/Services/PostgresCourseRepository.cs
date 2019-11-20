@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using GalaSoft.MvvmLight.Messaging;
 using Npgsql;
 using ProgramPlanning.Shared.Models;
 using System;
@@ -11,60 +12,155 @@ namespace ProgramPlanning.Shared.Services
 {
     public class PostgresCourseRepository : ICourseInfoRepository
     {
-        private readonly string connectionString;
+        private string connectionString;
 
-        public PostgresCourseRepository(string connectionString)
+        public PostgresCourseRepository()
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                throw new ArgumentException("message", nameof(connectionString));
-            }
-
-            this.connectionString = connectionString;
         }
 
         public IEnumerable<Course> GetCourses()
         {
-            var courses = new List<Course>();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                var rows = connection.Query<QueryRow>("select [columns] from [tables] [where]", new { ParamName = "Bogus" });
-                foreach(var row in rows)
-                {
-                    //map row columns to course, learning outcome and skill
-                }
-            }
+            if (courses == null)
+                refreshCourses();
 
             return courses;
         }
 
-        public object TestConnection()
+        private void refreshCourses()
         {
-            string create = "create table Customers (CustomerName text)";
-            string sql = "INSERT INTO Customers (CustomerName) Values (@CustomerName);";
-
-            using (var connection = new NpgsqlConnection(connectionString))
+            courses = new List<Course>();
+            if (!String.IsNullOrEmpty(connectionString))
             {
-                connection.Execute(create);
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    var dbCourses = connection.Query<DbCourse>("select id, num, title, summary, semester, prefix, nonprogramprereq from public.course");
 
-                var affectedRows = connection.Execute(sql, new { CustomerName = "Mark" });
-
-                Console.WriteLine(affectedRows);
-
-                var customer = connection.Query<Customer>("Select * FROM CUSTOMERS WHERE CustomerName = 'Mark'").ToList();
-
+                    courses.AddRange(from d in dbCourses
+                                     select new Course(d.Prefix, d.Num, translateSemester(d.Semester), d.Title, d.Summary));
+                }
+                Messenger.Default.Send(new RefreshDatabaseMessage());
             }
-            return null;
         }
 
-        private class Customer
+        private Semester translateSemester(string semester)
         {
-            string CustomerName { get; set; }
+            switch (semester)
+            {
+                case "Yr0-PreReq":
+                    return Semester.Year0PreReq;
+                case "Yr1 - Fall":
+                    return Semester.Year1Fall;
+                case "Yr1 - Spring":
+                    return Semester.Year1Spring;
+                case "Yr2 - Fall":
+                    return Semester.Year2Fall;
+                case "Yr2 - Spring":
+                    return Semester.Year2Spring;
+                case "Yr3 - Fall":
+                    return Semester.Year3Fall;
+                case "Yr3 - Spring":
+                    return Semester.Year3Spring;
+                case "Yr4 - Fall":
+                    return Semester.Year4Fall;
+                case "Yr4 - Spring":
+                    return Semester.Year4Spring;
+                default:
+                    return Semester.Year0PreReq;
+            }
+        }
+
+        private List<Course> courses;
+
+        public void SetConnection(ConnectionInfo selectedConnection)
+        {
+            var c = selectedConnection;
+            connectionString = $"Server={c.Host}; Port={c.Port}; Database={c.Database}; User ID={c.User}; Password={c.Password};";
+
+            refreshCourses();
+        }
+
+        public DbCourse GetDbCourse(string prefix, int num)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                var sql = "select id, num, title, summary, semester, prefix, nonprogramprereq from public.course where prefix = @prefix and num = @num";
+                var course = connection.QuerySingle<DbCourse>(sql, new { prefix = prefix, num = num });
+                return course;
+            }
+        }
+
+        public DbLearningObjective AddOutcome(DbLearningObjective learningOutcome)
+        {
+            using(var conn = new NpgsqlConnection(connectionString))
+            {
+                var sql = "insert into learningobjective (name, description) values (@name, @description)";
+                conn.Execute(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
+                var newOutcome = conn.QuerySingle<DbLearningObjective>("select name, description from learningobjective where description = @description order by id desc",
+                    new { description = learningOutcome.Description });
+                return newOutcome;
+            }
+        }
+
+        public void AddCourseOutcomeLink(DbCourseLearningObjectiveXRef outcomeCourseLink)
+        {
+            using(var conn = new NpgsqlConnection(connectionString))
+            {
+                var sql = "insert into course_learningobjective (course_id, learningobjective_id) values (@CourseId, @LearningOutcomeId)";
+                conn.Execute(sql, new { CourseId = outcomeCourseLink.CourseId, LearningOutcomeId = outcomeCourseLink.LearningObjectiveId });
+            }
         }
     }
 
-    public class QueryRow
+    public class DbCourse
     {
+        public DbCourse()
+        {
+            PreRequisites = new List<DbCourse>();
+        }
+        public int Id { get; set; }
+        public int Num { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Semester { get; set; }
+        public string Prefix { get; set; }
+        public string NonProgramPreReq { get; set; }
+        public List<DbCourse> PreRequisites { get; set; }
+    }
 
+    public class DbCoursePreReqXRef
+    {
+        public int Id { get; set; }
+        public int CourseId { get; set; }
+    }
+
+    public class DbCourseLearningObjectiveXRef
+    {
+        public int CourseId { get; set; }
+        public int LearningObjectiveId { get; set; }
+    }
+
+    public class DbLearningObjective
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class DbLearningObjectivePost
+    {
+        public int Here { get; set; }
+        public int Post { get; set; }
+    }
+
+    public class DbLearingObjectivePre
+    {
+        public int Here { get; set; }
+        public int Pre { get; set; }
+    }
+
+    public class DbSkill
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

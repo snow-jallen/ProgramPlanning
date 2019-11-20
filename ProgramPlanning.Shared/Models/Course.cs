@@ -40,7 +40,7 @@ namespace ProgramPlanning.Shared.Models
 
     public enum Semester
     {
-        PreReq,
+        Year0PreReq,
         Year1Fall,
         Year1Spring,
         Year2Fall,

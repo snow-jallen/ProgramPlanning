@@ -10,5 +10,6 @@ namespace ProgramPlanning.Shared.Services
     public interface ICourseInfoRepository
     {
         IEnumerable<Course> GetCourses();
+        void SetConnection(ConnectionInfo selectedConnection);
     }
 }

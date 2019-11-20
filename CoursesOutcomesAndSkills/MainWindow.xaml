@@ -14,41 +14,46 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TabControl Margin="5">
-            <TabItem Header="Program View">
+        <TabControl Margin="5"
+                    SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Program View"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:ProgramView />
             </TabItem>
-            <TabItem Header="Course View">
+            <TabItem Header="Course View"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:CourseView />
             </TabItem>
-            <TabItem Header="Report">
+            <TabItem Header="Report"
+                     IsEnabled="{Binding DataIsEnabled}">
                 <views:ReportView />
             </TabItem>
             <TabItem Header="Config">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <GroupBox Header="PostgreSQL Database"
-                              HorizontalAlignment="Left"
-                              MinWidth="350">
-                        <StackPanel>
-                            <TextBlock Text="Connection String" />
-                            <TextBox Text="{Binding ConnectionString}" />
-                            <Button Content="Connect"
-                                    Command="{Binding ConnectToDatabase}"
-                                    HorizontalAlignment="Left"
-                                    Margin="0,5,0,0"
-                                    MinWidth="80"/>
-                        </StackPanel>
-                    </GroupBox>
-                </Grid>
+                <views:ConfigView />
             </TabItem>
         </TabControl>
+
+        <ComboBox ItemsSource="{Binding Connections}"
+                  SelectedItem="{Binding SelectedConnection}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  MinWidth="80"
+                  Margin="5">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>
+                            <Run Text="{Binding Nickname}"
+                                 FontWeight="Medium" />
+                            <Run Text="(" />
+                            <Run Text="{Binding Database}" />
+                            <Run Text="@" />
+                            <Run Text="{Binding Host}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </Window>
