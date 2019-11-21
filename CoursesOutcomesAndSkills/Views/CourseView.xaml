@@ -15,25 +15,32 @@
                              Value="True">
                     <Setter Property="Background"
                             Value="Yellow" />
-                    <Setter Property="FontSize"
-                            Value="60" />
                 </DataTrigger>
             </Style.Triggers>
             <Setter Property="FontWeight"
                     Value="Bold" />
+        </Style>
+        <Style x:Key="courseBorder" TargetType="Border">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="LightBlue" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <DataTemplate x:Key="courseTemplate">
             <Border CornerRadius="3"
                     Margin="0,1"
                     HorizontalAlignment="Stretch"
                     BorderThickness="1"
+                    Style="{StaticResource courseBorder}"
                     BorderBrush="Blue">
                 <StackPanel Margin="3">
                     <TextBlock Text="{Binding CourseNumber}"
                                Style="{StaticResource courseHeader}"/>
                     <TextBlock Text="{Binding Title}"
                                TextWrapping="Wrap" />
-                    <TextBlock Text="{Binding IsPrerequisiteToCurrentCourse, StringFormat='Is PreReq: {0}'}" />
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -219,16 +226,25 @@
                        FontWeight="Bold"
                        Grid.Row="2" />
 
-            <ItemsControl Grid.Row="3"
+            <ScrollViewer Grid.Row="3"
                           Grid.ColumnSpan="2"
-                          ItemsSource="{Binding Outcomes}"
-                          ItemTemplate="{StaticResource OutcomeTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl Grid.Row="3"
+                              Grid.ColumnSpan="2"
+                              ItemsSource="{Binding Outcomes}"
+                              ItemTemplate="{StaticResource OutcomeTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <TextBlock Text="Pre-Requisites"
+                       Grid.Row="4"/>
+            <TextBlock Text="{Binding Prereqs}"
+                       Grid.Row="5" />
         </Grid>
     </Grid>
 </UserControl>

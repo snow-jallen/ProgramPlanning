@@ -7,12 +7,13 @@ using System.Linq;
 using ProgramPlanning.Shared.Services;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Diagnostics;
+using System.Windows.Media;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class CourseViewModel : ViewModelBase
     {
-        private IEnumerable<IndividualCourseViewModel> courseViewModels;
+        private List<IndividualCourseViewModel> courseViewModels;
         private readonly ICourseInfoRepository courseRepository;
 
         public CourseViewModel(ICourseInfoRepository courseRepository)
@@ -24,40 +25,44 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
         private void refreshCourses()
         {
-            this.courseViewModels = courseRepository
-                                        .GetCourses()
-                                        .Select(c => new IndividualCourseViewModel(c));
-            RaisePropertyChanged(nameof(PreReqCourses));
-            RaisePropertyChanged(nameof(Year1Fall));
-            RaisePropertyChanged(nameof(Year1Spring));
-            RaisePropertyChanged(nameof(Year2Fall));
-            RaisePropertyChanged(nameof(Year2Spring));
-            RaisePropertyChanged(nameof(Year3Fall));
-            RaisePropertyChanged(nameof(Year3Spring));
-            RaisePropertyChanged(nameof(Year4Fall));
-            RaisePropertyChanged(nameof(Year4Spring));
+            courseViewModels = new List<IndividualCourseViewModel>(from c in courseRepository.GetCourses()
+                                                                   select new IndividualCourseViewModel(c));
+            PreReqCourses = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year0PreReq));
+            Year1Fall = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year1Fall));
+            Year1Spring = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year1Spring));
+            Year2Fall = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year2Fall));
+            Year2Spring = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year2Spring));
+            Year3Fall = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year3Fall));
+            Year3Spring = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year3Spring));
+            Year4Fall = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year4Fall));
+            Year4Spring = new List<IndividualCourseViewModel>(courseViewModels.Where(c => c.Semester == Semester.Year4Spring));
         }
 
-        public IEnumerable<IndividualCourseViewModel> PreReqCourses => courseViewModels.Where(c => c.Semester == Semester.Year0PreReq);
-        public IEnumerable<IndividualCourseViewModel> Year1Fall => courseViewModels.Where(c => c.Semester == Semester.Year1Fall);
-        public IEnumerable<IndividualCourseViewModel> Year1Spring => courseViewModels.Where(c => c.Semester == Semester.Year1Spring);
-        public IEnumerable<IndividualCourseViewModel> Year2Fall => courseViewModels.Where(c => c.Semester == Semester.Year2Fall);
-        public IEnumerable<IndividualCourseViewModel> Year2Spring => courseViewModels.Where(c => c.Semester == Semester.Year2Spring);
-        public IEnumerable<IndividualCourseViewModel> Year3Fall => courseViewModels.Where(c => c.Semester == Semester.Year3Fall);
-        public IEnumerable<IndividualCourseViewModel> Year3Spring => courseViewModels.Where(c => c.Semester == Semester.Year3Spring);
-        public IEnumerable<IndividualCourseViewModel> Year4Fall => courseViewModels.Where(c => c.Semester == Semester.Year4Fall);
-        public IEnumerable<IndividualCourseViewModel> Year4Spring => courseViewModels.Where(c => c.Semester == Semester.Year4Spring);
+        public List<IndividualCourseViewModel> PreReqCourses { get; private set; }
+        public List<IndividualCourseViewModel> Year1Fall { get; private set; }
+        public List<IndividualCourseViewModel> Year1Spring { get; private set; }
+        public List<IndividualCourseViewModel> Year2Fall { get; private set; }
+        public List<IndividualCourseViewModel> Year2Spring { get; private set; }
+        public List<IndividualCourseViewModel> Year3Fall { get; private set; }
+        public List<IndividualCourseViewModel> Year3Spring { get; private set; }
+        public List<IndividualCourseViewModel> Year4Fall { get; private set; }
+        public List<IndividualCourseViewModel> Year4Spring { get; private set; }
+
         private IndividualCourseViewModel selectedCourse;
         public IndividualCourseViewModel SelectedCourse
         {
             get { return selectedCourse; }
             set
             {
+                if (selectedCourse != null)
+                    selectedCourse.IsSelected = false;
                 clearPrerequisites(selectedCourse);
                 Set(ref selectedCourse, null);//un-select the prior one
 
                 Set(ref selectedCourse, value);//select the new one
                 highlightPrerequisites(selectedCourse);
+                if (selectedCourse != null)
+                    selectedCourse.IsSelected = true;
             }
         }
 
@@ -65,7 +70,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
         {
             if (selectedCourse?.Course?.Prerequisites == null)
                 return;
-            foreach(var preReq in selectedCourse.Course.Prerequisites)
+            foreach (var preReq in selectedCourse.Course.Prerequisites)
             {
                 var courseVM = courseViewModels.Single(c => c.Course.Id == preReq.Id);
                 courseVM.IsPrerequisiteToCurrentCourse = false;
@@ -78,9 +83,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
                 return;
             foreach (var preReq in selectedCourse.Course.Prerequisites)
             {
-                var courseVM = courseViewModels.Single(c => c.Course.Id == preReq.Id);
+                var courseVM = courseViewModels.Single(c => c.Course.CourseNumber == preReq.CourseNumber);
                 courseVM.IsPrerequisiteToCurrentCourse = true;
-                Debug.WriteLine($"{selectedCourse.CourseNumber} has {preReq.CourseNumber} as a prereq");
             }
         }
     }
@@ -98,6 +102,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public Semester Semester => Course.Semester;
         public string Summary => Course.Summary;
         public IEnumerable<LearningOutcome> Outcomes => Course.Outcomes;
+        public string Prereqs => $"{Course.NonProgramPrereqs} {String.Join(" ", Course.Prerequisites?.Select(p => p.CourseNumber))}";
 
         private bool isPrerequisiteToCurrentCourse;
         public bool IsPrerequisiteToCurrentCourse
@@ -106,5 +111,27 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set { Set(ref isPrerequisiteToCurrentCourse, value); }
         }
 
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                Set(ref isSelected, value);
+                if (isSelected)
+                {
+                    Background = Brushes.Turquoise;
+                }
+                else
+                {
+                    Background = Brushes.White;
+                }
+                RaisePropertyChanged(nameof(Background));
+            }
+        }
+
+        public SolidColorBrush Background { get; set; }
+
+        public override string ToString() => $"{CourseNumber} | IsPrereq={IsPrerequisiteToCurrentCourse}; IsSelected: {IsSelected}";
     }
 }
