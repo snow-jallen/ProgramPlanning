@@ -110,6 +110,7 @@ namespace ProgramPlanning.Shared.Services
                 translateSemester(dbCourse.Semester),
                 dbCourse.Title,
                 dbCourse.Summary,
+                dbCourse.NonProgramPreReq,
                 prereqs,
                 outcomes);
             return c;

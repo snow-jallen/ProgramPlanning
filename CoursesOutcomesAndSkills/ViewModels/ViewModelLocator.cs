@@ -30,7 +30,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
             MainWindowViewModel = new MainWindowViewModel(courseRepository, settingsManager);
             ProgramViewModel = new ProgramViewModel(courseRepository);
-            ReportViewModel = new ReportViewModel();
+            ReportViewModel = new ReportViewModel(courseRepository);
             CourseViewModel = new CourseViewModel(courseRepository);
             ConfigViewModel = new ConfigViewModel(databaseManagementService, settingsManager);
         }

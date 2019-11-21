@@ -11,7 +11,7 @@ namespace ProgramPlanning.Shared.Models
         private List<Course> prerequisites;
         private List<LearningOutcome> outcomes;
 
-        public Course(int id, string prefix, int number, Semester semester, string title, string summary = null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
+        public Course(int id, string prefix, int number, Semester semester, string title, string summary = null, string nonProgramPrereqs=null, IEnumerable<Course> prerequisites = null, IEnumerable<LearningOutcome> outcomes = null)
         {
             this.Id = id;
             this.Prefix = prefix;
@@ -19,6 +19,7 @@ namespace ProgramPlanning.Shared.Models
             this.Title = title;
             this.Semester = semester;
             this.Summary = summary;
+            this.NonProgramPrereqs = NonProgramPrereqs;
             this.prerequisites = new List<Course>();
             if (prerequisites != null)
                 this.prerequisites.AddRange(prerequisites);
@@ -35,6 +36,7 @@ namespace ProgramPlanning.Shared.Models
         public string Title { get; set; }
         public Semester Semester { get; set; }
         public string Summary { get; set; }
+        public string NonProgramPrereqs { get; set; }
         public IEnumerable<Course> Prerequisites { get => prerequisites; }
         public IEnumerable<LearningOutcome> Outcomes { get => outcomes; }
     }
