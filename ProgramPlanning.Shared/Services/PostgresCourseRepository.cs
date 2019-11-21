@@ -36,13 +36,15 @@ namespace ProgramPlanning.Shared.Services
                     var sql = @"select id, num, title, summary, semester, prefix, nonprogramprereq from public.course;
                                 select course_id, prereq_id from ""coursePreReq"";
                                 select id, name, description from learningoutcome;
-                                select course_id, learningoutcome_id from course_learningoutcome;";
+                                select course_id, learningoutcome_id from course_learningoutcome;
+                                select id, name, learningoutcome_id from skill;";
                     using(var multi = connection.QueryMultiple(sql))
                     {
                         var dbCourses = multi.Read<DbCourse>();
                         var coursePreReqs = multi.Read<DbCoursePreReq>();
                         var dbOutcomes = multi.Read<DbLearningOutcome>();
                         var dbCourseOutcomes = multi.Read<DbCourseLearningOutcome>();
+                        var dbSkills = multi.Read<DbSkill>();
 
                         courses.AddRange(from c in dbCourses
                                          let prereqs = from p in coursePreReqs
@@ -52,8 +54,11 @@ namespace ProgramPlanning.Shared.Services
                                          let outcomes = from co in dbCourseOutcomes
                                                         where co.Course_Id == c.Id
                                                         let outcome = dbOutcomes.Single(o => o.Id == co.LearningOutcome_Id)
-                                                        select new LearningOutcome(outcome.Name, outcome.Description)
-                                         select CourseFromDbCourse(c, prereqs, outcomes)); ;
+                                                        let skills = from s in dbSkills
+                                                                     where s.LearningOutcome_Id == co.LearningOutcome_Id
+                                                                     select new Skill(s.Name)
+                                                        select new LearningOutcome(outcome.Name, outcome.Description, skills)
+                                         select CourseFromDbCourse(c, prereqs, outcomes)); ; ;
                     }
                 }
                 Messenger.Default.Send(new RefreshDatabaseMessage());
@@ -195,5 +200,6 @@ namespace ProgramPlanning.Shared.Services
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int LearningOutcome_Id { get; set; }
     }
 }

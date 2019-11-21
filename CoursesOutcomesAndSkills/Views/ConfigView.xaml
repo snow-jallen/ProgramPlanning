@@ -14,7 +14,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <TextBlock Text="Saved Connections"
                    Style="{StaticResource sectionHeading}" />
@@ -38,6 +44,8 @@
         <DataGrid ItemsSource="{Binding Connections}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="true"
+                  Margin="5"
+                  Grid.ColumnSpan="3"
                   Grid.Row="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nickname"
@@ -92,5 +100,39 @@
                        VerticalAlignment="Center"
                        Margin="5" />
         </StackPanel>
+
+        <TextBlock Text="Learning Outcomes"
+                   Style="{StaticResource sectionHeading}"
+                   Grid.Row="4" />
+
+        <Border Grid.Row="5"
+                Grid.RowSpan="5"
+                BorderThickness="1"
+                BorderBrush="LightSlateGray"
+                Margin="5,0,9,5">
+
+        </Border>
+
+        <TextBlock Text="Linked Courses"
+                   Grid.Column="1"
+                   Grid.Row="4"
+                   Style="{StaticResource sectionHeading}" />
+        <Border Grid.Row="5"
+                Grid.Column="1"
+                BorderThickness="1"
+                BorderBrush="LightSlateGray"
+                Margin="5,0,9,5">
+        </Border>
+
+        <TextBlock Text="Linked Skills"
+                   Grid.Column="2"
+                   Grid.Row="4"
+                   Style="{StaticResource sectionHeading}" />
+        <Border Grid.Row="5"
+                Grid.Column="2"
+                BorderThickness="1"
+                BorderBrush="LightSlateGray"
+                Margin="5,0,9,5">
+        </Border>
     </Grid>
 </UserControl>
