@@ -13,8 +13,9 @@ namespace ProgramPlanning.Shared.Models
         private List<LearningOutcome> postOutcomes;
         private List<Course> courses;
 
-        public LearningOutcome(string name, string description, IEnumerable<Skill> skills=null, IEnumerable<LearningOutcome> preOutcomes = null, IEnumerable<LearningOutcome> postOutcomes = null, IEnumerable<Course> courses=null)
+        public LearningOutcome(int id, string name, string description, IEnumerable<Skill> skills=null, IEnumerable<LearningOutcome> preOutcomes = null, IEnumerable<LearningOutcome> postOutcomes = null, IEnumerable<Course> courses=null)
         {
+            this.Id = id;
             this.Name = name;
             Description = description;
             this.skills = new List<Skill>();
@@ -40,6 +41,6 @@ namespace ProgramPlanning.Shared.Models
         public List<Skill> Skills { get => skills; }
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
-        public ICollection<Course> Courses { get => courses; }
+        public List<Course> Courses { get => courses; set { courses = value; } }
     }
 }

@@ -11,5 +11,6 @@ namespace ProgramPlanning.Shared.Services
     {
         IEnumerable<Course> GetCourses();
         void SetConnection(ConnectionInfo selectedConnection);
+        void SaveOutcomesAndSkills(IEnumerable<LearningOutcome> outcomes);
     }
 }

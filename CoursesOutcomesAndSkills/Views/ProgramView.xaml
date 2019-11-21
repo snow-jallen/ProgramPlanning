@@ -38,6 +38,11 @@
 
         <TextBlock Text="Outcomes &amp; Skills"
                    Style="{StaticResource sectionHeading}" />
+        <Button Content="Save Changes"
+                Margin="5,2,9,0"
+                Padding="10,0"
+                Command="{Binding SaveOutcomesAndSkills}"
+                HorizontalAlignment="Right" />
         <Border Grid.Row="1"
                 BorderThickness="1"
                 BorderBrush="LightSlateGray"
@@ -92,12 +97,15 @@
                 BorderBrush="Gray">
             <StackPanel Margin="5">
                 <TextBlock Text="{Binding Name}"
+                           FontWeight="Bold" FontSize="14px"
                            TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Description}"
+                           TextWrapping="Wrap" />
                 <TextBlock Text="Courses"
-                           Margin="5,2,0,0"
+                           Margin="5,10,0,0"
                            FontWeight="Bold"/>
                 <ItemsControl ItemsSource="{Binding Courses}"
-                              Margin="5,0,0,0">
+                              Margin="5,0,0,10">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}" />

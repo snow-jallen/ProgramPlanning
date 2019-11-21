@@ -12,16 +12,16 @@ namespace ProgramPlanning.Shared.Services
         public BogusCourseInfoRepository()
         {
 
-            var cs1400_lo1 = new LearningOutcome("Need Name", "Know basic data types, control structures, and programming approaches for a current programming language.", new[] {
+            var cs1400_lo1 = new LearningOutcome(1, "Need Name", "Know basic data types, control structures, and programming approaches for a current programming language.", new[] {
                 new Skill("Basic Data Types"),
                 new Skill("Control Structures"),
                 new Skill("Programming Approaches")
             });
-            var cs1400_lo3 = new LearningOutcome("Need Name", "Understand the social responsibilities of the computing professional and the impact of computing on society.", new[]
+            var cs1400_lo3 = new LearningOutcome(2, "Need Name", "Understand the social responsibilities of the computing professional and the impact of computing on society.", new[]
             {
                 new Skill("Understand social responsibilities"),
             });
-            var cs1400_lo2 = new LearningOutcome("Need Name", "Solve problems by developing algorithms and implementing those algorithms using a current programming language.", new[]
+            var cs1400_lo2 = new LearningOutcome(3, "Need Name", "Solve problems by developing algorithms and implementing those algorithms using a current programming language.", new[]
             {
                 new Skill("Develop algorithms"),
                 new Skill("Implement algorithms")
@@ -50,6 +50,11 @@ namespace ProgramPlanning.Shared.Services
         public void SetConnection(ConnectionInfo selectedConnection)
         {
 
+        }
+
+        public void SaveOutcomesAndSkills(IEnumerable<LearningOutcome> outcomes)
+        {
+            throw new NotImplementedException();
         }
     }
 }

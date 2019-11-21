@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
 using ProgramPlanning.Shared.Services;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -59,5 +60,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set { Set(ref selectedOutcome, value); }
         }
 
+        private RelayCommand saveOutcomesAndSkills;
+        public RelayCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new RelayCommand(() => courseRepository.SaveOutcomesAndSkills(Outcomes)));
     }
 }

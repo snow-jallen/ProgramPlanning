@@ -38,7 +38,7 @@ namespace ProgramPlanning.Shared.Services
                                 select id, name, description from learningoutcome;
                                 select course_id, learningoutcome_id from course_learningoutcome;
                                 select id, name, learningoutcome_id from skill;";
-                    using(var multi = connection.QueryMultiple(sql))
+                    using (var multi = connection.QueryMultiple(sql))
                     {
                         var dbCourses = multi.Read<DbCourse>();
                         var coursePreReqs = multi.Read<DbCoursePreReq>();
@@ -57,8 +57,17 @@ namespace ProgramPlanning.Shared.Services
                                                         let skills = from s in dbSkills
                                                                      where s.LearningOutcome_Id == co.LearningOutcome_Id
                                                                      select new Skill(s.Name)
-                                                        select new LearningOutcome(outcome.Name, outcome.Description, skills)
-                                         select CourseFromDbCourse(c, prereqs, outcomes)); ; ;
+                                                        select new LearningOutcome(outcome.Id, outcome.Name, outcome.Description, skills)
+                                         select CourseFromDbCourse(c, prereqs, outcomes));
+
+                        foreach (var outcome in (from c in courses
+                                                 from o in c.Outcomes
+                                                 select o).Distinct())
+                        {
+                            outcome.Courses = new List<Course>(from c in courses
+                                                               where c.Outcomes.Contains(outcome)
+                                                               select c);
+                        }
                     }
                 }
                 Messenger.Default.Send(new RefreshDatabaseMessage());
@@ -87,7 +96,7 @@ namespace ProgramPlanning.Shared.Services
 
         public DbLearningOutcome AddOutcome(DbLearningOutcome learningOutcome)
         {
-            using(var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 var sql = "insert into learningoutcome (name, description) values (@name, @description)";
                 conn.Execute(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
@@ -99,14 +108,14 @@ namespace ProgramPlanning.Shared.Services
 
         public void AddCourseOutcomeLink(DbCourseLearningOutcome outcomeCourseLink)
         {
-            using(var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 var sql = "insert into course_learningoutcome (course_id, learningoutcome_id) values (@CourseId, @LearningOutcomeId)";
                 conn.Execute(sql, new { CourseId = outcomeCourseLink.Course_Id, LearningOutcomeId = outcomeCourseLink.LearningOutcome_Id });
             }
         }
 
-        public static Course CourseFromDbCourse(DbCourse dbCourse, IEnumerable<Course> prereqs=null, IEnumerable<LearningOutcome> outcomes=null)
+        public static Course CourseFromDbCourse(DbCourse dbCourse, IEnumerable<Course> prereqs = null, IEnumerable<LearningOutcome> outcomes = null)
         {
             var c = new Course(
                 dbCourse.Id,
@@ -147,6 +156,31 @@ namespace ProgramPlanning.Shared.Services
                     return Semester.Year0PreReq;
             }
         }
+
+        public void SaveOutcomesAndSkills(IEnumerable<LearningOutcome> outcomes)
+        {
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    foreach (var outcome in outcomes)
+                    {
+                        conn.Execute("update learningoutcome set name=@name, description=@description where id=@id", new { outcome.Name, outcome.Description, outcome.Id }, trans);
+
+                        foreach (var skill in outcome.Skills)
+                        {
+                            if (skill.Id == 0)
+                                conn.Execute("insert into skill (name, learningoutcome_id) values (@name, @learningoutcomeid)", new { skill.Name, learningoutcomeid = outcome.Id }, trans);
+                            else
+                                conn.Execute("update skill set name=@name where id=@id", new { skill.Name, skill.Id }, trans);
+                        }
+                    }
+                    trans.Commit();
+                }
+                conn.Close();
+            }
+        }
     }
 
     public class DbCourse
@@ -182,6 +216,16 @@ namespace ProgramPlanning.Shared.Services
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        internal static DbLearningOutcome FromOutcome(LearningOutcome outcome)
+        {
+            return new DbLearningOutcome
+            {
+                Id = outcome.Id,
+                Name = outcome.Name,
+                Description = outcome.Description
+            };
+        }
     }
 
     public class DbLearningOutcomePost
@@ -201,5 +245,15 @@ namespace ProgramPlanning.Shared.Services
         public int Id { get; set; }
         public string Name { get; set; }
         public int LearningOutcome_Id { get; set; }
+
+        internal static DbSkill FromSkill(Skill skill, int learningOutcomeId)
+        {
+            return new DbSkill
+            {
+                Id = skill.Id,
+                Name = skill.Name,
+                LearningOutcome_Id = learningOutcomeId
+            };
+        }
     }
 }
