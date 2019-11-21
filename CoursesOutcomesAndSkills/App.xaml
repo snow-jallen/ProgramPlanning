@@ -16,36 +16,53 @@
                     Value="5,5,5,0" />
         </Style>
         <DataTemplate x:Key="OutcomeTemplate">
-            <Grid Margin="0,5,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Name, TargetNullValue='[No name]'}"
-                         FontWeight="Medium"
-                         Grid.ColumnSpan="2"
-                         TextWrapping="Wrap" />
-                <TextBox Text="{Binding Description}"
-                           Grid.Row="1"
-                           Grid.ColumnSpan="2"
-                           TextWrapping="WrapWithOverflow" />
-                <DataGrid Margin="15,0,2,2"
-                          Grid.Column="1"
-                          Grid.Row="2"
-                          AutoGenerateColumns="False"
-                          ItemsSource="{Binding Skills}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Skills"
-                                            Width="*"
-                                            Binding="{Binding Name}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <Expander IsExpanded="{Binding IsExpanded}">
+                <Expander.Header>
+                    <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=ActualWidth}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name, TargetNullValue='[No name]'}"
+                                 FontWeight="Medium"
+                                 TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding CoursesText, FallbackValue='CS 1234'}"
+                                   Grid.Column="1" />
+                    </Grid>
+                </Expander.Header>
+                <Grid Margin="0,5,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding Name, TargetNullValue='[No name]'}"
+                             Grid.ColumnSpan="2"
+                             FontWeight="Medium"
+                             TextWrapping="Wrap" />
+
+                    <TextBox Text="{Binding Description}"
+                             Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             TextWrapping="WrapWithOverflow" />
+                    <DataGrid Margin="15,0,0,2"
+                              Grid.Column="1"
+                              Grid.Row="2"
+                              RowHeaderWidth="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Skills}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Skills"
+                                                Width="*"
+                                                Binding="{Binding Name}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Expander>
         </DataTemplate>
     </Application.Resources>
 </Application>

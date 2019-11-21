@@ -53,12 +53,30 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <TextBlock Text="Filter"
+                           VerticalAlignment="Center"
                            Margin="2,2,0,0" />
                 <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
-                         Grid.Row="1"
-                         Margin="0,0,0,5" />
+                         Grid.Column="1"
+                         Margin="5" />
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5,0,5,5">
+                    <Button Content="⟰ Collapse All"
+                            Command="{Binding CollapseAll}"
+                            MinWidth="80" />
+                    <Button Content="⟱ Expand All"
+                            MinWidth="80"
+                            Command="{Binding ExpandAll}"
+                            Margin="5,0" />
+                </StackPanel>
                 <ListBox ItemsSource="{Binding FilteredOutcomes}"
+                         Grid.ColumnSpan="2"
                          SelectionMode="Single"
                          SelectedItem="{Binding SelectedOutcome}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"

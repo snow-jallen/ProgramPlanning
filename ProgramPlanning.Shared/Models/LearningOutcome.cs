@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProgramPlanning.Shared.Models
 {
-    public class LearningOutcome
+    public class LearningOutcome : INotifyPropertyChanged
     {
         private List<Skill> skills;
         private List<LearningOutcome> preOutcomes;
@@ -42,5 +44,30 @@ namespace ProgramPlanning.Shared.Models
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
         public List<Course> Courses { get => courses; set { courses = value; } }
+
+        private bool isExpanded;
+        public bool IsExpanded
+        {
+            get => isExpanded;
+            set { SetField(ref isExpanded, value); }
+        }
+
+        #region INotifyPropertyChanged Implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        #endregion
+
     }
 }

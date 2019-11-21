@@ -24,9 +24,9 @@ namespace CoursesOutcomesAndSkills.ViewModels
         private void refreshCourses()
         {
             Courses = courseRepository.GetCourses();
-            Outcomes = from c in Courses
-                       from o in c.Outcomes
-                       select o;
+            Outcomes = new List<LearningOutcome>(from c in Courses
+                                                 from o in c.Outcomes
+                                                 select o);
             RaisePropertyChanged(nameof(Courses));
             RaisePropertyChanged(nameof(Outcomes));
             RaisePropertyChanged(nameof(FilteredOutcomes));
@@ -45,7 +45,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
 
         public IEnumerable<Course> Courses { get; private set; }
-        public IEnumerable<LearningOutcome> Outcomes { get; private set; }
+        public List<LearningOutcome> Outcomes { get; private set; }
         public IEnumerable<LearningOutcome> FilteredOutcomes => from o in Outcomes
                                                                 where (o.Name?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
                                                                       (o.Description?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
@@ -62,5 +62,19 @@ namespace CoursesOutcomesAndSkills.ViewModels
 
         private RelayCommand saveOutcomesAndSkills;
         public RelayCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new RelayCommand(() => courseRepository.SaveOutcomesAndSkills(Outcomes)));
+
+        private RelayCommand collapseAll;
+        public RelayCommand CollapseAll => collapseAll ?? (collapseAll = new RelayCommand(() =>
+        {
+            foreach (var o in Outcomes)
+                o.IsExpanded = false;
+        }));
+
+        private RelayCommand expandAll;
+        public RelayCommand ExpandAll => expandAll ?? (expandAll = new RelayCommand(() =>
+        {
+            foreach (var o in Outcomes)
+                o.IsExpanded = true;
+        }));
     }
 }
