@@ -8,6 +8,11 @@ namespace ProgramPlanning.Shared.Models
 {
     public class Skill
     {
+        public Skill()
+        {
+
+        }
+
         public Skill(string name)
         {
             this.Name = name;
