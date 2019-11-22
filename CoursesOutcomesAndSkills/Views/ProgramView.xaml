@@ -38,7 +38,7 @@
 
         <TextBlock Text="Outcomes &amp; Skills"
                    Style="{StaticResource sectionHeading}" />
-        <Button Content="Save Changes"
+        <Button Content="💾 Save Changes"
                 Margin="5,2,9,0"
                 Padding="10,0"
                 Command="{Binding SaveOutcomesAndSkills}"

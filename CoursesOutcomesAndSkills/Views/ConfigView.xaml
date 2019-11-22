@@ -89,7 +89,7 @@
         </DataGrid>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="3">
-            <Button Content="Save Connections"
+            <Button Content="💾 Save Connections"
                     HorizontalAlignment="Left"
                     Margin="5"
                     Padding="10,5"
