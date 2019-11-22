@@ -67,11 +67,11 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="5,0,5,5">
-                    <Button Content="⟰ Collapse All"
+                    <Button Content="⟰ Collapse All ⟰"
                             Command="{Binding CollapseAll}"
-                            MinWidth="80" />
-                    <Button Content="⟱ Expand All"
-                            MinWidth="80"
+                            MinWidth="100" />
+                    <Button Content="⟱ Expand All ⟱"
+                            MinWidth="100"
                             Command="{Binding ExpandAll}"
                             Margin="5,0" />
                 </StackPanel>
@@ -93,7 +93,7 @@
                       Grid.RowSpan="2"
                       Background="DarkGray" />
 
-        <TextBlock Text="Pre."
+        <TextBlock Text="Outcomes required from previous courses"
                    Grid.Column="1"
                    Style="{StaticResource sectionHeading}" />
         <ListBox Grid.Row="1"
@@ -104,7 +104,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         </ListBox>
 
-        <TextBlock Text="Selected"
+        <TextBlock Text="Selected Outcome"
                    Grid.Column="2"
                    Style="{StaticResource sectionHeading}" />
         <Border Grid.Row="1"
@@ -114,7 +114,7 @@
                 Margin="5,0,5,5"
                 BorderBrush="Gray">
             <StackPanel Margin="5">
-                <TextBlock Text="{Binding Name}"
+                <TextBlock Text="{Binding Name, FallbackValue='[No Name]',TargetNullValue='[No Name]'}"
                            FontWeight="Bold" FontSize="14px"
                            TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding Description}"
@@ -126,7 +126,13 @@
                               Margin="5,0,0,10">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Title}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>
+                                    <Run Text="{Binding Prefix}" />
+                                    <Run Text="{Binding Number}" />
+                                    <Run Text="{Binding Title}" />
+                                </TextBlock>
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -144,7 +150,7 @@
             </StackPanel>
         </Border>
 
-        <TextBlock Text="Post"
+        <TextBlock Text="Outcomes required in subsequent courses"
                    Grid.Column="3"
                    Style="{StaticResource sectionHeading}" />
         <ListBox Grid.Row="1"

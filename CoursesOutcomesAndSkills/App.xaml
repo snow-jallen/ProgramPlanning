@@ -28,7 +28,7 @@
                                  TextWrapping="NoWrap" />
                         <TextBlock Text="{Binding CoursesText, FallbackValue='[Not used in any courses]'}"
                                    TextAlignment="Right"
-                                   Background="LightBlue"
+                                   Background="BurlyWood"
                                    Padding="3,0"
                                    Margin="0,0,30,0"
                                    Grid.Column="1" />
@@ -41,20 +41,23 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="23" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBox Text="{Binding Name, TargetNullValue='[No name]'}"
                              Grid.ColumnSpan="2"
+                             Grid.Column="1"
                              FontWeight="Medium"
                              TextWrapping="Wrap" />
 
                     <TextBox Text="{Binding Description}"
                              Grid.Row="1"
+                             Grid.Column="1"
                              Grid.ColumnSpan="2"
                              TextWrapping="WrapWithOverflow" />
                     <DataGrid Margin="15,0,0,2"
-                              Grid.Column="1"
+                              Grid.Column="2"
                               Grid.Row="2"
                               RowHeaderWidth="0"
                               AutoGenerateColumns="False"

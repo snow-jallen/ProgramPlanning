@@ -36,6 +36,7 @@ namespace ProgramPlanning.Shared.Models
             this.courses = new List<Course>();
             if (courses != null)
                 this.courses.AddRange(courses);
+            Heading = $"{Name ?? Description.Truncate(90)}";
         }
 
         public int Id { get; set; }
@@ -44,9 +45,17 @@ namespace ProgramPlanning.Shared.Models
         public List<Skill> Skills { get => skills; }
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
-        public List<Course> Courses { get => courses; set { courses = value; } }
-        public string Heading => $"{Name ?? Description.Truncate(90)}";
-        public string CoursesText => String.Join(", ", Courses.Select(c => c.CourseNumber));
+        public List<Course> Courses
+        {
+            get => courses;
+            set
+            {
+                courses = value;
+                CoursesText = String.Join(", ", Courses.Select(c => c.CourseNumber));
+            }
+        }
+        public string Heading { get; private set; }
+        public string CoursesText { get; private set; }
 
         private bool isExpanded;
         public bool IsExpanded
