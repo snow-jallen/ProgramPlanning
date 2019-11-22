@@ -58,6 +58,17 @@ namespace ProgramPlanning.Shared.Services
         public void DumpDatabaseWithoutDocker(ConnectionInfo info, string exportFile) => dumpDatabase(info, exportFile, runInDocker: false);
         private void dumpDatabase(ConnectionInfo info, string exportFile, bool runInDocker)
         {
+            var folder = Path.GetDirectoryName(exportFile);
+            if (!Directory.Exists(folder))
+                throw new DirectoryNotFoundException(exportFile);
+
+            var file = Path.GetFileName(exportFile);
+
+            string dockerRun = $"docker run --rm -e PGPASSWORD={info.Password} -v \"{folder}:/usr/backupoutput\" -it postgres ";
+            var dumpFile = runInDocker ?
+                $"/usr/backupoutput/{file}" :
+                exportFile;
+            var cmd = $"{(runInDocker ? dockerRun : String.Empty)} pg_dump -h ${info.Host} -p ${info.Port} -U ${info.User} -f ${dumpFile} -d ${info.Database}";
 
         }
 
