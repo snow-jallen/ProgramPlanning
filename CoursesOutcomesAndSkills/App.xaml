@@ -23,10 +23,14 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name, TargetNullValue='[No name]'}"
+                        <TextBlock Text="{Binding Heading, TargetNullValue='[No name]'}"
                                  FontWeight="Medium"
-                                 TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding CoursesText, FallbackValue='CS 1234'}"
+                                 TextWrapping="NoWrap" />
+                        <TextBlock Text="{Binding CoursesText, FallbackValue='[Not used in any courses]'}"
+                                   TextAlignment="Right"
+                                   Background="LightBlue"
+                                   Padding="3,0"
+                                   Margin="0,0,30,0"
                                    Grid.Column="1" />
                     </Grid>
                 </Expander.Header>

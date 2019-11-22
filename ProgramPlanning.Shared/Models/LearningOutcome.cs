@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ProgramPlanning.Shared;
 
 namespace ProgramPlanning.Shared.Models
 {
@@ -44,6 +45,8 @@ namespace ProgramPlanning.Shared.Models
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
         public List<Course> Courses { get => courses; set { courses = value; } }
+        public string Heading => $"{Name ?? Description.Truncate(90)}";
+        public string CoursesText => String.Join(", ", Courses.Select(c => c.CourseNumber));
 
         private bool isExpanded;
         public bool IsExpanded
