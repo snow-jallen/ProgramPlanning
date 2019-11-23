@@ -52,7 +52,7 @@ namespace ProgramPlanning.Shared.Services
 
         }
 
-        public void SaveOutcomesAndSkills(IEnumerable<LearningOutcome> outcomes)
+        public async Task SaveOutcomesAndSkillsAsync(IEnumerable<LearningOutcome> outcomes)
         {
             throw new NotImplementedException();
         }

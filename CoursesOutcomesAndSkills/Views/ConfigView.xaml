@@ -71,17 +71,14 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Export/Dump"
+                                    Binding="{Binding ExportFile, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTemplateColumn Header="Export/Dump">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="File Name: " />
-                                <TextBox Text="{Binding ExportFile,UpdateSourceTrigger=PropertyChanged}"
-                                         MinWidth="80" />
-                                <Button Content="Export"
-                                        MinWidth="60"
-                                        Command="{Binding ExportCommand}" />
-                            </StackPanel>
+                            <Button Content="Export"
+                                    MinWidth="60"
+                                    Command="{Binding ExportCommand}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

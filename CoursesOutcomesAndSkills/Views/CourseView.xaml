@@ -193,24 +193,25 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="{Binding CourseNumber}"
                        FontWeight="Bold"
                        FontSize="12pt"/>
             <TextBlock Text="{Binding Title}"
-                       Grid.ColumnSpan="2"
+                       Grid.Column="1"
                        FontWeight="Medium"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
             <TextBlock Text="{Binding Semester}"
                        FontStyle="Italic"
-                       Grid.Column="1"
+                       Grid.Column="2"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"/>
-            <Border Grid.ColumnSpan="2"
+            <Border Grid.ColumnSpan="3"
                     VerticalAlignment="Bottom"
                     BorderThickness="1"
                     Margin="0,0,0,-5"
@@ -220,14 +221,15 @@
                        TextWrapping="Wrap"
                        Margin="0,10,0,0"
                        Grid.Row="1"
-                       Grid.ColumnSpan="2"/>
+                       Grid.ColumnSpan="3"/>
 
             <TextBlock Text="Learning Outcomes"
                        FontWeight="Bold"
+                       Grid.ColumnSpan="3"
                        Grid.Row="2" />
 
             <ScrollViewer Grid.Row="3"
-                          Grid.ColumnSpan="2"
+                          Grid.ColumnSpan="3"
                           VerticalScrollBarVisibility="Auto">
                 <ItemsControl Grid.Row="3"
                               Grid.ColumnSpan="2"
@@ -242,8 +244,10 @@
             </ScrollViewer>
 
             <TextBlock Text="Pre-Requisites"
+                       Grid.ColumnSpan="3"
                        Grid.Row="4"/>
             <TextBlock Text="{Binding Prereqs}"
+                       Grid.ColumnSpan="3"
                        Grid.Row="5" />
         </Grid>
     </Grid>

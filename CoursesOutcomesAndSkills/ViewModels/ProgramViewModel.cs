@@ -7,11 +7,14 @@ using System.Text;
 using System.Collections.ObjectModel;
 using ProgramPlanning.Shared.Services;
 using GalaSoft.MvvmLight.CommandWpf;
+using System.Threading.Tasks;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
     public class ProgramViewModel : ViewModelBase
     {
+        private const string defaultSaveButtonContent = "💾 Save Changes";
+
         public ProgramViewModel(ICourseInfoRepository courseRepository)
         {
             this.courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
@@ -19,6 +22,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
             SelectedOutcome = Outcomes.FirstOrDefault();
             FilterText = string.Empty;
             MessengerInstance.Register<RefreshDatabaseMessage>(this, (m) => refreshCourses());
+            SaveButtonContent = defaultSaveButtonContent;
+            CanSave = true;
         }
 
         private void refreshCourses()
@@ -49,7 +54,8 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public IEnumerable<LearningOutcome> FilteredOutcomes => from o in Outcomes
                                                                 where (o.Name?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
                                                                       (o.Description?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
-                                                                      o.Skills.Any(s => s.Name.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase))
+                                                                      ((o.Skills?.Any(s => s.Name.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase)) ?? false) ||
+                                                                      (o.CoursesText?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false))
                                                                 select o;
         private LearningOutcome selectedOutcome;
         private readonly ICourseInfoRepository courseRepository;
@@ -60,8 +66,42 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set { Set(ref selectedOutcome, value); }
         }
 
+        private bool canSave;
+        public bool CanSave
+        {
+            get => canSave;
+            set
+            {
+                Set(ref canSave, value);
+                SaveOutcomesAndSkills.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string saveButtonContent;
+        public string SaveButtonContent
+        {
+            get => saveButtonContent;
+            set { Set(ref saveButtonContent, value); }
+        }
+
         private RelayCommand saveOutcomesAndSkills;
-        public RelayCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new RelayCommand(() => courseRepository.SaveOutcomesAndSkills(Outcomes)));
+        public RelayCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new RelayCommand(() =>
+            {
+                CanSave = false;
+                SaveButtonContent = "Saving...";
+                Task.Run(() => courseRepository.SaveOutcomesAndSkillsAsync(Outcomes))
+                .ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                        throw t.Exception;
+                    CanSave = true;
+                    SaveButtonContent = defaultSaveButtonContent;
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            },
+            ()=>
+            {
+                return CanSave;
+            }));
 
         private RelayCommand collapseAll;
         public RelayCommand CollapseAll => collapseAll ?? (collapseAll = new RelayCommand(() =>
@@ -71,6 +111,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
         }));
 
         private RelayCommand expandAll;
+
         public RelayCommand ExpandAll => expandAll ?? (expandAll = new RelayCommand(() =>
         {
             foreach (var o in Outcomes)

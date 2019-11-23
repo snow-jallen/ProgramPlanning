@@ -68,8 +68,8 @@ namespace ProgramPlanning.Shared.Services
             var dumpFile = runInDocker ?
                 $"/usr/backupoutput/{file}" :
                 exportFile;
-            var cmd = $"{(runInDocker ? dockerRun : String.Empty)} pg_dump -h ${info.Host} -p ${info.Port} -U ${info.User} -f ${dumpFile} -d ${info.Database}";
-
+            var cmd = $"{(runInDocker ? dockerRun : String.Empty)} pg_dump -h {info.Host} -p {info.Port} -U {info.User} -f \"{dumpFile}\" -d {info.Database}";
+            Process.Start("powershell.exe", $"-NoExit -c {{{cmd}}}");
         }
 
     }

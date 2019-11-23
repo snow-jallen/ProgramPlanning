@@ -157,28 +157,28 @@ namespace ProgramPlanning.Shared.Services
             }
         }
 
-        public void SaveOutcomesAndSkills(IEnumerable<LearningOutcome> outcomes)
+        public async Task SaveOutcomesAndSkillsAsync(IEnumerable<LearningOutcome> outcomes)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 using (var trans = conn.BeginTransaction())
                 {
                     foreach (var outcome in outcomes)
                     {
-                        conn.Execute("update learningoutcome set name=@name, description=@description where id=@id", new { outcome.Name, outcome.Description, outcome.Id }, trans);
+                        await conn.ExecuteAsync("update learningoutcome set name=@name, description=@description where id=@id", new { outcome.Name, outcome.Description, outcome.Id }, trans);
 
                         foreach (var skill in outcome.Skills)
                         {
                             if (skill.Id == 0)
-                                conn.Execute("insert into skill (name, learningoutcome_id) values (@name, @learningoutcomeid)", new { skill.Name, learningoutcomeid = outcome.Id }, trans);
+                                await conn.ExecuteAsync("insert into skill (name, learningoutcome_id) values (@name, @learningoutcomeid)", new { skill.Name, learningoutcomeid = outcome.Id }, trans);
                             else
-                                conn.Execute("update skill set name=@name where id=@id", new { skill.Name, skill.Id }, trans);
+                                await conn.ExecuteAsync("update skill set name=@name where id=@id", new { skill.Name, skill.Id }, trans);
                         }
                     }
-                    trans.Commit();
+                    await trans.CommitAsync();
                 }
-                conn.Close();
+                await conn.CloseAsync();
             }
         }
     }
