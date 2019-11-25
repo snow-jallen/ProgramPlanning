@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -41,6 +42,15 @@ namespace CoursesOutcomesAndSkills
                 services.AddSingleton<ICourseInfoRepository, PostgresCourseRepository>();
             });
 
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             await host.StartAsync();
@@ -54,6 +64,14 @@ namespace CoursesOutcomesAndSkills
 
             var mainWindow = host.Services.GetService<MainWindow>();
             mainWindow.Show();
+
+
+            var handle = GetConsoleWindow();
+
+            // Show
+            ShowWindow(handle, SW_SHOW);
+            // Hide
+            ShowWindow(handle, SW_HIDE);
         }
 
         private async void Application_Exit(object sender, ExitEventArgs e)
