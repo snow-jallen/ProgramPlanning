@@ -24,6 +24,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
             MessengerInstance.Register<RefreshDatabaseMessage>(this, (m) => refreshCourses());
             SaveButtonContent = defaultSaveButtonContent;
             CanSave = true;
+            IsDirty = false;
         }
 
         private void refreshCourses()
@@ -32,10 +33,25 @@ namespace CoursesOutcomesAndSkills.ViewModels
             Outcomes = new List<LearningOutcome>(from c in Courses
                                                  from o in c.Outcomes
                                                  select o);
+            Outcomes.ForEach(o => o.PropertyChanged += (s, e) =>  IsDirty = Outcomes.Any(o => o.IsDirty));
+
             RaisePropertyChanged(nameof(Courses));
             RaisePropertyChanged(nameof(Outcomes));
             RaisePropertyChanged(nameof(FilteredOutcomes));
         }
+
+        private bool isDirty;
+        public bool IsDirty
+        {
+            get => isDirty;
+            set
+            {
+                Set(ref isDirty, value);
+                RaisePropertyChanged(nameof(OutcomesAndSkillsHeadingWithIsDirtyFlag));
+            }
+        }
+
+        public string OutcomesAndSkillsHeadingWithIsDirtyFlag => "Outcomes & Skills " + (IsDirty ? "(Changed!)" : String.Empty);
 
         private string filterText;
         public string FilterText
@@ -54,7 +70,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public IEnumerable<LearningOutcome> FilteredOutcomes => from o in Outcomes
                                                                 where (o.Name?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
                                                                       (o.Description?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
-                                                                      ((o.Skills?.Any(s => s.Name.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase)) ?? false) ||
+                                                                      ((o.Skills?.Any(s => s.Name?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false) ?? false) ||
                                                                       (o.CoursesText?.Contains(FilterText, StringComparison.InvariantCultureIgnoreCase) ?? false))
                                                                 select o;
         private LearningOutcome selectedOutcome;

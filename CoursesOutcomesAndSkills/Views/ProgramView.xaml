@@ -36,7 +36,7 @@
         </Grid.RowDefinitions>
 
 
-        <TextBlock Text="Outcomes &amp; Skills"
+        <TextBlock Text="{Binding OutcomesAndSkillsHeadingWithIsDirtyFlag, FallbackValue='Outcomes &amp; Skills'}"
                    Style="{StaticResource sectionHeading}" />
         <Button Content="{Binding SaveButtonContent}"
                 Margin="5,2,9,0"

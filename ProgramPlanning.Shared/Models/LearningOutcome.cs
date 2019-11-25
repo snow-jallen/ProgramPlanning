@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,7 +12,7 @@ namespace ProgramPlanning.Shared.Models
 {
     public class LearningOutcome : INotifyPropertyChanged
     {
-        private List<Skill> skills;
+        private ObservableCollection<Skill> skills;
         private List<LearningOutcome> preOutcomes;
         private List<LearningOutcome> postOutcomes;
         private List<Course> courses;
@@ -21,9 +22,10 @@ namespace ProgramPlanning.Shared.Models
             this.Id = id;
             this.Name = name;
             Description = description;
-            this.skills = new List<Skill>();
+            this.skills = new ObservableCollection<Skill>();
             if (skills != null)
-                this.skills.AddRange(skills);
+                skills.ToList().ForEach(s => this.skills.Add(s));
+            this.skills.CollectionChanged += (s, e) => IsDirty = true;
 
             this.preOutcomes = new List<LearningOutcome>();
             if (preOutcomes != null)
@@ -36,13 +38,40 @@ namespace ProgramPlanning.Shared.Models
             this.courses = new List<Course>();
             if (courses != null)
                 this.courses.AddRange(courses);
+            refreshHeading();
+
+            IsDirty = false;
+        }
+
+        private void refreshHeading()
+        {
             Heading = $"{Name ?? Description.Truncate(90)}";
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public List<Skill> Skills { get => skills; }
+        private string name;
+        public string Name
+        {
+            get => name;
+            set
+            {
+                SetField(ref name, value);
+                refreshHeading();
+                IsDirty = true;
+            }
+        }
+        private string description;
+        public string Description
+        {
+            get => description;
+            set
+            {
+                SetField(ref description, value);
+                IsDirty = true;
+            }
+        }
+
+        public ObservableCollection<Skill> Skills { get => skills; }
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
         public List<Course> Courses
@@ -54,7 +83,13 @@ namespace ProgramPlanning.Shared.Models
                 CoursesText = String.Join(", ", Courses.Select(c => c.CourseNumber));
             }
         }
-        public string Heading { get; private set; }
+        private string heading;
+        public string Heading
+        {
+            get => heading;
+            set { SetField(ref heading, value); }
+        }
+
         public string CoursesText { get; private set; }
 
         private bool isExpanded;
@@ -63,6 +98,14 @@ namespace ProgramPlanning.Shared.Models
             get => isExpanded;
             set { SetField(ref isExpanded, value); }
         }
+
+        private bool isDirty;
+        public bool IsDirty
+        {
+            get => isDirty;
+            set { SetField(ref isDirty, value); }
+        }
+
 
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;

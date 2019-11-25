@@ -164,7 +164,9 @@ namespace ProgramPlanning.Shared.Services
                 await conn.OpenAsync();
                 using (var trans = conn.BeginTransaction())
                 {
-                    foreach (var outcome in outcomes)
+                    foreach (var outcome in from o in outcomes
+                                            where o.IsDirty
+                                            select o)
                     {
                         await conn.ExecuteAsync("update learningoutcome set name=@name, description=@description where id=@id", new { outcome.Name, outcome.Description, outcome.Id }, trans);
 
@@ -175,6 +177,8 @@ namespace ProgramPlanning.Shared.Services
                             else
                                 await conn.ExecuteAsync("update skill set name=@name where id=@id", new { skill.Name, skill.Id }, trans);
                         }
+
+                        outcome.IsDirty = false;
                     }
                     await trans.CommitAsync();
                 }
