@@ -94,24 +94,24 @@ namespace ProgramPlanning.Shared.Services
             }
         }
 
-        public DbLearningOutcome AddOutcome(DbLearningOutcome learningOutcome)
+        public async Task<DbLearningOutcome> AddOutcomeAsync(DbLearningOutcome learningOutcome)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 var sql = "insert into learningoutcome (name, description) values (@name, @description)";
-                conn.Execute(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
-                var newOutcome = conn.QuerySingle<DbLearningOutcome>("select id, name, description from learningoutcome where description = @description order by id desc fetch first 1 row only",
-                    new { description = learningOutcome.Description });
+                await conn.ExecuteAsync(sql, new { name = learningOutcome.Name, description = learningOutcome.Description });
+                var newOutcome = await conn.QuerySingleAsync<DbLearningOutcome>("select id, name, description from learningoutcome where name = @name and description = @description order by id desc fetch first 1 row only",
+                    new { description = learningOutcome.Description, name = learningOutcome.Name });
                 return newOutcome;
             }
         }
 
-        public void AddCourseOutcomeLink(DbCourseLearningOutcome outcomeCourseLink)
+        public async Task AddCourseOutcomeLinkAsync(DbCourseLearningOutcome outcomeCourseLink)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 var sql = "insert into course_learningoutcome (course_id, learningoutcome_id) values (@CourseId, @LearningOutcomeId)";
-                conn.Execute(sql, new { CourseId = outcomeCourseLink.Course_Id, LearningOutcomeId = outcomeCourseLink.LearningOutcome_Id });
+                await conn.ExecuteAsync(sql, new { CourseId = outcomeCourseLink.Course_Id, LearningOutcomeId = outcomeCourseLink.LearningOutcome_Id });
             }
         }
 
@@ -184,6 +184,23 @@ namespace ProgramPlanning.Shared.Services
                 }
                 await conn.CloseAsync();
             }
+        }
+
+        public async Task AddLearningOutcomeAsync(Course course, string newLearningOutcomeName, string newLearningOutcomeDescription)
+        {
+            if (course is null)
+            {
+                throw new ArgumentNullException(nameof(course));
+            }
+
+            if (string.IsNullOrEmpty(newLearningOutcomeName))
+            {
+                throw new ArgumentException("newLearningOutcome required", nameof(newLearningOutcomeName));
+            }
+
+            var dbOutcome = await AddOutcomeAsync(new DbLearningOutcome { Name = newLearningOutcomeName, Description=newLearningOutcomeDescription });
+            await AddCourseOutcomeLinkAsync(new DbCourseLearningOutcome { Course_Id = course.Id, LearningOutcome_Id = dbOutcome.Id });
+            refreshCourses();
         }
     }
 

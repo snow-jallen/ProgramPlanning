@@ -56,5 +56,10 @@ namespace ProgramPlanning.Shared.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task AddLearningOutcomeAsync(Course course, string newLearningOutcomeName, string newLearningOutcomeDescription)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

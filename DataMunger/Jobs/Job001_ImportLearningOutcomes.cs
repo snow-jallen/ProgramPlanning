@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DataMunger.Jobs
 {
     public static class Job001_ImportLearningOutcomes
     {
-        public static void Run()
+        public static async Task Run()
         {
             var repo = new PostgresCourseRepository();
             repo.SetConnection(new ConnectionInfo
@@ -50,14 +51,14 @@ namespace DataMunger.Jobs
                         {
                             Description = outcomeText
                         };
-                        learningOutcome = repo.AddOutcome(learningOutcome);
+                        learningOutcome = await repo.AddOutcomeAsync(learningOutcome);
 
                         var outcomeCourseLink = new DbCourseLearningOutcome
                         {
                             LearningOutcome_Id = learningOutcome.Id,
                             Course_Id = dbCourse.Id
                         };
-                        repo.AddCourseOutcomeLink(outcomeCourseLink);
+                        await repo.AddCourseOutcomeLinkAsync(outcomeCourseLink);
 
                         Console.WriteLine($"Added learning outcome {outcomeText.Substring(0, Math.Min(outcomeText.Length, 25))}...");
                     }

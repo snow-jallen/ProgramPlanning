@@ -12,5 +12,6 @@ namespace ProgramPlanning.Shared.Services
         IEnumerable<Course> GetCourses();
         void SetConnection(ConnectionInfo selectedConnection);
         Task SaveOutcomesAndSkillsAsync(IEnumerable<LearningOutcome> outcomes);
+        Task AddLearningOutcomeAsync(Course course, string newLearningOutcomeName, string newLearningOutcomeDescription);
     }
 }
