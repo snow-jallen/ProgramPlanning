@@ -51,7 +51,7 @@ namespace ProgramPlanning.Shared.Services
             cmd += $"{(runInDocker ? dockerRun : String.Empty)} psql -h {info.Host} -p {info.Port} -U {info.User} -d {info.Database} -f {backupScript};";
 
             string arguments = $"-NoExit -c {{{cmd}}}";
-            Process.Start("powershell.exe", arguments);
+            //Process.Start("powershell.exe", arguments);
         }
 
         public void DumpDatabaseUsingDocker(ConnectionInfo info, string exportFile) => dumpDatabase(info, exportFile, runInDocker: true);
@@ -69,7 +69,7 @@ namespace ProgramPlanning.Shared.Services
                 $"/usr/backupoutput/{file}" :
                 exportFile;
             var cmd = $"{(runInDocker ? dockerRun : String.Empty)} pg_dump -h {info.Host} -p {info.Port} -U {info.User} -f \"{dumpFile}\" -d {info.Database}";
-            Process.Start("powershell.exe", $"-NoExit -c {{{cmd}}}");
+            //Process.Start("powershell.exe", $"-NoExit -c {{{cmd}}}");
         }
 
     }
