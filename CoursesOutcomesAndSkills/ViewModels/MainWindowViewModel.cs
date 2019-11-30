@@ -12,13 +12,18 @@ namespace CoursesOutcomesAndSkills.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
+		public const int ConfigTabIndex = 3;
+
 		public MainWindowViewModel(ICourseInfoRepository courseRepository, ISettingsManager<MySettings> settingsManager)
 		{
 			this.courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
-			this.settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+
+			if (settingsManager is null)
+			{
+				throw new ArgumentNullException(nameof(settingsManager));
+			}
 
 			refreshConnections(settingsManager);
-
 			MessengerInstance.Register<RefreshDatabaseConnectionsMessage>(this, (m) => refreshConnections(settingsManager));
 		}
 
@@ -34,12 +39,11 @@ namespace CoursesOutcomesAndSkills.ViewModels
 			else
 			{
 				MessengerInstance.Send(new MessageBoxMessage("No Databases Configured", "No database connections have been configured.\nPlease add some on the 'Config' tab."));
-				SelectedTabIndex = 3;//config tab
+				SelectedTabIndex = ConfigTabIndex;
 			}
 		}
 
 		private readonly ICourseInfoRepository courseRepository;
-		private readonly ISettingsManager<MySettings> settingsManager;
 
 		private bool dataIsEnabled;
 		public bool DataIsEnabled
