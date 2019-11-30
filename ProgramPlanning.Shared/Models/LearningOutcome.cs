@@ -13,39 +13,53 @@ namespace ProgramPlanning.Shared.Models
     public class LearningOutcome : INotifyPropertyChanged
     {
         private ObservableCollection<Skill> skills;
-        private List<LearningOutcome> preOutcomes;
-        private List<LearningOutcome> postOutcomes;
+        private ObservableCollection<LearningOutcome> preOutcomes;
+        private ObservableCollection<LearningOutcome> postOutcomes;
         private List<Course> courses;
 
         public LearningOutcome(int id, string name, string description, IEnumerable<Skill> skills=null, IEnumerable<LearningOutcome> preOutcomes = null, IEnumerable<LearningOutcome> postOutcomes = null, IEnumerable<Course> courses=null)
         {
-            this.Id = id;
-            this.Name = name;
+            Id = id;
+            Name = name;
             Description = description;
             this.skills = new ObservableCollection<Skill>();
             if (skills != null)
                 skills.ToList().ForEach(s => this.skills.Add(s));
             this.skills.CollectionChanged += (s, e) =>
-            {
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (var oldItem in e.OldItems)
+                    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                     {
-                        var skillToBeRemoved = oldItem as Skill;
-                        if (skillToBeRemoved != null)
-                            SkillsToBeDeleted.Add(skillToBeRemoved);
+                        foreach (var oldItem in e.OldItems)
+                        {
+                            var skillToBeRemoved = oldItem as Skill;
+                            if (skillToBeRemoved != null)
+                                SkillsToBeDeleted.Add(skillToBeRemoved);
+                        }
                     }
-                }
-                IsDirty = true;
-            };
+                    IsDirty = true;
+                };
 
-            this.preOutcomes = new List<LearningOutcome>();
+            this.preOutcomes = new ObservableCollection<LearningOutcome>();
             if (preOutcomes != null)
-                this.preOutcomes.AddRange(preOutcomes);
+            {
+                foreach (var outcome in preOutcomes)
+                    PreOutcomes.Add(outcome);
+            }
+            PreOutcomes.CollectionChanged += (s, e) =>
+              {
+                  IsDirty = true;
+              };
 
-            this.postOutcomes = new List<LearningOutcome>();
+            this.postOutcomes = new ObservableCollection<LearningOutcome>();
             if (postOutcomes != null)
-                this.postOutcomes.AddRange(postOutcomes);
+            {
+                foreach (var outcome in postOutcomes)
+                    PostOutcomes.Add(outcome);
+            }
+            PostOutcomes.CollectionChanged += (s, e) =>
+              {
+                  IsDirty = true;
+              };
 
             this.courses = new List<Course>();
             if (courses != null)
@@ -85,8 +99,8 @@ namespace ProgramPlanning.Shared.Models
 
         public List<Skill> SkillsToBeDeleted { get; private set; } = new List<Skill>();
         public ObservableCollection<Skill> Skills { get => skills; }
-        public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
-        public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }
+        public ObservableCollection<LearningOutcome> PreOutcomes { get => preOutcomes; }
+        public ObservableCollection<LearningOutcome> PostOutcomes { get => postOutcomes; }
         public List<Course> Courses
         {
             get => courses;

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using ProgramPlanning.Shared.Services;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Threading.Tasks;
+using AsyncAwaitBestPractices.MVVM;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -33,7 +34,7 @@ namespace CoursesOutcomesAndSkills.ViewModels
             Outcomes = new List<LearningOutcome>(from c in Courses
                                                  from o in c.Outcomes
                                                  select o);
-            Outcomes.ForEach(o => o.PropertyChanged += (s, e) =>  IsDirty = Outcomes.Any(o => o.IsDirty));
+            Outcomes.ForEach(p => p.PropertyChanged += (s, e) =>  IsDirty = Outcomes.Any(q => q.IsDirty));
 
             RaisePropertyChanged(nameof(Courses));
             RaisePropertyChanged(nameof(Outcomes));
@@ -100,21 +101,16 @@ namespace CoursesOutcomesAndSkills.ViewModels
             set { Set(ref saveButtonContent, value); }
         }
 
-        private RelayCommand saveOutcomesAndSkills;
-        public RelayCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new RelayCommand(() =>
+        private AsyncCommand saveOutcomesAndSkills;
+        public AsyncCommand SaveOutcomesAndSkills => saveOutcomesAndSkills ?? (saveOutcomesAndSkills = new AsyncCommand(async () =>
             {
                 CanSave = false;
                 SaveButtonContent = "Saving...";
-                Task.Run(() => courseRepository.SaveOutcomesAndSkillsAsync(Outcomes))
-                .ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                        throw t.Exception;
-                    CanSave = true;
-                    SaveButtonContent = defaultSaveButtonContent;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                await courseRepository.SaveOutcomesAndSkillsAsync(Outcomes);
+                CanSave = true;
+                SaveButtonContent = defaultSaveButtonContent;
             },
-            ()=>
+            (o)=>
             {
                 return CanSave;
             }));

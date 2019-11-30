@@ -37,7 +37,9 @@ namespace ProgramPlanning.Shared.Services
                                 select course_id, prereq_id from ""coursePreReq"";
                                 select id, name, description from learningoutcome;
                                 select course_id, learningoutcome_id from course_learningoutcome;
-                                select id, name, learningoutcome_id from skill;";
+                                select id, name, learningoutcome_id from skill;
+                                select here, pre from learningoutcome_pre;
+                                select here, post from learningoutcome_post;";
                     using (var multi = connection.QueryMultiple(sql))
                     {
                         var dbCourses = multi.Read<DbCourse>();
@@ -45,28 +47,45 @@ namespace ProgramPlanning.Shared.Services
                         var dbOutcomes = multi.Read<DbLearningOutcome>();
                         var dbCourseOutcomes = multi.Read<DbCourseLearningOutcome>();
                         var dbSkills = multi.Read<DbSkill>();
+                        var dbOutcomePre = multi.Read<DbLearingOutcomePre>();
+                        var dbOutcomePost = multi.Read<DbLearningOutcomePost>();
 
                         courses.AddRange(from c in dbCourses
                                          let prereqs = from p in coursePreReqs
                                                        where p.Course_Id == c.Id
                                                        let prereq = dbCourses.Single(prereq => prereq.Id == p.Prereq_Id)
                                                        select CourseFromDbCourse(prereq)
-                                         let outcomes = from co in dbCourseOutcomes
-                                                        where co.Course_Id == c.Id
-                                                        let outcome = dbOutcomes.Single(o => o.Id == co.LearningOutcome_Id)
-                                                        let skills = from s in dbSkills
-                                                                     where s.LearningOutcome_Id == co.LearningOutcome_Id
-                                                                     select new Skill(s.Id, s.Name)
-                                                        select new LearningOutcome(outcome.Id, outcome.Name, outcome.Description, skills)
-                                         select CourseFromDbCourse(c, prereqs, outcomes));
+                                         let courseOutcomes = from co in dbCourseOutcomes
+                                                              where co.Course_Id == c.Id
+                                                              let outcome = dbOutcomes.Single(o => o.Id == co.LearningOutcome_Id)
+                                                              let skills = from s in dbSkills
+                                                                           where s.LearningOutcome_Id == co.LearningOutcome_Id
+                                                                           select new Skill(s.Id, s.Name)
+                                                              select new LearningOutcome(outcome.Id, outcome.Name, outcome.Description, skills)
+                                         select CourseFromDbCourse(c, prereqs, courseOutcomes));
 
-                        foreach (var outcome in (from c in courses
-                                                 from o in c.Outcomes
-                                                 select o).Distinct())
+                        var outcomes = (from c in courses
+                                        from o in c.Outcomes
+                                        select o).Distinct();
+                        foreach (var outcome in outcomes)
                         {
                             outcome.Courses = new List<Course>(from c in courses
                                                                where c.Outcomes.Contains(outcome)
                                                                select c);
+
+                            foreach(var pre in from p in dbOutcomePre
+                                               where p.Here == outcome.Id
+                                               select p)
+                            {
+                                outcome.PreOutcomes.Add(outcomes.Single(o => o.Id == pre.Pre));
+                            }
+
+                            foreach(var post in from p in dbOutcomePost
+                                                where p.Here == outcome.Id
+                                                select p)
+                            {
+                                outcome.PostOutcomes.Add(outcomes.Single(o => o.Id == post.Post));
+                            }
                         }
                     }
                 }
@@ -185,6 +204,16 @@ namespace ProgramPlanning.Shared.Services
                             await conn.ExecuteAsync("delete from skill where id = @id", new { skillToBeDeleted.Id }, trans);
                         }
                         outcome.SkillsToBeDeleted.Clear();
+
+                        foreach(var postOutcome in outcome.PostOutcomes)
+                        {
+                            await conn.ExecuteAsync("insert into learningoutcome_post (here, post) values (@id, @post_id) on conflict do nothing", new { outcome.Id, post_id = postOutcome.Id });
+                        }
+
+                        foreach(var preOutcome in outcome.PreOutcomes)
+                        {
+                            await conn.ExecuteAsync("insert into learningoutcome_pre (here, pre) values (@id, @pre_id) on conflict do nothing", new { outcome.Id, pre_id = preOutcome.Id });
+                        }
 
                         outcome.IsDirty = false;
                     }
