@@ -56,7 +56,7 @@ namespace ProgramPlanning.Shared.Services
                                                         let outcome = dbOutcomes.Single(o => o.Id == co.LearningOutcome_Id)
                                                         let skills = from s in dbSkills
                                                                      where s.LearningOutcome_Id == co.LearningOutcome_Id
-                                                                     select new Skill(s.Name)
+                                                                     select new Skill(s.Id, s.Name)
                                                         select new LearningOutcome(outcome.Id, outcome.Name, outcome.Description, skills)
                                          select CourseFromDbCourse(c, prereqs, outcomes));
 
@@ -177,6 +177,14 @@ namespace ProgramPlanning.Shared.Services
                             else
                                 await conn.ExecuteAsync("update skill set name=@name where id=@id", new { skill.Name, skill.Id }, trans);
                         }
+
+                        foreach(var skillToBeDeleted in outcome.SkillsToBeDeleted)
+                        {
+                            if (skillToBeDeleted.Id == 0)
+                                continue;
+                            await conn.ExecuteAsync("delete from skill where id = @id", new { skillToBeDeleted.Id }, trans);
+                        }
+                        outcome.SkillsToBeDeleted.Clear();
 
                         outcome.IsDirty = false;
                     }

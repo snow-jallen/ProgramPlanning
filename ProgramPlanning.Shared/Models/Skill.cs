@@ -15,7 +15,12 @@ namespace ProgramPlanning.Shared.Models
 
         public Skill(string name)
         {
-            this.Name = name;
+            Name = name;
+        }
+
+        public Skill(int id, string name) : this(name)
+        {
+            Id = id;
         }
 
         public int Id { get; set; }

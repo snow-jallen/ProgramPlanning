@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProgramPlanning.Shared.Models
 {
-    public class Course
+    public class Course : INotifyPropertyChanged
     {
         private List<Course> prerequisites;
         private ObservableCollection<LearningOutcome> outcomes;
@@ -43,6 +45,30 @@ namespace ProgramPlanning.Shared.Models
         public string NonProgramPrereqs { get; set; }
         public IEnumerable<Course> Prerequisites { get => prerequisites; }
         public ObservableCollection<LearningOutcome> Outcomes { get => outcomes; }
+
+        private bool isDirty;
+        public bool IsDirty
+        {
+            get => isDirty;
+            set { SetField(ref isDirty, value); }
+        }
+
+        #region INotifyPropertyChanged Implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        #endregion
     }
 
     public enum Semester

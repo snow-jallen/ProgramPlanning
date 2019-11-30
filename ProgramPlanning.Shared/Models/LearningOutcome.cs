@@ -25,7 +25,19 @@ namespace ProgramPlanning.Shared.Models
             this.skills = new ObservableCollection<Skill>();
             if (skills != null)
                 skills.ToList().ForEach(s => this.skills.Add(s));
-            this.skills.CollectionChanged += (s, e) => IsDirty = true;
+            this.skills.CollectionChanged += (s, e) =>
+            {
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                {
+                    foreach (var oldItem in e.OldItems)
+                    {
+                        var skillToBeRemoved = oldItem as Skill;
+                        if (skillToBeRemoved != null)
+                            SkillsToBeDeleted.Add(skillToBeRemoved);
+                    }
+                }
+                IsDirty = true;
+            };
 
             this.preOutcomes = new List<LearningOutcome>();
             if (preOutcomes != null)
@@ -71,6 +83,7 @@ namespace ProgramPlanning.Shared.Models
             }
         }
 
+        public List<Skill> SkillsToBeDeleted { get; private set; } = new List<Skill>();
         public ObservableCollection<Skill> Skills { get => skills; }
         public IEnumerable<LearningOutcome> PreOutcomes { get => preOutcomes; }
         public IEnumerable<LearningOutcome> PostOutcomes { get => postOutcomes; }

@@ -219,6 +219,7 @@
                        VerticalAlignment="Center" />
             <Border Grid.ColumnSpan="3"
                     VerticalAlignment="Bottom"
+                    Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView}, Converter={StaticResource TrueToVisible}}"
                     BorderThickness="1"
                     Margin="0,0,0,-5"
                     BorderBrush="DarkGray" />
@@ -229,13 +230,24 @@
                        Grid.Row="1"
                        Grid.ColumnSpan="3" />
 
+            <TextBlock Text="[ Select a course to see its details ]"
+                       Grid.ColumnSpan="3"
+                       Grid.RowSpan="9"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="12pt"
+                       FontWeight="Bold"
+                       Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView},Converter={StaticResource FalseToVisible}}" />
+
             <TextBlock Text="Learning Outcomes"
+                       Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView}, Converter={StaticResource TrueToVisible}}"
                        VerticalAlignment="Center"
                        FontSize="12pt"
                        FontWeight="Bold"
                        Grid.ColumnSpan="3"
                        Grid.Row="3" />
             <Button Content="➕"
+                    Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView}, Converter={StaticResource TrueToVisible}}"
                     ToolTip="Add New Learning Outcome"
                     Grid.Row="3"
                     Grid.Column="2"
@@ -251,7 +263,7 @@
                       Grid.Row="4"
                       Grid.ColumnSpan="3"
                       Margin="5,-5,5,5"
-                      Visibility="{Binding AddNewLearningOutcomeVisibility}">
+                      Visibility="{Binding AddNewLearningOutcomeVisibility, FallbackValue=Collapsed}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -302,6 +314,7 @@
             </ScrollViewer>
 
             <TextBlock Text="Pre-Requisites"
+                       Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView}, Converter={StaticResource TrueToVisible}}"
                        Grid.ColumnSpan="3"
                        Grid.Row="8" />
             <TextBlock Text="{Binding Prereqs}"
@@ -310,6 +323,7 @@
 
             <Button Content="{Binding SaveButtonContent}"
                     Command="{Binding SaveOutcomesAndSkills}"
+                    Visibility="{Binding DataContext.IsACourseSelected,RelativeSource={RelativeSource AncestorType=local:CourseView}, Converter={StaticResource TrueToVisible}}"
                     Grid.Row="8"
                     Grid.RowSpan="2"
                     Grid.Column="0"
