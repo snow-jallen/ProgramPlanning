@@ -9,6 +9,7 @@ using System.Windows.Media;
 using AsyncAwaitBestPractices.MVVM;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Diagnostics;
 
 namespace CoursesOutcomesAndSkills.ViewModels
 {
@@ -33,7 +34,11 @@ namespace CoursesOutcomesAndSkills.ViewModels
         public bool IsPrerequisiteToCurrentCourse
         {
             get => isPrerequisiteToCurrentCourse;
-            set { Set(ref isPrerequisiteToCurrentCourse, value); }
+            set
+            {
+                Set(ref isPrerequisiteToCurrentCourse, value);
+                //Debug.WriteLine($"{Course.CourseNumber} {(value ? "is" : "is not")} a pre-req to current course.");
+            }
         }
 
         private bool isSelected;
