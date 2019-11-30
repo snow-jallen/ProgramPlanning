@@ -38,7 +38,6 @@ namespace ProgramPlanning.Shared.Services
                                 select id, name, description from learningoutcome;
                                 select course_id, learningoutcome_id from course_learningoutcome;
                                 select id, name, learningoutcome_id from skill;
-                                select here, pre from learningoutcome_pre;
                                 select here, post from learningoutcome_post;";
                     using (var multi = connection.QueryMultiple(sql))
                     {
@@ -47,7 +46,6 @@ namespace ProgramPlanning.Shared.Services
                         var dbOutcomes = multi.Read<DbLearningOutcome>();
                         var dbCourseOutcomes = multi.Read<DbCourseLearningOutcome>();
                         var dbSkills = multi.Read<DbSkill>();
-                        var dbOutcomePre = multi.Read<DbLearingOutcomePre>();
                         var dbOutcomePost = multi.Read<DbLearningOutcomePost>();
 
                         courses.AddRange(from c in dbCourses
@@ -73,11 +71,11 @@ namespace ProgramPlanning.Shared.Services
                                                                where c.Outcomes.Contains(outcome)
                                                                select c);
 
-                            foreach(var pre in from p in dbOutcomePre
-                                               where p.Here == outcome.Id
+                            foreach(var pre in from p in dbOutcomePost
+                                               where p.Post == outcome.Id
                                                select p)
                             {
-                                outcome.PreOutcomes.Add(outcomes.Single(o => o.Id == pre.Pre));
+                                outcome.PreOutcomes.Add(outcomes.Single(o => o.Id == pre.Here));
                             }
 
                             foreach(var post in from p in dbOutcomePost
@@ -208,11 +206,6 @@ namespace ProgramPlanning.Shared.Services
                         foreach(var postOutcome in outcome.PostOutcomes)
                         {
                             await conn.ExecuteAsync("insert into learningoutcome_post (here, post) values (@id, @post_id) on conflict do nothing", new { outcome.Id, post_id = postOutcome.Id });
-                        }
-
-                        foreach(var preOutcome in outcome.PreOutcomes)
-                        {
-                            await conn.ExecuteAsync("insert into learningoutcome_pre (here, pre) values (@id, @pre_id) on conflict do nothing", new { outcome.Id, pre_id = preOutcome.Id });
                         }
 
                         outcome.IsDirty = false;

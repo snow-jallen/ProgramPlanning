@@ -133,6 +133,7 @@ namespace ProgramPlanning.Shared.Models
             set { SetField(ref isDirty, value); }
         }
 
+        public override string ToString() => $"{Id}: {Name??"[No Name]"} ({Description.Truncate(24)})";
 
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;

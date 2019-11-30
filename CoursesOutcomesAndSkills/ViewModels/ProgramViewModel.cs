@@ -129,5 +129,32 @@ namespace CoursesOutcomesAndSkills.ViewModels
             foreach (var o in Outcomes)
                 o.IsExpanded = true;
         }));
+
+        private RelayCommand moveSelectedPostOutcomeToSelectedOutcome;
+        public RelayCommand MoveSelectedPostOutcomeToSelectedOutcome => moveSelectedPostOutcomeToSelectedOutcome ?? (moveSelectedPostOutcomeToSelectedOutcome = new RelayCommand(() =>
+        {
+            SelectedOutcome = SelectedPostOutcome;
+        }));
+
+        private LearningOutcome selectedPostOutcome;
+        public LearningOutcome SelectedPostOutcome
+        {
+            get => selectedPostOutcome;
+            set { Set(ref selectedPostOutcome, value); }
+        }
+
+        private RelayCommand moveSelectedPreOutcomeToSelectedOutcome;
+        public RelayCommand MoveSelectedPreOutcomeToSelectedOutcome => moveSelectedPreOutcomeToSelectedOutcome ?? (moveSelectedPreOutcomeToSelectedOutcome = new RelayCommand(() =>
+        {
+            SelectedOutcome = SelectedPreOutcome;
+        }));
+
+        private LearningOutcome selectedPreOutcome;
+        public LearningOutcome SelectedPreOutcome
+        {
+            get => selectedPreOutcome;
+            set { Set(ref selectedPreOutcome, value); }
+        }
+
     }
 }

@@ -144,7 +144,15 @@
                  Style="{StaticResource reportListBox}"
                  ItemsSource="{Binding SelectedOutcome.PreOutcomes}"
                  ItemTemplate="{StaticResource OutcomeTemplate}"
+                 SelectedItem="{Binding SelectedPreOutcome}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Move to Selected Outcome"
+                              Icon="  ▶"
+                              Command="{Binding MoveSelectedPreOutcomeToSelectedOutcome}" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
 
         <TextBlock Text="Selected Outcome"
@@ -202,8 +210,15 @@
                  Style="{StaticResource reportListBox}"
                  ItemsSource="{Binding SelectedOutcome.PostOutcomes}"
                  ItemTemplate="{StaticResource OutcomeTemplate}"
+                 SelectedItem="{Binding SelectedPostOutcome}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Move to Selected Outcome"
+                              Icon="  ◀"
+                              Command="{Binding MoveSelectedPostOutcomeToSelectedOutcome}" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
     </Grid>
 </UserControl>
